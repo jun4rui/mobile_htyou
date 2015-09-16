@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+	<meta charset="GBK">
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>华天旅游网 移动版</title>
+	<script src="./bower_components/jquery/jquery.min.js"></script>
+	<link  href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js"></script>
+	<script src="./bower_components/avalon/dist/avalon.js"></script>
+	<script>
+		//Avalon模型
+		avalon.ready(function(){
+			//全局VM
+			//顶部广告轮播VM
+			var galleryVM = avalon.define({
+				$id: 'gallery',
+				list: []
+			});
+
+			avalon.scan();
+
+			//Ajax载入顶部广告轮播数据
+			$.getJSON('http://www.htyou.com/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?', function (result) {
+				galleryVM.list = result; // 只取前六个
+			}).done(function(){
+				$('.am-slider-manual').flexslider({"directionNav":false});
+			});
+
+		});
+	</script>
+</head>
+<body>
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin:0 3em;
+	}
+	.htyou-header-menu {
+		color:#FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default">
+	<div class="am-header-left am-header-nav">
+
+		<div  data-am-dropdown>
+			<a href="#left-link">
+				<i class="am-header-icon am-icon-bars am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
+			</a>
+			<ul class="am-dropdown-content">
+				<li class="am-dropdown-header">导航菜单</li>
+				<li class="am-divider"></li>
+				<li><a href="#">旅游</a></li>
+				<li><a href="#">机票</a></li>
+				<li><a href="#">酒店</a></li>
+				<li><a href="#">签证</a></li>
+				<li><a href="#">自定义</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			华天旅游网 移动版
+		</a>
+	</h1>
+
+	<div class="am-header-right am-header-nav">
+		<a href="#right-link" class="">
+			<i class="am-header-icon am-icon-comments-o"></i>
+		</a>
+	</div>
+</header>
+<!--/头部-->
+
+<!--顶部轮播广告-->
+<div data-am-widget="slider" class="am-slider-manual am-slider am-slider-c4">
+	<ul class="am-slides" ms-controller="gallery">
+		<li ms-repeat-unit="list">
+			<a href="http://www.htyou.com/{{unit.alink}}">
+				<img ms-src="http://www.htyou.com/{{unit.picuri}}">
+				<!--<div class="am-slider-desc">{{unit.text}}</div>-->
+			</a>
+		</li>
+	</ul>
+</div>
+<!--/顶部轮播广告-->
+</body>
+</html>
