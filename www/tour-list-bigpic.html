@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>线路列表页面</title>
+	<!--<link rel="stylesheet" href="./bower_components/amazeui/dist/css/amazeui.flat.min.css"/>-->
+	<link rel="stylesheet" href="./bower_components/amazeui/dist/css/amazeui.min.css"/>
+	<script src="./bower_components/jquery/jquery.min.js" charset="utf-8"></script>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="utf-8"></script>
+	<script src="./bower_components/avalon/avalon.js" charset="utf-8"></script>
+	<script>
+		//Avalon模型
+		avalon.ready(function () {
+			var toursVM = avalon.define({
+				$id: 'tours',
+				list: []
+			});
+
+			avalon.scan();
+			$.getJSON('./tour_temp.json', function (result) {
+				toursVM.list = result.value;
+			});
+
+		});
+	</script>
+</head>
+<body style="padding-top:59px; background:rgb(245, 245, 245)">
+<!--头部部分-->
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<!--左侧图标-->
+	<div class="am-header-left am-header-nav">
+		<a href="#left-link" class="">
+			<i class="am-header-icon am-icon-home"></i>
+		</a>
+	</div>
+	<!--/左侧图标-->
+	<!--中间标题-->
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			线路列表
+		</a>
+	</h1>
+	<!--/中间标题-->
+	<!--右侧图标-->
+	<div class="am-header-right am-header-nav">
+		<!--<a href="#right-link" class="">-->
+		<!--<i class="am-header-icon am-icon-bars"></i>-->
+		<!--</a>-->
+		<div class="am-dropdown" data-am-dropdown>
+			<button class="am-btn am-btn-primary am-dropdown-toggle" data-am-dropdown-toggle><i
+					class="am-header-icon am-icon-bars"></i></button>
+			<ul class="am-dropdown-content">
+				<li class="am-dropdown-header">排序方式</li>
+				<li class="am-divider"></li>
+				<li class="am-active"><a>默认</a></li>
+				<li><a>价格从高到低</a></li>
+				<li><a>价格从低到高</a></li>
+				<li><a>按类型</a></li>
+			</ul>
+		</div>
+	</div>
+	<!--/右侧图标-->
+</header>
+<!--/头部部分-->
+
+
+<!--bigpicview-->
+<style>
+	.tour-unit {
+		margin: 5px;
+		border-radius: 1px;
+		box-shadow: 1px 1px 3px #959595;
+		overflow:hidden;
+		padding-bottom:5px;
+		background-color: #FFF;
+	}
+
+	.tour-unit .tour-image {
+		padding-bottom: 66%;
+		background-size: cover;
+		background-position: center center;
+	}
+	.tour-unit .tour-name {
+		font-size:1em;
+		line-height:1.5em;
+		/*font-weight:bold;*/
+		margin:0 .2em;
+		height:3em;
+		overflow:hidden;
+		color:#555;
+	}
+	.tour-unit .tour-price {
+		text-align: right;
+		padding-top:2px;
+		color:#EF6915;
+		padding-right:.2em;
+		line-height: 1.2em;
+	}
+	.tour-price h1 {
+		margin-top: 0;
+		display: inline;
+		font-size:1.2em;
+	}
+</style>
+<ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4" ms-controller="tours">
+	<li ms-repeat-tour="list">
+		<div class="tour-unit">
+			<a href="#">
+				<div class="tour-image" ms-css-background-image="url(http://www.htyou.com/{{tour.spotviewpic}})"></div>
+				<div class="tour-name">{{tour.tourproname}}</div>
+				<div class="tour-price">
+					&yen;<h1>{{tour.leastprice}}</h1>元
+				</div>
+			</a>
+		</div>
+	</li>
+</ul>
+<!--/bigpicview-->
+
+</body>
+</html>

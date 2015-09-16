@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        .clear {
+            clear: both;
+        }
+        .chatmsg {
+            margin:1em auto;
+        }
+        .face {
+            width:64px;
+            height:64px;
+            border-radius:50%;
+            border:2px solid #333;
+            margin:.5em;
+        }
+        .face.left {
+            float:left;
+        }
+        .face.right {
+            float:right;
+            transform: scale(-1,1);
+        }
+        .chatbox {
+            border:2px solid #555;
+            border-radius: 15px;
+            padding:.5em;
+            min-height:68px;
+            max-width: 70%;
+        }
+        .chatbox.left {
+            float:left;
+        }
+        .chatbox.right {
+            float:right;
+        }
+        .charmsg {
+            display:block;
+        }
+    </style>
+    <script src="http://www.htyou.com/common/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script>
+        var chatData    = [
+            ['left','face1.jpg','左侧脸朝左'],
+            ['right','face1.jpg','右侧脸朝右'],
+            ['left','face1.jpg','尼美，我真的很担心你弟弟……'],
+            ['right','face2.jpg','妈比，先别急……发生什么事情了？'],
+            ['left','face1.jpg', '我感觉你弟弟变得内向了，好像是失恋了……'],
+            ['right','face3.jpg', '“你还没看呢？特别好看！”23岁的徐凡和朋友聊了2个多小时的电影，28岁的孙博则在周末经常带孩子去看电影。约30块钱的电影票和遍地开花的影院引发了全民观影热潮。好莱坞的电影制作企业也纷纷与中国企业合作……']
+        ];
+        $(document).ready(function(){
+            for (var i=0; i<chatData.length; i++){
+                $('body').append('<div class="chatmsg '+chatData[i][0]+'"><img src="./images/'+chatData[i][1]+'" alt="" class="face '+chatData[i][0]+'"/><div class="chatbox '+chatData[i][0]+'">'+chatData[i][2]+'</div><div class="clear"></div></div>');
+            }
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

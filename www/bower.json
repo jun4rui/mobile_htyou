@@ -1,0 +1,22 @@
+{
+  "name": "www",
+  "version": "0.0.0",
+  "authors": [
+    "jun4rui <jun4rui@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "amazeui": "~2.4.0",
+    "avalon": "~1.4.6",
+    "bootstrap": "~3.3.0",
+    "material-design-lite": "~1.0.2",
+    "angularjs": "1.4.4"
+  }
+}

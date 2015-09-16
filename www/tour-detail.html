@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<title>华天旅游网 线路详情</title>
+	<link rel="stylesheet" href="./bower_components/amazeui/dist/css/amazeui.min.css"/>
+	<script src="./bower_components/jquery/jquery.min.js" charset="utf-8"></script>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="utf-8"></script>
+	<script src="./bower_components/avalon/avalon.js" charset="utf-8"></script>
+	<script>
+		avalon.ready(function () {
+			var toursVM = avalon.define({
+				$id: 'tours',
+				list: [],
+				name:''
+			});
+			avalon.scan();
+		});
+	</script>
+</head>
+<body ms-controller="tours">
+123
+<div  ms-include-src="temp.html{{name}}"></div>
+abc
+</body>
+</html>
