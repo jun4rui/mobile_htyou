@@ -1,37 +1,40 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
+<html lang="zh_CN" ng-app="galleryApp">
 <head>
-	<meta charset="GBK">
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<title>»ªÌìÂÃÓÎÍø ÒÆ¶¯°æ</title>
-	<script src="./bower_components/jquery/jquery.min.js"></script>
+	<title>åå¤©æ—…æ¸¸ç½‘ ç§»åŠ¨ç‰ˆ</title>
+	<!--jQueryæ¡†æ¶-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amazeæ¡†æ¶ éœ€è¦jQueryæ”¯æŒ-->
 	<link  href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
-	<script src="./bower_components/amazeui/dist/js/amazeui.min.js"></script>
-	<script src="./bower_components/avalon/dist/avalon.js"></script>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalonæ¡†æ¶-->
+	<script src="./bower_components/avalon/avalon.modern.js"></script>
 	<script>
-		//AvalonÄ£ĞÍ
-		avalon.ready(function(){
-			//È«¾ÖVM
-			//¶¥²¿¹ã¸æÂÖ²¥VM
-			var galleryVM = avalon.define({
-				$id: 'gallery',
-				list: []
-			});
-
-			avalon.scan();
-
-			//AjaxÔØÈë¶¥²¿¹ã¸æÂÖ²¥Êı¾İ
-			$.getJSON('http://www.htyou.com/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?', function (result) {
-				galleryVM.list = result; // Ö»È¡Ç°Áù¸ö
-			}).done(function(){
-				$('.am-slider-manual').flexslider({"directionNav":false});
-			});
-
-		});
+//		//Avalonæ¨¡å‹
+//		avalon.ready(function(){
+//			//å…¨å±€VM
+//			//é¡¶éƒ¨å¹¿å‘Šè½®æ’­VM
+//			var galleryVM = avalon.define({
+//				$id: 'gallery',
+//				list: []
+//			});
+//
+//			avalon.scan();
+//
+//			//Ajaxè½½å…¥é¡¶éƒ¨å¹¿å‘Šè½®æ’­æ•°æ®
+//			$.getJSON('http://www.htyou.com/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?', function (result) {
+//				galleryVM.list = result; // åªå–å‰å…­ä¸ª
+//			}).done(function(){
+//				$('.am-slider-manual').flexslider({"directionNav":false});
+//			});
+//
+//		});
 	</script>
 </head>
 <body>
-<!--Í·²¿-->
+<!--å¤´éƒ¨-->
 <style>
 	header.am-header .am-header-title {
 		margin:0 3em;
@@ -48,20 +51,20 @@
 				<i class="am-header-icon am-icon-bars am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
 			</a>
 			<ul class="am-dropdown-content">
-				<li class="am-dropdown-header">µ¼º½²Ëµ¥</li>
+				<li class="am-dropdown-header">å¯¼èˆªèœå•</li>
 				<li class="am-divider"></li>
-				<li><a href="#">ÂÃÓÎ</a></li>
-				<li><a href="#">»úÆ±</a></li>
-				<li><a href="#">¾Æµê</a></li>
-				<li><a href="#">Ç©Ö¤</a></li>
-				<li><a href="#">×Ô¶¨Òå</a></li>
+				<li><a href="#">æ—…æ¸¸</a></li>
+				<li><a href="#">æœºç¥¨</a></li>
+				<li><a href="#">é…’åº—</a></li>
+				<li><a href="#">ç­¾è¯</a></li>
+				<li><a href="#">è‡ªå®šä¹‰</a></li>
 			</ul>
 		</div>
 	</div>
 
 	<h1 class="am-header-title">
 		<a href="#title-link" class="">
-			»ªÌìÂÃÓÎÍø ÒÆ¶¯°æ
+			åå¤©æ—…æ¸¸ç½‘ ç§»åŠ¨ç‰ˆ
 		</a>
 	</h1>
 
@@ -71,19 +74,26 @@
 		</a>
 	</div>
 </header>
-<!--/Í·²¿-->
+<!--/å¤´éƒ¨-->
 
-<!--¶¥²¿ÂÖ²¥¹ã¸æ-->
+<!--é¡¶éƒ¨è½®æ’­å¹¿å‘Š-->
 <div data-am-widget="slider" class="am-slider-manual am-slider am-slider-c4">
-	<ul class="am-slides" ms-controller="gallery">
-		<li ms-repeat-unit="list">
-			<a href="http://www.htyou.com/{{unit.alink}}">
-				<img ms-src="http://www.htyou.com/{{unit.picuri}}">
+	<ul class="am-slides" ng-controller="GalleryCtrl">
+		<li ng-repeat="gallery in gallerys">
+			<a href="http://www.htyou.com/{{gallery.text}}">
+				<img ng-src="http://www.htyou.com/{{gallery.picuri}}">
 				<!--<div class="am-slider-desc">{{unit.text}}</div>-->
 			</a>
 		</li>
 	</ul>
 </div>
-<!--/¶¥²¿ÂÖ²¥¹ã¸æ-->
+<!--/é¡¶éƒ¨è½®æ’­å¹¿å‘Š-->
+
+
+<script>
+	$(document).ready(function(){
+		$('.am-slider-manual').flexslider({"directionNav":false});
+	});
+</script>
 </body>
 </html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="bower_components/jquery/jquery.min.js"></script>
+</head>
+<body>
+<script>
+	jQuery(document).ready(function () {
+		$.ajax({
+			type: "get", //jquey是不支持post方式跨域的
+			async: false,
+			url: "http://www.htyou.com/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?", //跨域请求的URL
+			dataType: "jsonp",
+			//传递给请求处理程序，用以获得jsonp回调函数名的参数名(默认为:callback)
+			jsonp: "jsoncallback",
+			//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+			jsonpCallback: "success_jsonpCallback",
+			//成功获取跨域服务器上的json数据后,会动态执行这个callback函数
+			success: function (json) {
+				console.log(json);
+			},
+			error: function () {
+				console.log(jqXHR, textStatus, errorThrown);
+			},
+			success_jsonpCallback: function (aaa) {
+				console.log(aaa);
+			}
+		});
+	});
+</script>
+
+
+<script>
+	[{
+		"text": "1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）",
+		"picuri2": "",
+		"createdate": "2015-02-15",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "3799",
+		"type": "220089",
+		"picuri": "pic/adpic/0710.jpg",
+		"id": 220,
+		"alink": "tour/tourbrowse/9935.htm",
+		"grade": "100",
+		"notes": "邮轮",
+		"enddate": ""
+	}, {
+		"text": "自组-日本印象本州6日游（阪进名出1023）",
+		"picuri2": "",
+		"createdate": "2015-02-15",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "5590",
+		"type": "220089",
+		"picuri": "pic/adpic/2015-05-05_10-03-36_1954.jpg",
+		"id": 183,
+		"alink": "tour/type/month/keyword日本.htm",
+		"grade": "95",
+		"notes": "日本",
+		"enddate": ""
+	}, {
+		"text": "1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）",
+		"picuri2": "",
+		"createdate": "2015-07-13",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "3799",
+		"type": "220089",
+		"picuri": "pic/adpic/2015-07-13_15-16-33_5978.jpg",
+		"id": 246,
+		"alink": "tour/tourbrowse/9935.htm",
+		"grade": "90",
+		"notes": "邮轮",
+		"enddate": ""
+	}, {
+		"text": "广州/珠海长隆活力家庭亲子游套餐（2大1小）（10月16-31日）",
+		"picuri2": "",
+		"createdate": "2015-02-15",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "900",
+		"type": "220089",
+		"picuri": "pic/adpic/cl.jpg",
+		"id": 222,
+		"alink": "tour/type/month/keyword长隆.htm",
+		"grade": "85",
+		"notes": "长隆",
+		"enddate": ""
+	}, {
+		"text": "广西桂林阳朔（地中海度假区魔法夏令营）三日游 CLUB MED（国庆节）",
+		"picuri2": "",
+		"createdate": "2015-06-24",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "3490",
+		"type": "220089",
+		"picuri": "pic/adpic/2015-06-24_17-08-00_6490.jpg",
+		"id": 231,
+		"alink": "tour/tourbrowse/9894.htm",
+		"grade": "85",
+		"notes": "med",
+		"enddate": ""
+	}, {
+		"text": "1006长滩岛5天4晚逍遥游（促销版）",
+		"picuri2": "",
+		"createdate": "2015-09-07",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "3590",
+		"type": "220089",
+		"picuri": "pic/adpic/2015-09-07_14-32-41_3897.jpg",
+		"id": 268,
+		"alink": "tour/type/month/keyword长滩.htm",
+		"grade": "1",
+		"notes": "长滩",
+		"enddate": ""
+	}][{
+		"text": "1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）",
+		"picuri2": "",
+		"createdate": "2015-02-15",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "3799",
+		"type": "220089",
+		"picuri": "pic/adpic/0710.jpg",
+		"id": 220,
+		"alink": "tour/tourbrowse/9935.htm",
+		"grade": "100",
+		"notes": "邮轮",
+		"enddate": ""
+	}, {
+		"text": "自组-日本印象本州6日游（阪进名出1023）",
+		"picuri2": "",
+		"createdate": "2015-02-15",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "5590",
+		"type": "220089",
+		"picuri": "pic/adpic/2015-05-05_10-03-36_1954.jpg",
+		"id": 183,
+		"alink": "tour/type/month/keyword日本.htm",
+		"grade": "95",
+		"notes": "日本",
+		"enddate": ""
+	}, {
+		"text": "1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）",
+		"picuri2": "",
+		"createdate": "2015-07-13",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "3799",
+		"type": "220089",
+		"picuri": "pic/adpic/2015-07-13_15-16-33_5978.jpg",
+		"id": 246,
+		"alink": "tour/tourbrowse/9935.htm",
+		"grade": "90",
+		"notes": "邮轮",
+		"enddate": ""
+	}, {
+		"text": "广州/珠海长隆活力家庭亲子游套餐（2大1小）（10月16-31日）",
+		"picuri2": "",
+		"createdate": "2015-02-15",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "900",
+		"type": "220089",
+		"picuri": "pic/adpic/cl.jpg",
+		"id": 222,
+		"alink": "tour/type/month/keyword长隆.htm",
+		"grade": "85",
+		"notes": "长隆",
+		"enddate": ""
+	}, {
+		"text": "广西桂林阳朔（地中海度假区魔法夏令营）三日游 CLUB MED（国庆节）",
+		"picuri2": "",
+		"createdate": "2015-06-24",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "3490",
+		"type": "220089",
+		"picuri": "pic/adpic/2015-06-24_17-08-00_6490.jpg",
+		"id": 231,
+		"alink": "tour/tourbrowse/9894.htm",
+		"grade": "85",
+		"notes": "med",
+		"enddate": ""
+	}, {
+		"text": "1006长滩岛5天4晚逍遥游（促销版）",
+		"picuri2": "",
+		"createdate": "2015-09-07",
+		"excol3": "",
+		"show": "11",
+		"excol2": "",
+		"actlabel": "",
+		"excol1": "3590",
+		"type": "220089",
+		"picuri": "pic/adpic/2015-09-07_14-32-41_3897.jpg",
+		"id": 268,
+		"alink": "tour/type/month/keyword长滩.htm",
+		"grade": "1",
+		"notes": "长滩",
+		"enddate": ""
+	}]
+</script>
+</body>
+</html>
