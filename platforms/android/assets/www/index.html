@@ -1,399 +1,306 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh_CN">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<title>华天旅游网 移动版</title>
-
-	<!--MDL相关库-->
-	<!--包含MDL样式-->
-	<!--<link rel="stylesheet" href="./bower_components/material-design-lite/material.min.css"/>-->
-	<link rel="stylesheet" href="./material_css_htyou.css"/>
-	<!--包含MDL的JS库-->
-	<script src="./bower_components/material-design-lite/material.min.js"></script>
-	<!--包含MDL需要的webfont-->
-	<link rel="stylesheet" href="./webfont/webfont.css"/>
-	<!--/MDL相关库-->
-
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link  href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
 	<style>
 		body {
-			background-color:#FBFBFB;
+			background-color:#f3f3f3;
+		}
+		.hide {
+			display:none;
 		}
 	</style>
+	<script>
+		//Avalon模型
+		avalon.ready(function(){
+			//全局VM
+			//顶部广告轮播VM
+			var galleryVM = avalon.define({
+				$id: 'gallery',
+				list: [],
+				galleryRendered: function(type){
+					$('#galleryAD').show().addClass('am-animation-slide-top am-animation-delay-1');
+					//激活滑动gallery
+					$('.am-slider-manual').flexslider({"directionNav":false});
+					//解决图片高度不一致的问题，最终高度和宽度的例如110:44的比例来显示
+					$('#galleryAD a img').height(parseInt($('#galleryAD').width()/110*44));
+				}
+			});
+			//推荐产品VM
+			var recommendTourVM = avalon.define({
+				$id: 'recommendTour',
+				list:[]
+			});
+
+			avalon.scan();
+
+			//Ajax载入顶部广告轮播数据
+			$.getJSON(server_addr+'/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?', function (result, status) {
+				galleryVM.list = result;
+			});
+			//Ajax载入推荐产品数据
+			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?commendtype=14&jsoncallback=?', function(result, status){
+				console.log(status, result);
+				recommendTourVM.list = result.value;
+			});
+
+		});
+	</script>
 </head>
 <body>
-<!--头部部分-->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-	<header class="mdl-layout__header">
-		<div class="mdl-layout__header-row">
-			<!-- 标题 -->
-			<span class="mdl-layout-title">华天旅游网 移动版</span>
-			<!-- 加入空白，让下面的内容右侧对齐 -->
-			<div class="mdl-layout-spacer"></div>
-			<!-- 导航菜单，在小尺寸屏幕下会隐藏起来 -->
-			<nav class="mdl-navigation mdl-layout--large-screen-only">
-				<a class="mdl-navigation__link" href="">Link</a>
-				<a class="mdl-navigation__link" href="">Link</a>
-				<a class="mdl-navigation__link" href="">Link</a>
-				<a class="mdl-navigation__link" href="">Link</a>
-			</nav>
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin:0 3em;
+	}
+	.htyou-header-menu {
+		color:#FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<div  data-am-dropdown>
+			<a href="#left-link">
+				<i class="am-header-icon am-icon-bars am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
+			</a>
+			<ul class="am-dropdown-content">
+				<li class="am-dropdown-header">导航菜单</li>
+				<li class="am-divider"></li>
+				<li><a href="#">旅游</a></li>
+				<li><a href="#">机票</a></li>
+				<li><a href="#">酒店</a></li>
+				<li><a href="#">签证</a></li>
+				<li><a href="#">自定义</a></li>
+			</ul>
 		</div>
-	</header>
-	<div class="mdl-layout__drawer">
-		<span class="mdl-layout-title">功能菜单</span>
-		<nav class="mdl-navigation">
-			<a class="mdl-navigation__link" href="">功能1</a>
-			<a class="mdl-navigation__link" href="">功能2</a>
-			<a class="mdl-navigation__link" href="">功能3</a>
-			<a class="mdl-navigation__link" href="">功能4</a>
-		</nav>
+		<!--/下拉菜单-->
 	</div>
-	<!--内容区域-->
-	<main class="mdl-layout__content">
-		<div class="page-content">
-			<!--网页主题内容-->
-			<!--大功能方块-->
-			<!-- Image card -->
-			<style>
-				#func-section {
-					margin-top:10px;
-				}
-				.mdl-grid {
-					padding:0;
-				}
-				.mdl-cell {
-					width:33.3%;
-					margin:0;
-				}
-				.card-image.mdl-card {
-					width: 100%;
-					margin: 0 auto;
-					/*height: auto;*/
-					min-height:60px;
-					padding-bottom:90%;
-					border:1px solid #E2E2E2;
-					position:relative;
-				}
-				.card-image > .mdl-card__actions {
-					width:100%;
-					height: 52px;
-					padding: 16px;
-					background: rgba(0, 0, 0, 0.2);
-					position:absolute;
-					bottom:0;
-					left:0;
-				}
-				.card-image__filename {
-					color: #fff;
-					font-size: 14px;
-					font-weight: 500;
-				}
-			</style>
-			<div class="mdl-grid" id="func-section">
-				<div class="mdl-cell">
-					<!--模块单元-->
-					<div class="card-image mdl-card" style="background:url(http://www.htyou.com/images/weixin/icon_1.gif) center / cover">
-						<!--<div class="mdl-card__title mdl-card&#45;&#45;expand">99</div>-->
-						<!--<div class="mdl-card__actions">-->
-							<!--<span class="card-image__filename">出境游</span>-->
-						<!--</div>-->
-					</div>
-					<!--/模块单元-->
-				</div>
-				<div class="mdl-cell">
-					<!--模块单元-->
-					<div class="card-image mdl-card" style="background:url(http://www.htyou.com/images/weixin/icon_2.gif) center / cover">
-						<!--<div class="mdl-card__title mdl-card&#45;&#45;expand">2</div>-->
-						<!--<div class="mdl-card__actions">-->
-							<!--<span class="card-image__filename">国内游</span>-->
-						<!--</div>-->
-					</div>
-					<!--/模块单元-->
-				</div>
-				<div class="mdl-cell">
-					<!--模块单元-->
-					<div class="card-image mdl-card" style="background:url(http://www.htyou.com/images/weixin/icon_3.gif) center / cover">
-						<!--<div class="mdl-card__title mdl-card&#45;&#45;expand">3</div>-->
-						<!--<div class="mdl-card__actions">-->
-							<!--<span class="card-image__filename">周边游</span>-->
-						<!--</div>-->
-					</div>
-					<!--/模块单元-->
-				</div>
-				<div class="mdl-cell">
-					<!--模块单元-->
-					<div class="card-image mdl-card" style="background:url(http://www.htyou.com/images/weixin/icon_4.gif) center / cover">
-						<!--<div class="mdl-card__title mdl-card&#45;&#45;expand">3</div>-->
-						<!--<div class="mdl-card__actions">-->
-							<!--<span class="card-image__filename">机票</span>-->
-						<!--</div>-->
-					</div>
-					<!--/模块单元-->
-				</div>
-				<div class="mdl-cell">
-					<!--模块单元-->
-					<div class="card-image mdl-card" style="background:url(http://www.htyou.com/images/weixin/icon_5.gif) center / cover">
-						<!--<div class="mdl-card__title mdl-card&#45;&#45;expand">3</div>-->
-						<!--<div class="mdl-card__actions">-->
-							<!--<span class="card-image__filename">签证</span>-->
-						<!--</div>-->
-					</div>
-					<!--/模块单元-->
-				</div>
-				<div class="mdl-cell">
-					<!--模块单元-->
-					<div class="card-image mdl-card" style="background:url(http://www.htyou.com/images/weixin/icon_6.gif) center / cover">
-						<!--<div class="mdl-card__title mdl-card&#45;&#45;expand">3</div>-->
-						<!--<div class="mdl-card__actions">-->
-							<!--<span class="card-image__filename">自由行及定制</span>-->
-						<!--</div>-->
-					</div>
-					<!--/模块单元-->
-				</div>
-			</div>
-			<!--/大功能方块-->
-			<!--搜索按钮区域-->
-			<style>
-				#search-section {
-					display:block;
-					margin:0 .5em;
-				}
-				.mdl-textfield {
-					width: auto;
-					display:block;
-					/*margin:0 .5em;*/
-					box-sizing:border-box;
-				}
-				.mdl-textfield__input {
-					/*margin:0 .5em;*/
-					width: 100%;
-				}
-			</style>
-			<form action="#" style="display:none;">
-				<div id="search-section" class="mdl-textfield mdl-js-textfield">
-					<div class="mdl-textfield">
-						<input class="mdl-textfield__input" type="text" id="search-expandable"/>
-						<label class="mdl-textfield__label" for="search-expandable">输入关键字进行搜索</label>
-						<button class="mdl-button mdl-js-button mdl-button--icon" for="search-expandable" style="right:0;">
-							<i class="material-icons">search</i>
-						</button>
-					</div>
-				</div>
-			</form>
-			<!--/搜索按钮区域-->
 
-			<!--热门目的地-->
-			<style>
-				.normal-panel {
-					margin: .5em 0 0 0;
-					display: block;
-					width: auto;
-					box-sizing: border-box;
-				}
-				.normal-panel .title {
-					background-color: rgb(33, 150, 243);
-					color: #FFF;
-					padding:.5em 0;
-				}
-				.normal-panel .title span {
-					font-size: 20px;
-					line-height: 24px;
-					height: 24px;
-					vertical-align: middle;
-				}
-				#hottour .mdl-cell {
-					width:25%;
-				}
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			华天旅游网 移动版
+		</a>
+	</h1>
 
-				#hottour .mdl-card {
-					width:auto;
-					min-height:70px;
-					margin:2px 2px;
-					padding-bottom:100%;
-				}
-				#hottour .mdl-card .mdl-card__actions {
-					height: 38px;
-					padding: .5em;
-					background: rgba(0, 0, 0, 0.2);
-					position:absolute;
-					bottom:0;
-					left:0;
-					text-align: center;
-				}
-				#hottour .mdl-card .mdl-card__actions .card-image__name {
-					color:#FFF;
-					font-weight:bold;
-				}
-			</style>
-			<div id="hottour" class="normal-panel mdl-shadow--2dp">
-				<div class="title">
-					<i class="material-icons" style="vertical-align: middle;">place</i>
-					<span>热门目的地</span>
-				</div>
-				<div class="mdl-grid">
-					<div class="mdl-cell">
-						<div class="mdl-card" style="background:url(http://www.htyou.com/pic/class/700.jpg) center / cover;">
-							<div class="mdl-card__actions">
-								<span class="card-image__name">邮轮</span>
-							</div>
-						</div>
-					</div>
-					<div class="mdl-cell">
-						<div class="mdl-card" style="background:url(http://www.htyou.com/pic/class/2014-08-21_10-07-58_7505.jpg) center / cover;">
-							<div class="mdl-card__actions">
-								<span class="card-image__name">台湾</span>
-							</div>
-						</div>
-					</div>
-					<div class="mdl-cell">
-						<div class="mdl-card" style="background:url(http://www.htyou.com/pic/class/2014-08-21_10-17-38_1520.jpg) center / cover;">
-							<div class="mdl-card__actions">
-								<span class="card-image__name">澳新</span>
-							</div>
-						</div>
-					</div>
-					<div class="mdl-cell">
-						<div class="mdl-card" style="background:url(http://www.htyou.com/pic/class/2014-08-21_10-13-55_3824.jpg) center / cover;">
-							<div class="mdl-card__actions">
-								<span class="card-image__name">普吉岛</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--/热门目的地-->
+	<div class="am-header-right am-header-nav">
+		<a href="#right-link" class="">
+			<i class="am-header-icon am-icon-comments-o"></i>
+		</a>
+	</div>
+</header>
+<!--/头部-->
 
-			<!--产品推荐-->
-			<style>
-				.recommend-unit {
-					width: 100%;
-					margin: .5em auto;
-					padding-bottom: .5em;
-					border-bottom: 1px solid #C9C9C9;
-				}
-				.recommend-unit .r-image {
-					width: 20%;
-					padding-bottom: 20%;
-					margin-left: 1px;
-					float: left;
-					background-size: cover;
-					background-position: center center;
-				}
-				.recommend-unit .r-name {
-					width: 60%;
-					float: left;
-					/*line-height: 140%;*/
-					/*font-weight: bold;*/
-					padding-left: .5em;
-					font-size: 1.1em;
-					color: #333;
-				}
-				.recommend-unit .r-price {
-					width: 17%;
-					float: right;
-					font-size: 1em;
-					color: #FF8200;
-					vertical-align: middle;
-					text-align: right;
-				}
-			</style>
-			<div id="recommend-section" class="normal-panel mdl-shadow--2dp">
-				<div class="title">
-					<i class="material-icons" style="vertical-align: middle;">folder_special</i>
-					<span>产品推荐</span>
-				</div>
-				<div class="content">
-					<!--推荐单元-->
-					<a href="/mobileTour/tourbrowse/9935.htm?infoid=" target="_top">
-						<div class="recommend-unit">
-							<div class="r-image"
-							     style="background-image:url(http://www.htyou.com:80//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg);"></div>
-							<div class="r-name">1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）</div>
-							<div class="r-price">&yen;3799起</div>
-							<div style="clear:both"></div>
-						</div>
-					</a>
-					<!--/推荐单元-->
-					<!--推荐单元-->
-					<a href="/mobileTour/tourbrowse/9028.htm?infoid=" target="_top">
-						<div class="recommend-unit">
-							<div class="r-image"
-							     style="background-image:url(http://www.htyou.com:80//pic/photo/f8bc07eaad6deea3e20edba76d0d2d7e-6.jpg);"></div>
-							<div class="r-name">长滩岛6天5晚浪漫游7-10月</div>
-							<div class="r-price">&yen;4790起</div>
-							<div style="clear:both"></div>
-						</div>
-					</a>
-					<!--/推荐单元-->
-					<!--推荐单元-->
-					<a href="/mobileTour/tourbrowse/8155.htm?infoid=" target="_top">
-						<div class="recommend-unit">
-							<div class="r-image"
-							     style="background-image:url(http://www.htyou.com:80//pic/photo/1260698db1f035833b44c07e88c26b58-4.jpg);"></div>
-							<div class="r-name">张家界黄龙洞  森林公园三日游(2015)</div>
-							<div class="r-price">&yen;900起</div>
-							<div style="clear:both"></div>
-						</div>
-					</a>
-					<!--/推荐单元-->
-					<!--推荐单元-->
-					<a href="/mobileTour/tourbrowse/9027.htm?infoid=" target="_top">
-						<div class="recommend-unit">
-							<div class="r-image"
-							     style="background-image:url(http://www.htyou.com:80//pic/photo/f8bc07eaad6deea3e20edba76d0d2d7e-9.jpg);"></div>
-							<div class="r-name">长滩岛6天5晚尊享游7-10月</div>
-							<div class="r-price">&yen;5590起</div>
-							<div style="clear:both"></div>
-						</div>
-					</a>
-					<!--/推荐单元-->
-					<!--推荐单元-->
-					<a href="/mobileTour/tourbrowse/8154.htm?infoid=" target="_top">
-						<div class="recommend-unit">
-							<div class="r-image"
-							     style="background-image:url(http://www.htyou.com:80//pic/photo/b1cee26c4f8ae1c9097c5da4fdf286ea-5.jpg);"></div>
-							<div class="r-name">张家界黄龙洞  森林公园 凤凰四日游（2015）</div>
-							<div class="r-price">&yen;1150起</div>
-							<div style="clear:both"></div>
-						</div>
-					</a>
-					<!--/推荐单元-->
-					<!--推荐单元-->
-					<a href="/mobileTour/tourbrowse/9023.htm?infoid=" target="_top">
-						<div class="recommend-unit">
-							<div class="r-image"
-							     style="background-image:url(http://www.htyou.com:80//pic/photo/f8bc07eaad6deea3e20edba76d0d2d7e-7.jpg);"></div>
-							<div class="r-name">长滩岛5天4晚尊享游7-10月</div>
-							<div class="r-price">&yen;4990起</div>
-							<div style="clear:both"></div>
-						</div>
-					</a>
-					<!--/推荐单元-->
+<!--顶部轮播广告-->
 
-				</div>
-			</div>
-			<!--/产品推荐-->
-
-			<!--在线帮助按钮-->
-			<style>
-				#helper {
-					position: fixed;
-					bottom: .5em;
-					right: .5em;
-					z-index: 999999;
-					background: rgb(255,64,129) url("http://www.htyou.com/common/weixin_include/images/icon_qq.png") center / cover;
-				}
-			</style>
-			<button id="helper" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
-				<!--<i class="material-icons">help</i>-->
-			</button>
-			<!--/在线帮助按钮-->
-			<!--/网页主题内容-->
-		</div>
-	</main>
-	<!--/内容区域-->
+<div data-am-widget="slider" id="galleryAD" class="am-slider-manual am-slider am-slider-a1 hide">
+	<ul class="am-slides" ms-controller="gallery">
+		<!--渲染完毕后执行galleryRendered-->
+		<li ms-repeat-unit="list" data-repeat-rendered="galleryRendered">
+			<a ms-attr-href="http://www.htyou.com/{{unit.alink}}">
+				<img ms-attr-src="http://www.htyou.com/{{unit.picuri}}" style="object-fit:fill;">
+				<!--<div class="am-slider-desc">{{unit.text}}</div>-->
+			</a>
+		</li>
+	</ul>
 </div>
-<!--/头部部分-->
+<!--/顶部轮播广告-->
 
+<!--六大功能模块-->
+<style>
+	#func-panel li {
+		padding:2px;
+	}
+	#func-panel i.fa {
+		vertical-align: middle;
+	}
+	#func-panel .func-unit a {
+		text-align: left;
+		text-indent: .5em;
+	}
+</style>
+<ul class="am-avg-sm-2" id="func-panel">
+	<li class="func-unit">
+		<a href="#" class="am-btn am-btn-warning am-btn-block am-animation-scale-down">
+			<i class="fa fa-plane fa-lg"></i>&nbsp;出境游
+		</a>
+	</li>
+	<li class="func-unit">
+		<a href="#" class="am-btn am-btn-warning am-btn-block am-animation-scale-down">
+			<i class="fa fa-ship fa-lg"></i>&nbsp;国内游</a>
+	</li>
+	<li class="func-unit">
+		<a href="#" class="am-btn am-btn-success am-btn-block am-animation-scale-down">
+			<i class="fa fa-bus fa-lg"></i>&nbsp;周边游</a>
+	</li>
+	<li class="func-unit">
+		<a href="#" class="am-btn am-btn-success am-btn-block am-animation-scale-down">
+			<i class="fa fa-credit-card fa-lg"></i>&nbsp;机票
+		</a>
+	</li>
+	<li class="func-unit">
+		<a href="#" class="am-btn am-btn-secondary am-btn-block am-animation-scale-down">
+			<i class="fa fa-ticket fa-lg"></i>&nbsp;签证</a>
+	</li>
+	<li class="func-unit">
+		<a href="#" class="am-btn am-btn-secondary am-btn-block am-animation-scale-down">
+			<i class="fa fa-users fa-lg"></i>&nbsp;自由行及定制
+		</a>
+	</li>
+</ul>
+<!--/六大功能模块-->
+
+<!--搜索栏-->
+<style>
+	#search-form {
+		margin:2px;
+	}
+</style>
+<form action="" class="am-form am-form-inline" id="search-form">
+	<div class="am-form-group am-form-icon">
+		<i class="am-icon-search"></i>
+		<input type="text" class="am-form-field" placeholder="请输出您要搜索关键字"/>
+	</div>
+</form>
+<!--/搜索栏-->
+<!--热门目的地-->
+<style>
+	.am-titlebar {
+		margin:0 2px;
+	}
+	#hot-section.am-gallery {
+		padding:0;
+	}
+	#hot-section.am-gallery-overlay > li {
+		padding:2px;
+	}
+</style>
+<!--热门线路标题-->
+<div id="hot-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+	<h2 class="am-titlebar-title">热门线路</h2>
+	<nav class="am-titlebar-nav">
+		<a href="#more" class="">更多 &raquo;</a>
+	</nav>
+</div>
+<!--/热门线路标题-->
+<ul id="hot-section" data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-gallery-overlay" data-am-gallery="{ pureview: false }">
+	<!--热门线路unit-->
+	<li>
+		<div class="am-gallery-item">
+			<a href="">
+				<img src="http://www.htyou.com/pic/class/700.jpg" alt=""/>
+				<h3 class="am-gallery-title">邮轮</h3>
+				<div class="am-gallery-desc"></div>
+			</a>
+		</div>
+	</li>
+	<!--/热门线路unit-->
+	<!--热门线路unit-->
+	<li>
+		<div class="am-gallery-item">
+			<a href="">
+				<img src="http://www.htyou.com/pic/class/2014-08-21_10-07-58_7505.jpg" alt=""/>
+				<h3 class="am-gallery-title">台湾</h3>
+				<div class="am-gallery-desc"></div>
+			</a>
+		</div>
+	</li>
+	<!--/热门线路unit-->
+	<!--热门线路unit-->
+	<li>
+		<div class="am-gallery-item">
+			<a href="">
+				<img src="http://www.htyou.com/pic/class/2014-08-21_10-17-38_1520.jpg" alt=""/>
+				<h3 class="am-gallery-title">澳新</h3>
+				<div class="am-gallery-desc"></div>
+			</a>
+		</div>
+	</li>
+	<!--/热门线路unit-->
+	<!--热门线路unit-->
+	<li>
+		<div class="am-gallery-item">
+			<a href="">
+				<img src="http://www.htyou.com/pic/class/2014-08-21_10-16-01_5785.jpg" alt=""/>
+				<h3 class="am-gallery-title">欧洲</h3>
+				<div class="am-gallery-desc"></div>
+			</a>
+		</div>
+	</li>
+	<!--/热门线路unit-->
+
+</ul>
+<!--/热门目的地-->
+
+<!--产品推荐-->
+<!--产品推荐标题-->
+<div id="recommend-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+	<h2 class="am-titlebar-title">产品推荐</h2>
+	<nav class="am-titlebar-nav">
+		<a href="#more" class="">更多 &raquo;</a>
+	</nav>
+</div>
+<!--/产品推荐标题-->
+
+<!--产品推荐list-->
+<style>
+	#recommend-section-list {
+		margin:0;
+	}
+	.recommend-unit {
+		margin:0 2px !important;
+		overflow:hidden;
+		border-top:0 !important;
+	}
+	#recommend-section-list .am-list-thumb {
+		width:33%;
+		padding-bottom:33%;
+		height:80%;
+	}
+	.recommend-unit-price {
+		color: #FF6C00;
+		font-size: 18px;
+		position: absolute;
+		right: 10px;
+		bottom: 5%;
+	}
+</style>
+<div id="recommend-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
+	<div class="am-list-news-bd">
+		<ul class="am-list">
+			<!--list单元-->
+			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
+				<a ms-attr-href="#{{unit.lineid}}" class="">
+					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
+					</div>
+					<div class=" am-u-sm-8 am-list-main">
+						<h3 class="am-list-item-hd">
+							{{unit.tourproname}}
+						</h3>
+					</div>
+					<div class="recommend-unit-price">
+						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>&nbsp;&yen;{{unit.leastprice}}元
+					</div>
+				</a>
+			</li>
+			<!--/list单元-->
+		</ul>
+	</div>
+</div>
+<!--/产品推荐list-->
+<!--/产品推荐-->
 </body>
 </html>

@@ -13,6 +13,8 @@
 	<script src="./bower_components/avalon/avalon.js"></script>
 	<!--fontawesome图标库-->
 	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
 	<style>
 		body {
 			background-color:#f3f3f3;
@@ -29,7 +31,7 @@
 			var galleryVM = avalon.define({
 				$id: 'gallery',
 				list: [],
-				galleryRendered: function(){
+				galleryRendered: function(type){
 					$('#galleryAD').show().addClass('am-animation-slide-top am-animation-delay-1');
 					//激活滑动gallery
 					$('.am-slider-manual').flexslider({"directionNav":false});
@@ -37,12 +39,22 @@
 					$('#galleryAD a img').height(parseInt($('#galleryAD').width()/110*44));
 				}
 			});
+			//推荐产品VM
+			var recommendTourVM = avalon.define({
+				$id: 'recommendTour',
+				list:[]
+			});
 
 			avalon.scan();
 
 			//Ajax载入顶部广告轮播数据
-			$.getJSON('http://www.htyou.com/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?', function (result) {
-				galleryVM.list = result; // 只取前六个
+			$.getJSON(server_addr+'/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?', function (result, status) {
+				galleryVM.list = result;
+			});
+			//Ajax载入推荐产品数据
+			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?commendtype=14&jsoncallback=?', function(result, status){
+				console.log(status, result);
+				recommendTourVM.list = result.value;
 			});
 
 		});
@@ -83,12 +95,13 @@
 			华天旅游网 移动版
 		</a>
 	</h1>
-
+	<!--右侧在线客服-->
 	<div class="am-header-right am-header-nav">
-		<a href="#right-link" class="">
+		<a href="http://tb.53kf.com/webCompany.php?arg=10102842&style=1" class="">
 			<i class="am-header-icon am-icon-comments-o"></i>
 		</a>
 	</div>
+	<!--/右侧在线客服-->
 </header>
 <!--/头部-->
 
@@ -252,312 +265,46 @@
 		margin:0 2px !important;
 		overflow:hidden;
 		border-top:0 !important;
+		padding:0 !important;
+	}
+	.recommend-unit .am-list-main {
+		padding-left: 5px !important;
+	}
+	#recommend-section-title {
+		margin-top: 1em;
 	}
 	#recommend-section-list .am-list-thumb {
-		width:32%;
-		padding-bottom:32%;
+		width:33%;
+		padding-bottom:33%;
 		height:80%;
 	}
 	.recommend-unit-price {
-		color: #F00;
+		color: #FF6C00;
 		font-size: 18px;
 		position: absolute;
 		right: 10px;
 		bottom: 5%;
 	}
 </style>
-<div id="recommend-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" >
+<div id="recommend-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
 	<div class="am-list-news-bd">
 		<ul class="am-list">
 			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
+			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
+				<a ms-attr-href="#{{unit.lineid}}" class="">
+					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
 					<div class=" am-u-sm-8 am-list-main">
 						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
+							{{unit.tourproname}}
 						</h3>
 					</div>
 					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
+						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>&nbsp;&yen;{{unit.leastprice}}元
 					</div>
 				</a>
 			</li>
 			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
-				<a href="#" class="">
-					<div class="am-u-sm-4 am-list-thumb" style="background:url(http://www.htyou.com//pic/photo/935b52173bdead5b285c25b4fb206f98-1.jpg) center/cover;">
-					</div>
-					<div class=" am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							1016 维多利亚号 上海-济州-福冈-上海4晚5天（正收客）
-						</h3>
-					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;散客自主</span>&nbsp;&yen;99999元
-					</div>
-				</a>
-			</li>
-			<!--/list单元-->
-
 		</ul>
 	</div>
 </div>

@@ -57,6 +57,7 @@
     "commit": "ce8431a0709b86d1249568aa89c1cebd0c088ba9"
   },
   "_source": "git://github.com/allmobilize/amazeui.git",
-  "_target": "~2.4.0",
-  "_originalSource": "amazeui"
+  "_target": "~2.4.2",
+  "_originalSource": "amazeui",
+  "_direct": true
 }
