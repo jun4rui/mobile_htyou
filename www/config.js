@@ -33,4 +33,4 @@ function getParameterValue(inUrl/*输入Url*/, inName/*参数名*/){
     }
     return '';
 }
-getParameterValue('http://www.htyou.com/index.html?q=北京&asdf=123&zxcv=123&a=fasdf','q');
+//TEST: getParameterValue('http://www.htyou.com/index.html?q=北京&asdf=123&zxcv=123&a=fasdf','q');
