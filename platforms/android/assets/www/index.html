@@ -32,7 +32,7 @@
 				$id: 'gallery',
 				list: [],
 				galleryRendered: function(type){
-					$('#galleryAD').show().addClass('am-animation-slide-top am-animation-delay-1');
+					$('#galleryAD').show();
 					//激活滑动gallery
 					$('.am-slider-manual').flexslider({"directionNav":false});
 					//解决图片高度不一致的问题，最终高度和宽度的例如110:44的比例来显示
@@ -95,18 +95,19 @@
 			华天旅游网 移动版
 		</a>
 	</h1>
-
+	<!--右侧在线客服-->
 	<div class="am-header-right am-header-nav">
-		<a href="#right-link" class="">
+		<a href="http://tb.53kf.com/webCompany.php?arg=10102842&style=1" class="">
 			<i class="am-header-icon am-icon-comments-o"></i>
 		</a>
 	</div>
+	<!--/右侧在线客服-->
 </header>
 <!--/头部-->
 
 <!--顶部轮播广告-->
 
-<div data-am-widget="slider" id="galleryAD" class="am-slider-manual am-slider am-slider-a1 hide">
+<div data-am-widget="slider" id="galleryAD" class="am-slider-manual am-slider am-slider-a1">
 	<ul class="am-slides" ms-controller="gallery">
 		<!--渲染完毕后执行galleryRendered-->
 		<li ms-repeat-unit="list" data-repeat-rendered="galleryRendered">
@@ -264,6 +265,13 @@
 		margin:0 2px !important;
 		overflow:hidden;
 		border-top:0 !important;
+		padding:0 !important;
+	}
+	.recommend-unit .am-list-main {
+		padding-left: 5px !important;
+	}
+	#recommend-section-title {
+		margin-top: 1em;
 	}
 	#recommend-section-list .am-list-thumb {
 		width:33%;

@@ -6,9 +6,10 @@
 	<title>线路列表页面</title>
 	<!--<link rel="stylesheet" href="./bower_components/amazeui/dist/css/amazeui.flat.min.css"/>-->
 	<link rel="stylesheet" href="./bower_components/amazeui/dist/css/amazeui.min.css"/>
-	<script src="./bower_components/jquery/jquery.min.js" charset="utf-8"></script>
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
 	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="utf-8"></script>
 	<script src="./bower_components/avalon/avalon.js" charset="utf-8"></script>
+	<script src="config.js"></script>
 	<script>
 		//Avalon模型
 		avalon.ready(function () {
@@ -18,7 +19,7 @@
 			});
 
 			avalon.scan();
-			$.getJSON('./tour_temp.json', function (result) {
+			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?pagesize=999&jsoncallback=?', function(result, status){
 				toursVM.list = result.value;
 			});
 

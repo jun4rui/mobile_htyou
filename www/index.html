@@ -32,7 +32,7 @@
 				$id: 'gallery',
 				list: [],
 				galleryRendered: function(type){
-					$('#galleryAD').show().addClass('am-animation-slide-top am-animation-delay-1');
+					$('#galleryAD').show();
 					//激活滑动gallery
 					$('.am-slider-manual').flexslider({"directionNav":false});
 					//解决图片高度不一致的问题，最终高度和宽度的例如110:44的比例来显示
@@ -107,7 +107,7 @@
 
 <!--顶部轮播广告-->
 
-<div data-am-widget="slider" id="galleryAD" class="am-slider-manual am-slider am-slider-a1 hide">
+<div data-am-widget="slider" id="galleryAD" class="am-slider-manual am-slider am-slider-a1">
 	<ul class="am-slides" ms-controller="gallery">
 		<!--渲染完毕后执行galleryRendered-->
 		<li ms-repeat-unit="list" data-repeat-rendered="galleryRendered">
@@ -285,6 +285,15 @@
 		right: 10px;
 		bottom: 5%;
 	}
+	#recommend-section-list .am-list {
+		margin-bottom:0;
+	}
+	#recommend-section-list .am-list-item-hd {
+		color:#555;
+	}
+	#recommend-section-list .am-badge {
+		background-color:#398421;
+	}
 </style>
 <div id="recommend-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
 	<div class="am-list-news-bd">
@@ -294,13 +303,14 @@
 				<a ms-attr-href="#{{unit.lineid}}" class="">
 					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
-					<div class=" am-u-sm-8 am-list-main">
+					<div class="am-u-sm-8 am-list-main">
+						<span class="am-badge am-badge-warning am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>
 						<h3 class="am-list-item-hd">
 							{{unit.tourproname}}
 						</h3>
 					</div>
 					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>&nbsp;&yen;{{unit.leastprice}}元
+						&nbsp;&yen;{{unit.leastprice}}元
 					</div>
 				</a>
 			</li>
@@ -310,5 +320,8 @@
 </div>
 <!--/产品推荐list-->
 <!--/产品推荐-->
+<!--更多按钮-->
+<a href="#" class="am-btn am-btn-primary am-btn-block">更多线路&gt;&gt;</a>
+<!--/更多按钮-->
 </body>
 </html>
