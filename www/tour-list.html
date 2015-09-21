@@ -22,6 +22,9 @@
 		.hide {
 			display:none;
 		}
+		.am-form-group {
+			margin-bottom:5px;
+		}
 	</style>
 	<script>
 		//Avalon模型
@@ -29,8 +32,9 @@
 			//全局VM
 
 			//产品VM
-			var recommendTourVM = avalon.define({
-				$id: 'recommendTour',
+			var tourListVM = avalon.define({
+				$id: 'tourList',
+				keyword:'',
 				list:[]
 			});
 
@@ -40,13 +44,13 @@
 			//Ajax载入推荐产品数据
 			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?pagesize=999&jsoncallback=?', function(result, status){
 				console.log(status, result);
-				recommendTourVM.list = result.value;
+				tourListVM.list = result.value;
 			});
 
 		});
 	</script>
 </head>
-<body>
+<body ms-controller="tourList">
 <!--头部-->
 <style>
 	header.am-header .am-header-title {
@@ -59,20 +63,9 @@
 <header data-am-widget="header" class="am-header am-header-default">
 	<div class="am-header-left am-header-nav">
 		<!--下拉菜单-->
-		<div  data-am-dropdown>
-			<a href="#left-link">
-				<i class="am-header-icon am-icon-bars am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
-			</a>
-			<ul class="am-dropdown-content">
-				<li class="am-dropdown-header">导航菜单</li>
-				<li class="am-divider"></li>
-				<li><a href="#">旅游</a></li>
-				<li><a href="#">机票</a></li>
-				<li><a href="#">酒店</a></li>
-				<li><a href="#">签证</a></li>
-				<li><a href="#">自定义</a></li>
-			</ul>
-		</div>
+		<a href="index.html">
+			<i class="am-header-icon am-icon-home am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
+		</a>
 		<!--/下拉菜单-->
 	</div>
 
@@ -83,8 +76,8 @@
 	</h1>
 	<!--右侧在线客服-->
 	<div class="am-header-right am-header-nav">
-		<a href="http://tb.53kf.com/webCompany.php?arg=10102842&style=1" class="">
-			<i class="am-header-icon am-icon-comments-o"></i>
+		<a href="#" data-am-offcanvas="{target: '#side-panel'}">
+			<i class="am-header-icon am-icon-bars"></i>
 		</a>
 	</div>
 	<!--/右侧在线客服-->
@@ -102,45 +95,38 @@
 <form action="" class="am-form am-form-inline" id="search-form">
 	<div class="am-form-group am-form-icon">
 		<i class="am-icon-search"></i>
-		<input type="text" class="am-form-field" placeholder="请输出您要搜索关键字"/>
+		<input type="text" class="am-form-field" placeholder="请输出您要搜索关键字" ms-duplex="keyword"/>
 	</div>
 </form>
 <!--/搜索栏-->
 
 
 <!--产品推荐-->
-<!--产品推荐标题-->
-<div id="recommend-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
-	<h2 class="am-titlebar-title">产品推荐</h2>
-	<nav class="am-titlebar-nav">
-		<a href="#more" class="">更多 &raquo;</a>
-	</nav>
-</div>
-<!--/产品推荐标题-->
 
 <!--产品推荐list-->
 <style>
-	#recommend-section-list {
+	#tourlist-section-list {
 		margin:0;
 	}
-	.recommend-unit {
+	.tourlist-unit {
 		margin:0 2px !important;
 		overflow:hidden;
 		border-top:0 !important;
 		padding:0 !important;
+		width: auto !important;
 	}
-	.recommend-unit .am-list-main {
+	.tourlist-unit .am-list-main {
 		padding-left: 5px !important;
 	}
-	#recommend-section-title {
+	#tourlist-section-title {
 		margin-top: 1em;
 	}
-	#recommend-section-list .am-list-thumb {
+	#tourlist-section-list .am-list-thumb {
 		width:25%;
 		padding-bottom:25%;
 		height:80%;
 	}
-	.recommend-unit-price {
+	.tourlist-unit-price {
 		color: #FF6C00;
 		font-size: 18px;
 		position: absolute;
@@ -149,23 +135,23 @@
 		background-color: #FFF;
 		padding-left: 1em;
 	}
-	#recommend-section-list .am-list {
+	#tourlist-section-list .am-list {
 		margin-bottom:0;
 	}
-	#recommend-section-list .am-list-item-hd {
+	#tourlist-section-list .am-list-item-hd {
 		color:#555;
 		height: 3em;
 		overflow: hidden;
 	}
-	#recommend-section-list .am-badge {
+	#tourlist-section-list .am-badge {
 		background-color:#398421;
 	}
 </style>
-<div id="recommend-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
+<div id="tourlist-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default">
 	<div class="am-list-news-bd">
 		<ul class="am-list">
 			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
+			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list" ms-if-loop="unit.tourproname.indexOf(keyword)>-1">
 				<a ms-attr-href="#{{unit.lineid}}" class="">
 					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
@@ -175,7 +161,7 @@
 							{{unit.tourproname}}
 						</h3>
 					</div>
-					<div class="recommend-unit-price">
+					<div class="tourlist-unit-price">
 						&nbsp;&yen;{{unit.leastprice}}元
 					</div>
 				</a>
@@ -187,5 +173,21 @@
 <!--/产品推荐list-->
 <!--/产品推荐-->
 
+
+<!--侧边栏-->
+<div id="side-panel" class="am-offcanvas">
+	<div class="am-offcanvas-bar am-offcanvas-bar-flip">
+		<!-- 你的内容 -->
+		<div class="am-offcanvas-content">
+			<p>
+				我不愿让你一个人 <br/>
+				承受这世界的残忍 <br/>
+				我不愿眼泪陪你到 永恒 <br/>
+			</p>
+			<p><a href="http://music.163.com/#/song?id=385554" target="_blank">网易音乐</a>      </p>
+		</div>
+	</div>
+</div>
+<!--/侧边栏-->
 </body>
 </html>

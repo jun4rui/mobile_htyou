@@ -80,7 +80,7 @@
 			<ul class="am-dropdown-content">
 				<li class="am-dropdown-header">导航菜单</li>
 				<li class="am-divider"></li>
-				<li><a href="#">旅游</a></li>
+				<li><a href="tour-list.html">旅游</a></li>
 				<li><a href="#">机票</a></li>
 				<li><a href="#">酒店</a></li>
 				<li><a href="#">签证</a></li>
@@ -248,7 +248,7 @@
 
 <!--产品推荐-->
 <!--产品推荐标题-->
-<div id="recommend-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+<div id="tourlist-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
 	<h2 class="am-titlebar-title">产品推荐</h2>
 	<nav class="am-titlebar-nav">
 		<a href="#more" class="">更多 &raquo;</a>
@@ -258,49 +258,64 @@
 
 <!--产品推荐list-->
 <style>
-	#recommend-section-list {
+	#tourlist-section-list {
 		margin:0;
 	}
-	.recommend-unit {
+	.tourlist-unit {
 		margin:0 2px !important;
 		overflow:hidden;
 		border-top:0 !important;
 		padding:0 !important;
+		width: auto !important;
 	}
-	.recommend-unit .am-list-main {
+	.tourlist-unit .am-list-main {
 		padding-left: 5px !important;
 	}
-	#recommend-section-title {
+	#tourlist-section-title {
 		margin-top: 1em;
 	}
-	#recommend-section-list .am-list-thumb {
-		width:33%;
-		padding-bottom:33%;
+	#tourlist-section-list .am-list-thumb {
+		width:25%;
+		padding-bottom:25%;
 		height:80%;
 	}
-	.recommend-unit-price {
+	.tourlist-unit-price {
 		color: #FF6C00;
 		font-size: 18px;
 		position: absolute;
 		right: 10px;
 		bottom: 5%;
+		background-color: #FFF;
+		padding-left: 1em;
+	}
+	#tourlist-section-list .am-list {
+		margin-bottom:0;
+	}
+	#tourlist-section-list .am-list-item-hd {
+		color:#555;
+		height: 3em;
+		overflow: hidden;
+	}
+	#tourlist-section-list .am-badge {
+		background-color:#398421;
 	}
 </style>
-<div id="recommend-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
+<div id="tourlist-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
 	<div class="am-list-news-bd">
 		<ul class="am-list">
 			<!--list单元-->
-			<li class="recommend-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
+			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
 				<a ms-attr-href="#{{unit.lineid}}" class="">
 					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
-					<div class=" am-u-sm-8 am-list-main">
+					<div class="am-u-sm-8 am-list-main">
+						<span class="am-badge am-badge-warning am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>
 						<h3 class="am-list-item-hd">
 							{{unit.tourproname}}
 						</h3>
 					</div>
-					<div class="recommend-unit-price">
-						<span class="am-badge am-badge-success am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>&nbsp;&yen;{{unit.leastprice}}元
+					<div class="tourlist-unit-price">
+						&nbsp;&yen;{{unit.leastprice}}元
 					</div>
 				</a>
 			</li>
@@ -310,5 +325,8 @@
 </div>
 <!--/产品推荐list-->
 <!--/产品推荐-->
+<!--更多按钮-->
+<a href="tour-list.html" class="am-btn am-btn-primary am-btn-block">更多线路&gt;&gt;</a>
+<!--/更多按钮-->
 </body>
 </html>

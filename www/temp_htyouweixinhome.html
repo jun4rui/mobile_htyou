@@ -96,20 +96,20 @@
 		font-weight: bold;
 		border-bottom: 1px solid #CACAC8;
 	}
-	.recommend-unit {
+	.tourlist-unit {
 		width: 100%;
 		margin: .5em auto;
 		padding-bottom: .5em;
 		border-bottom: 1px solid #C9C9C9;
 	}
-	.recommend-unit .r-image {
+	.tourlist-unit .r-image {
 		width: 20%;
 		padding-bottom: 20%;
 		float: left;
 		background-size: cover;
 		background-position: center center;
 	}
-	.recommend-unit .r-name {
+	.tourlist-unit .r-name {
 		width: 60%;
 		float: left;
 		/*line-height: 140%;*/
@@ -118,7 +118,7 @@
 		font-size: 1.1em;
 		color: #333;
 	}
-	.recommend-unit .r-price {
+	.tourlist-unit .r-price {
 		width: 20%;
 		float: right;
 		font-size: 1em;
@@ -381,7 +381,7 @@
 		<#list tourProductList as tempTourList>
 			<!--推荐单元-->
 			<a href="/mobileTour/tourbrowse/${tempTourList.lineid}.htm?infoid=${xiaoShouVO.info_id}" target="_top">
-				<div class="recommend-unit">
+				<div class="tourlist-unit">
 					<div class="r-image"
 					     style="background-image:url(${stack.findValue('@com.transfar.htonline.Util.ResultConstants@getPhotoUrl()')}/${tempTourList.spotviewpic});"></div>
 					<div class="r-name">${tempTourList.tourproname}</div>

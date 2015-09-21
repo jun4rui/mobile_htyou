@@ -1,142 +1,193 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh_CN">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>线路列表页面</title>
-	<!--<link rel="stylesheet" href="./bower_components/amazeui/dist/css/amazeui.flat.min.css"/>-->
-	<link rel="stylesheet" href="./bower_components/amazeui/dist/css/amazeui.min.css"/>
-	<script src="./bower_components/jquery/jquery.min.js" charset="utf-8"></script>
-	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="utf-8"></script>
-	<script src="./bower_components/avalon/avalon.js" charset="utf-8"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>华天旅游网 移动版</title>
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link  href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+	<style>
+		body {
+			background-color:#f3f3f3;
+		}
+		.hide {
+			display:none;
+		}
+		.am-form-group {
+			margin-bottom:5px;
+		}
+	</style>
 	<script>
 		//Avalon模型
-		avalon.ready(function () {
-			var toursVM = avalon.define({
-				$id: 'tours',
-				list: []
+		avalon.ready(function(){
+			//全局VM
+
+			//产品VM
+			var tourListVM = avalon.define({
+				$id: 'tourList',
+				keyword:'',
+				list:[]
 			});
 
 			avalon.scan();
-			$.getJSON('./tour_temp.json', function (result) {
-				toursVM.list = result.value;
+
+
+			//Ajax载入推荐产品数据
+			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?pagesize=999&jsoncallback=?', function(result, status){
+				console.log(status, result);
+				tourListVM.list = result.value;
 			});
 
 		});
 	</script>
 </head>
-<body style="padding-top:59px;">
-<!--头部部分-->
-<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
-	<!--左侧图标-->
-	<div class="am-header-left am-header-nav">
-		<a href="#left-link" class="">
-			<i class="am-header-icon am-icon-home"></i>
-		</a>
-	</div>
-	<!--/左侧图标-->
-	<!--中间标题-->
-	<h1 class="am-header-title">
-		<a href="#title-link" class="">
-			线路列表
-		</a>
-	</h1>
-	<!--/中间标题-->
-	<!--右侧图标-->
-	<div class="am-header-right am-header-nav">
-		<!--<a href="#right-link" class="">-->
-		<!--<i class="am-header-icon am-icon-bars"></i>-->
-		<!--</a>-->
-		<div class="am-dropdown" data-am-dropdown>
-			<button class="am-btn am-btn-primary am-dropdown-toggle" data-am-dropdown-toggle><i
-					class="am-header-icon am-icon-bars"></i></button>
-			<ul class="am-dropdown-content">
-				<li class="am-dropdown-header">排序方式</li>
-				<li class="am-divider"></li>
-				<li class="am-active"><a>默认</a></li>
-				<li><a>价格从高到低</a></li>
-				<li><a>价格从低到高</a></li>
-				<li><a>按类型</a></li>
-			</ul>
-		</div>
-	</div>
-	<!--/右侧图标-->
-</header>
-<!--/头部部分-->
-
+<body ms-controller="tourList">
+<!--头部-->
 <style>
-	.am-list-item-hd {
-		height: 50px;
-		overflow: hidden;
+	header.am-header .am-header-title {
+		margin:0 3em;
 	}
-
-	.am-list-thumb {
-		width: 90px;
-		height: 90px;
-		max-height: 90px;
-		background-position: center center;
-		background-size: cover;
-	}
-
-	.am-list-thumb img {
-		height: 100%;
-		width: auto !important;
-	}
-
-	.am-list-item-text {
-		text-align: right;
-	}
-
-	* + h1, * + h2, * + h3, * + h4, * + h5, * + h6 {
-		margin-top: 0;
-		display: inline;
-	}
-	.tour-type {
-		color: #1B9645;
-		border: 1px solid #1b9645;
-		line-height: 26px;
-		padding: 2px;
-		font-size: 10px;
-		margin-right: .5em;
+	.htyou-header-menu {
+		color:#FFF;
 	}
 </style>
-<form class="am-form am-form-horizontal">
-	<div class="am-form-group">
-		<label for="doc-ipt-3" class="am-u-sm-2 am-form-label" style="text-align:right;">查找</label>
+<header data-am-widget="header" class="am-header am-header-default">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<a href="index.html">
+			<i class="am-header-icon am-icon-home am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
+		</a>
+		<!--/下拉菜单-->
+	</div>
 
-		<div class="am-u-sm-10">
-			<input type="email" id="doc-ipt-3" placeholder="输入您查询线路的关键字">
-		</div>
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			华天旅游网 移动版
+		</a>
+	</h1>
+	<!--右侧在线客服-->
+	<div class="am-header-right am-header-nav">
+		<a href="#" data-am-offcanvas="{target: '#side-panel'}">
+			<i class="am-header-icon am-icon-bars"></i>
+		</a>
+	</div>
+	<!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+
+
+<!--搜索栏-->
+<style>
+	#search-form {
+		margin:2px;
+	}
+</style>
+<form action="" class="am-form am-form-inline" id="search-form">
+	<div class="am-form-group am-form-icon">
+		<i class="am-icon-search"></i>
+		<input type="text" class="am-form-field" placeholder="请输出您要搜索关键字" ms-duplex="keyword"/>
 	</div>
 </form>
+<!--/搜索栏-->
 
-<!--listview style-->
-<div data-am-widget="list_news" class="am-list-news am-list-news-default">
+
+<!--产品推荐-->
+
+<!--产品推荐list-->
+<style>
+	#tourlist-section-list {
+		margin:0;
+	}
+	.tourlist-unit {
+		margin:0 2px !important;
+		overflow:hidden;
+		border-top:0 !important;
+		padding:0 !important;
+		width: auto !important;
+	}
+	.tourlist-unit .am-list-main {
+		padding-left: 5px !important;
+	}
+	#tourlist-section-title {
+		margin-top: 1em;
+	}
+	#tourlist-section-list .am-list-thumb {
+		width:25%;
+		padding-bottom:25%;
+		height:80%;
+	}
+	.tourlist-unit-price {
+		color: #FF6C00;
+		font-size: 18px;
+		position: absolute;
+		right: 10px;
+		bottom: 5%;
+		background-color: #FFF;
+		padding-left: 1em;
+	}
+	#tourlist-section-list .am-list {
+		margin-bottom:0;
+	}
+	#tourlist-section-list .am-list-item-hd {
+		color:#555;
+		height: 3em;
+		overflow: hidden;
+	}
+	#tourlist-section-list .am-badge {
+		background-color:#398421;
+	}
+</style>
+<div id="tourlist-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default">
 	<div class="am-list-news-bd">
-		<ul class="am-list" ms-controller="tours">
-			<!--缩略图在标题左边-->
-			<!--线路列表单元-->
-			<li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-tour="list">
-				<div class="am-u-sm-4 am-list-thumb"
-				     ms-css-background-image="url(http://www.htyou.com/{{tour.spotviewpic}})"></div>
-				<div class=" am-u-sm-8 am-list-main">
-					<h3 class="am-list-item-hd"><a href="http://www.douban.com/online/11614662/" class=""><span
-							class="am-badge am-badge-danger am-radius"></span>{{tour.tourproname}}</a>
-					</h3>
-					<div class="am-list-item-text">
-						<span class="tour-type">
-							<i class="am-icon-flag"></i> {{tour.tourtype}}
-						</span>
-						<span style="color: #FF2A18;">
-							<i class="am-icon-cny"></i>	<h1>{{tour.leastprice}}</h1>元
-						</span>
+		<ul class="am-list">
+			<!--list单元-->
+			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list" ms-if-loop="unit.tourproname.indexOf(keyword)>-1">
+				<a ms-attr-href="#{{unit.lineid}}" class="">
+					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
-				</div>
+					<div class="am-u-sm-8 am-list-main">
+						<span class="am-badge am-badge-warning am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>
+						<h3 class="am-list-item-hd">
+							{{unit.tourproname}}
+						</h3>
+					</div>
+					<div class="tourlist-unit-price">
+						&nbsp;&yen;{{unit.leastprice}}元
+					</div>
+				</a>
 			</li>
-			<!--/线路列表单元-->
+			<!--/list单元-->
 		</ul>
 	</div>
 </div>
-<!--/listview style-->
+<!--/产品推荐list-->
+<!--/产品推荐-->
+
+
+<!--侧边栏-->
+<div id="side-panel" class="am-offcanvas">
+	<div class="am-offcanvas-bar am-offcanvas-bar-flip">
+		<!-- 你的内容 -->
+		<div class="am-offcanvas-content">
+			<p>
+				我不愿让你一个人 <br/>
+				承受这世界的残忍 <br/>
+				我不愿眼泪陪你到 永恒 <br/>
+			</p>
+			<p><a href="http://music.163.com/#/song?id=385554" target="_blank">网易音乐</a>      </p>
+		</div>
+	</div>
+</div>
+<!--/侧边栏-->
 </body>
 </html>
