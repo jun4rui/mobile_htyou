@@ -7,7 +7,7 @@
     </feature>
     <preference name="webView" value="org.crosswalk.engine.XWalkWebViewEngine" />
     <allow-intent href="market:*" />
-    <name>HelloCordova</name>
+    <name>华天旅游网</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
