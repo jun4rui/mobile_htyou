@@ -7,7 +7,7 @@
 	<!--jQuery框架-->
 	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
 	<!--amaze框架 需要jQuery支持-->
-	<link  href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
 	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
 	<!--avalon框架-->
 	<script src="./bower_components/avalon/avalon.js"></script>
@@ -17,34 +17,124 @@
 	<script src="./config.js"></script>
 	<style>
 		body {
-			background-color:#f3f3f3;
+			background-color: #f3f3f3;
 		}
+
 		.hide {
-			display:none;
+			display: none;
 		}
+
 		.am-form-group {
-			margin-bottom:5px;
+			margin-bottom: 2px;
 		}
 	</style>
 	<script>
 		//Avalon模型
-		avalon.ready(function(){
+		avalon.ready(function () {
 			//全局VM
 
 			//产品VM
 			var tourListVM = avalon.define({
 				$id: 'tourList',
-				keyword:'',
-				list:[]
+				keyword: decodeURI(getParameterValue(window.location.href, 'q')), //根据url中的q参数过滤结果
+				list: []
 			});
+
+			//搜索类别VM
+			var searchVM = avalon.define({
+				$id: 'search',
+				typeInfo1_name: '',
+				typeInfo1: [],
+				typeInfo2_name: '',
+				typeInfo2: [],
+				typeInfo3_name: '',
+				typeInfo3: [],
+				typeInfo4_name: '',
+				typeInfo4: [],
+				typeInfo5_name: '',
+				typeInfo5: []
+			});
+
 
 			avalon.scan();
 
 
 			//Ajax载入推荐产品数据
-			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?pagesize=999&jsoncallback=?', function(result, status){
+			$.getJSON(server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&jsoncallback=?', function (result, status) {
 				console.log(status, result);
 				tourListVM.list = result.value;
+			});
+			//Ajax载入目的地
+			$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classId=710&jsoncallback=?', function (result) {
+				//bodyVM.typeInfo1_name   = result[0].typename+':';
+				searchVM.typeInfo1_name = '国内:';
+				var tempArray1 = result[0].gotolink.split(',');
+				var tempArray2 = result[0].notes.split(',');
+				for (var i = 0; i < tempArray1.length; i++) {
+					if (i > 4) {
+						//break;
+					}
+					searchVM.typeInfo1.push([tempArray1[i], tempArray2[i]]);
+				}
+			});
+			$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classId=714&jsoncallback=?', function (result) {
+				//bodyVM.typeInfo1_name   = result[0].typename+':';
+				searchVM.typeInfo5_name = '出境:';
+				var tempArray1 = result[0].gotolink.split(',');
+				var tempArray2 = result[0].notes.split(',');
+				for (var i = 0; i < tempArray1.length; i++) {
+					if (i > 4) {
+						//break;
+					}
+					searchVM.typeInfo5.push([tempArray1[i], tempArray2[i]]);
+				}
+			});
+			//Ajax载入出发日期
+			$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classId=711&jsoncallback=?', function (result) {
+				searchVM.typeInfo2_name = result[0].typename + ':';
+				var tempArray1 = result[0].gotolink.split(',');
+				var tempArray2 = result[0].notes.split(',');
+				for (var i = 0; i < tempArray1.length; i++) {
+					if (i > 4) {
+						//break;
+					}
+					searchVM.typeInfo2.push([tempArray1[i], tempArray2[i]]);
+				}
+			});
+			//Ajax载入价格预算
+			$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classId=712&jsoncallback=?', function (result) {
+				searchVM.typeInfo3_name = result[0].typename + ':';
+				var tempArray1 = result[0].gotolink.split(',');
+				var tempArray2 = result[0].notes.split(',');
+				for (var i = 0; i < tempArray1.length; i++) {
+					if (i > 4) {
+						//break;
+					}
+					searchVM.typeInfo3.push([tempArray1[i], tempArray2[i]]);
+				}
+			});
+			//Ajax载入行程天数
+			$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classId=713&jsoncallback=?', function (result) {
+				searchVM.typeInfo4_name = result[0].typename + ':';
+				var tempArray1 = result[0].gotolink.split(',');
+				var tempArray2 = result[0].notes.split(',');
+				for (var i = 0; i < tempArray1.length; i++) {
+					if (i > 4) {
+						//break;
+					}
+					searchVM.typeInfo4.push([tempArray1[i], tempArray2[i]]);
+				}
+			});
+
+			/*点击菜单触发搜索功能的函数*/
+			$('#side-panel').delegate('.type-unit', 'click', function(){
+				var stype   = $(this).attr('stype');
+				var sdata   = encodeURI($(this).attr('sdata'));
+				$.getJSON(server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&'+stype+'='+sdata+'&jsoncallback=?', function (result, status) {
+					tourListVM.keyword  = '';
+					tourListVM.list     = result.value;
+				});
+				$('#side-panel').offCanvas('close');
 			});
 
 		});
@@ -54,13 +144,14 @@
 <!--头部-->
 <style>
 	header.am-header .am-header-title {
-		margin:0 3em;
+		margin: 0 3em;
 	}
+
 	.htyou-header-menu {
-		color:#FFF;
+		color: #FFF;
 	}
 </style>
-<header data-am-widget="header" class="am-header am-header-default">
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
 	<div class="am-header-left am-header-nav">
 		<!--下拉菜单-->
 		<a href="index.html">
@@ -85,11 +176,10 @@
 <!--/头部-->
 
 
-
 <!--搜索栏-->
 <style>
 	#search-form {
-		margin:2px;
+		margin: 2px;
 	}
 </style>
 <form action="" class="am-form am-form-inline" id="search-form">
@@ -106,26 +196,31 @@
 <!--产品推荐list-->
 <style>
 	#tourlist-section-list {
-		margin:0;
+		margin: 0;
 	}
+
 	.tourlist-unit {
-		margin:0 2px !important;
-		overflow:hidden;
-		border-top:0 !important;
-		padding:0 !important;
+		margin: 0 2px !important;
+		overflow: hidden;
+		border-top: 0 !important;
+		padding: 0 !important;
 		width: auto !important;
 	}
+
 	.tourlist-unit .am-list-main {
 		padding-left: 5px !important;
 	}
+
 	#tourlist-section-title {
 		margin-top: 1em;
 	}
+
 	#tourlist-section-list .am-list-thumb {
-		width:25%;
-		padding-bottom:25%;
-		height:80%;
+		width: 25%;
+		padding-bottom: 25%;
+		height: 80%;
 	}
+
 	.tourlist-unit-price {
 		color: #FF6C00;
 		font-size: 18px;
@@ -135,28 +230,34 @@
 		background-color: #FFF;
 		padding-left: 1em;
 	}
+
 	#tourlist-section-list .am-list {
-		margin-bottom:0;
+		margin-bottom: 0;
 	}
+
 	#tourlist-section-list .am-list-item-hd {
-		color:#555;
+		color: #555;
 		height: 3em;
 		overflow: hidden;
 	}
+
 	#tourlist-section-list .am-badge {
-		background-color:#398421;
+		background-color: #398421;
 	}
 </style>
 <div id="tourlist-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default">
 	<div class="am-list-news-bd">
 		<ul class="am-list">
 			<!--list单元-->
-			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list" ms-if-loop="unit.tourproname.indexOf(keyword)>-1">
+			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left"
+			    ms-repeat-unit="list" ms-if-loop="unit.tourproname.indexOf(keyword)>-1">
 				<a ms-attr-href="#{{unit.lineid}}" class="">
-					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
+					<div class="am-u-sm-4 am-list-thumb"
+					     ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
 					<div class="am-u-sm-8 am-list-main">
 						<span class="am-badge am-badge-warning am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>
+
 						<h3 class="am-list-item-hd">
 							{{unit.tourproname}}
 						</h3>
@@ -175,19 +276,64 @@
 
 
 <!--侧边栏-->
+<style>
+	#side-panel .type-unit {
+		margin-right: 1em;
+	}
+</style>
 <div id="side-panel" class="am-offcanvas">
 	<div class="am-offcanvas-bar am-offcanvas-bar-flip">
 		<!-- 你的内容 -->
-		<div class="am-offcanvas-content">
+		<div class="am-offcanvas-content" ms-controller="search">
+			<h2>分类查询</h2>
+
 			<p>
-				我不愿让你一个人 <br/>
-				承受这世界的残忍 <br/>
-				我不愿眼泪陪你到 永恒 <br/>
+				<strong>{{typeInfo5_name}}：</strong>
+				<span class="type-unit" ms-repeat-unit="typeInfo5" stype="KeyWords" ms-attr-sdata="{{unit[0]}}">{{unit[0]}}</span>
 			</p>
-			<p><a href="http://music.163.com/#/song?id=385554" target="_blank">网易音乐</a>      </p>
+
+			<p>
+				<strong>{{typeInfo1_name}}：</strong>
+				<span class="type-unit" ms-repeat-unit="typeInfo1" stype="keyWords" ms-attr-sdata="{{unit[0]}}">{{unit[0]}}</span>
+			</p>
+
+			<p>
+				<strong>{{typeInfo2_name}}：</strong>
+				<span class="type-unit" ms-repeat-unit="typeInfo2" stype="month" ms-attr-sdata="{{unit[0]}}">{{unit[0]}}月</span>
+			</p>
+
+			<p>
+				<strong>{{typeInfo3_name}}：</strong>
+				<span class="type-unit" ms-repeat-unit="typeInfo3" stype="price" ms-attr-sdata="{{unit[0]}}">{{unit[0]}}元</span>
+			</p>
+
+			<p>
+				<strong>{{typeInfo4_name}}：</strong>
+				<span class="type-unit" ms-repeat-unit="typeInfo4" stype="traveldate" ms-attr-sdata="{{unit[0]}}">{{unit[0]}}天</span>
+			</p>
+
 		</div>
 	</div>
 </div>
 <!--/侧边栏-->
+<!--回顶部-->
+<style>
+	.am-gotop-fixed {
+		width:47px !important;
+		max-width: 47px !important;
+	}
+	.am-gotop-icon-custom {
+		width:47px;
+		max-width: 47px !important;
+		height:47px;
+		max-height: 47px !important;
+	}
+</style>
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed" >
+	<a href="#top" title="">
+		<img class="am-gotop-icon-custom" src="./images/return2top.png" />
+	</a>
+</div>
+<!--/回顶部-->
 </body>
 </html>

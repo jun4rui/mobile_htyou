@@ -13,6 +13,13 @@
 ajax载入数据用jquery，一来是amazeui依赖并且自带了，二来是avalon的也要额外装组件还不如直接jquery省心算了。
 
 
+
+获取新闻的接口DEMO：
+http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoID=1215
+
+
+http://www.htyou.com/common/websinfo_queryHTClass.action?datatype=json&classId=722
+
 adpic_queryAdPic ok
 
 待remote化处理接口
