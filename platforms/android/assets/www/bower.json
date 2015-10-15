@@ -1,0 +1,20 @@
+{
+  "name": "HuaTian Mobile",
+  "version": "0.1",
+  "authors": [
+    "jun4rui <jun4rui@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "avalon": "~1.5.2",
+    "amazeui": "~2.4.2"
+  },
+  "homepage": "https://github.com/jun4rui/mobile_htyou"
+}

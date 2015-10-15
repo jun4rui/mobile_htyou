@@ -60,7 +60,7 @@
 
 
 			//Ajax载入推荐产品数据
-			$.getJSON(server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&jsoncallback=?', function (result, status) {
+			$.getJSON(server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&area='+getParameterValue(window.location.href, 'a')+'&jsoncallback=?', function (result, status) {
 				console.log(status, result);
 				tourListVM.list = result.value;
 			});
@@ -154,9 +154,7 @@
 <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
 	<div class="am-header-left am-header-nav">
 		<!--下拉菜单-->
-		<a href="index.html">
-			<i class="am-header-icon am-icon-home am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
-		</a>
+		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu" onclick="window.history.back()"></i>
 		<!--/下拉菜单-->
 	</div>
 
@@ -251,7 +249,7 @@
 			<!--list单元-->
 			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left"
 			    ms-repeat-unit="list" ms-if-loop="unit.tourproname.indexOf(keyword)>-1">
-				<a ms-attr-href="#{{unit.lineid}}" class="">
+				<a ms-attr-href="tour-detail.html?lineid={{unit.lineid}}" class="">
 					<div class="am-u-sm-4 am-list-thumb"
 					     ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>

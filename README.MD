@@ -30,3 +30,17 @@ adpic_queryAdPic ok
 
 <@s.action name='tourpro_listTourProWithQuery' commendtype='14' namespace='/tour' executeResult='false' pagesize='6'/>
 对应ipad接口里面的/mobile/ipad_queryTourLine.action
+
+
+'''
+订单提交和微信版一样，但是要多增加一个tourOrderVO.order_source=16 用来确定字符集
+MobileTourOrderAction
+addTourOrder
+'''
+
+select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=石牛寨一日游&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
+
+http://www.htyou.com/mobile/tourorder_addTourOrder.action?select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=石牛寨一日游&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
+
+
+http://www.htyou.com/mobile/tourorder_addTourOrder.action?tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=石牛寨一日游&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16

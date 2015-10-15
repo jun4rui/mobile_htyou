@@ -57,7 +57,7 @@
 							var classid = $(this).attr('classid');
 							$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classParent=' + classid + '&jsoncallback=?', function(result){
 								for (var i=0; i<result.length; i++){
-									var tempHTML    = '<!--热门线路unit--> <li> <div class="am-gallery-item"> <a href="'+result[i].id+'"> <img src="http://www.htyou.com/pic/class/'+result[i].pic+'" alt=""/> <h3 class="am-gallery-title">'+result[i].typename+'</h3> <div class="am-gallery-desc"></div> </a> </div> </li> <!--/热门线路unit-->';
+									var tempHTML    = '<!--热门线路unit--> <li> <div class="am-gallery-item"> <a href="tour-list.html?a='+result[i].typename+'"> <img src="http://www.htyou.com/pic/class/'+result[i].pic+'" alt=""/> <h3 class="am-gallery-title">'+result[i].typename+'</h3> <div class="am-gallery-desc"></div> </a> </div> </li> <!--/热门线路unit-->';
 									$('.point-panel[classid='+result[0].parent_id+']').append(tempHTML);
 								}
 							});
@@ -114,9 +114,7 @@
 <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
 	<div class="am-header-left am-header-nav">
 		<!--下拉菜单-->
-		<a href="index.html">
-			<i class="am-header-icon am-icon-home am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
-		</a>
+		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu" onclick="window.history.back()"></i>
 		<!--/下拉菜单-->
 	</div>
 
@@ -224,7 +222,7 @@
 		<ul class="am-list">
 			<!--list单元-->
 			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
-				<a ms-attr-href="#{{unit.lineid}}" class="">
+				<a ms-attr-href="tour-detail.html?lineid={{unit.lineid}}" class="">
 					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
 					<div class="am-u-sm-8 am-list-main">
