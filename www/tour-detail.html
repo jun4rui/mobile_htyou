@@ -2,7 +2,7 @@
 <html lang="zh_CN">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
 	<title>华天旅游网 移动版</title>
 	<!--jQuery框架-->
 	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
@@ -275,6 +275,12 @@
 		padding:0;
 		margin:0;
 	}
+	#tour-modal .am-thumbnail {
+		margin-bottom:2px;
+	}
+	#tour-modal h3 {
+		margin:0;
+	}
 </style>
 <div class="am-popup" id="tour-modal">
 	<div class="am-popup-inner">
@@ -285,9 +291,10 @@
 			<div ms-repeat-unit="detail.value1" data-each-rendered="detailRendered">
 				<h3>第{{$index+1}}天 {{unit.startspot}} 到 {{unit.endspot}}</h3>
 				<!--图片轮播-->
-				<ul class="am-avg-sm-3 am-avg-md-3 am-avg-lg-3 am-thumbnails">
+				<!--<ul class="am-avg-sm-3 am-avg-md-3 am-avg-lg-3 am-thumbnails">
 					<li ms-repeat="unit.albumList"><img class="am-thumbnail" ms-attr-src="http://www.htyou.com/{{el}}" /></li>
-				</ul>
+				</ul>-->
+				<img ms-repeat="unit.albumList" class="am-thumbnail" ms-attr-src="http://www.htyou.com/{{el}}" />
 				<!--/图片轮播-->
 				<p>
 					<div>交通工具：{{unit.dinner}}</div>

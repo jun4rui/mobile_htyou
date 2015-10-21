@@ -2,7 +2,7 @@
 <html lang="zh_CN">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
 	<title>华天旅游网 移动版</title>
 	<!--jQuery框架-->
 	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
@@ -254,10 +254,8 @@
 					     ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
 					<div class="am-u-sm-8 am-list-main">
-						<span class="am-badge am-badge-warning am-radius"><i class="am-icon-tag"></i>&nbsp;{{unit.tourtype}}</span>
-
 						<h3 class="am-list-item-hd">
-							{{unit.tourproname}}
+							<span class="am-badge am-badge-warning am-radius"><!--<i class="am-icon-tag"></i>&nbsp;-->{{unit.tourtype}}</span>&nbsp;{{unit.tourproname}}
 						</h3>
 					</div>
 					<div class="tourlist-unit-price">
