@@ -44,7 +44,11 @@
 				$id: 'recommendTour',
 				list:[]
 			});
-
+			//热门目的地VM
+			var hotTourVM   = avalon.define({
+				$id:'hotTour',
+				list:[]
+			});
 			avalon.scan();
 
 			//Ajax载入顶部广告轮播数据
@@ -53,8 +57,13 @@
 			});
 			//Ajax载入推荐产品数据
 			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?commendtype=14&jsoncallback=?', function(result, status){
-				console.log(status, result);
+				//console.log(status, result);
 				recommendTourVM.list = result.value;
+			});
+			//Ajax载入热门目的地数据
+			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&infoClass=414&jsoncallback=?', function(result, status){
+				console.log(status, result);
+				hotTourVM.list = result;
 			});
 
 		});
@@ -197,52 +206,18 @@
 	</nav>
 </div>
 <!--/热门线路标题-->
-<ul id="hot-section" data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-gallery-overlay" data-am-gallery="{ pureview: false }">
+<ul id="hot-section" ms-controller="hotTour" data-am-widget="gallery" class="ms-controller am-gallery am-avg-sm-2 am-gallery-overlay" data-am-gallery="{ pureview: false }">
 	<!--热门线路unit-->
-	<li>
+	<li ms-repeat-unit="list">
 		<div class="am-gallery-item">
-			<a href="tour-list.html?a=邮轮">
-				<img src="http://www.htyou.com/pic/class/700.jpg" alt=""/>
-				<h3 class="am-gallery-title">邮轮</h3>
+			<a ms-attr-href="tour-list.html?a={{unit.info_name}}">
+				<img ms-attr-src="http://www.htyou.com/{{unit.info_thumbpic}}" alt=""/>
+				<h3 class="am-gallery-title">{{unit.info_name}}</h3>
 				<div class="am-gallery-desc"></div>
 			</a>
 		</div>
 	</li>
 	<!--/热门线路unit-->
-	<!--热门线路unit-->
-	<li>
-		<div class="am-gallery-item">
-			<a href="tour-list.html?a=台湾">
-				<img src="http://www.htyou.com/pic/class/2014-08-21_10-07-58_7505.jpg" alt=""/>
-				<h3 class="am-gallery-title">台湾</h3>
-				<div class="am-gallery-desc"></div>
-			</a>
-		</div>
-	</li>
-	<!--/热门线路unit-->
-	<!--热门线路unit-->
-	<li>
-		<div class="am-gallery-item">
-			<a href="tour-list.html?a=澳新">
-				<img src="http://www.htyou.com/pic/class/2014-08-21_10-17-38_1520.jpg" alt=""/>
-				<h3 class="am-gallery-title">澳新</h3>
-				<div class="am-gallery-desc"></div>
-			</a>
-		</div>
-	</li>
-	<!--/热门线路unit-->
-	<!--热门线路unit-->
-	<li>
-		<div class="am-gallery-item">
-			<a href="tour-list.html?a=欧洲">
-				<img src="http://www.htyou.com/pic/class/2014-08-21_10-16-01_5785.jpg" alt=""/>
-				<h3 class="am-gallery-title">欧洲</h3>
-				<div class="am-gallery-desc"></div>
-			</a>
-		</div>
-	</li>
-	<!--/热门线路unit-->
-
 </ul>
 <!--/热门目的地-->
 
