@@ -179,10 +179,10 @@
 		margin:2px;
 	}
 </style>
-<form action="" class="am-form am-form-inline" id="search-form">
+<form action="tour-list.html" class="am-form am-form-inline" id="search-form">
 	<div class="am-form-group am-form-icon">
 		<i class="am-icon-search"></i>
-		<input type="text" class="am-form-field" placeholder="请输出您要搜索关键字"/>
+		<input type="text" name="q" class="am-form-field" placeholder="请输出您要搜索关键字"/>
 	</div>
 </form>
 <!--/搜索栏-->
@@ -210,7 +210,7 @@
 	<!--热门线路unit-->
 	<li ms-repeat-unit="list">
 		<div class="am-gallery-item">
-			<a ms-attr-href="tour-list.html?a={{unit.info_name}}">
+			<a ms-attr-href="tour-list.html?q={{unit.info_name}}">
 				<img ms-attr-src="http://www.htyou.com/{{unit.info_thumbpic}}" alt=""/>
 				<h3 class="am-gallery-title">{{unit.info_name}}</h3>
 				<div class="am-gallery-desc"></div>
