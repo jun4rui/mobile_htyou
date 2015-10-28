@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
 	<title>华天旅游网 移动版</title>
+	<script type="text/javascript" src="cordova.js"></script>
 	<!--jQuery框架-->
 	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
 	<!--amaze框架 需要jQuery支持-->
@@ -99,7 +100,7 @@
 
 	<h1 class="am-header-title">
 		<a href="#title-link" class="">
-			华天旅游 尤为精彩
+			华天旅游 游为精彩
 		</a>
 	</h1>
 	<!--右侧在线客服-->
@@ -202,7 +203,7 @@
 <div id="hot-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
 	<h2 class="am-titlebar-title">热门线路</h2>
 	<nav class="am-titlebar-nav">
-		<a href="tour-list.html" class="">更多 &raquo;</a>
+		<a href="javascript:void(0)" class="" onclick="slide('tour-list.html')">更多 &raquo;</a>
 	</nav>
 </div>
 <!--/热门线路标题-->
@@ -226,7 +227,7 @@
 <div id="tourlist-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
 	<h2 class="am-titlebar-title">产品推荐</h2>
 	<nav class="am-titlebar-nav">
-		<a href="tour-list.html" class="">更多 &raquo;</a>
+		<a href="javascript:void(0)" onclick="slide('tour-list.html')" class="">更多 &raquo;</a>
 	</nav>
 </div>
 <!--/产品推荐标题-->
@@ -280,7 +281,7 @@
 		<ul class="am-list">
 			<!--list单元-->
 			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
-				<a ms-attr-href="tour-detail.html?lineid={{unit.lineid}}" class="">
+				<a ms-attr-href="slide('tour-detail.html?lineid={{unit.lineid}}')" class="">
 					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
 					<div class="am-u-sm-8 am-list-main">
@@ -300,7 +301,7 @@
 <!--/产品推荐list-->
 <!--/产品推荐-->
 <!--更多按钮-->
-<a href="tour-list.html" class="am-btn am-btn-primary am-btn-block">更多线路&gt;&gt;</a>
+<a href="javascript:void(0)" onclick="slide('tour-list.html')" class="am-btn am-btn-primary am-btn-block">更多线路&gt;&gt;</a>
 <!--/更多按钮-->
 </body>
 </html>

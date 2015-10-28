@@ -38,6 +38,39 @@ MobileTourOrderAction
 addTourOrder
 '''
 
+		  机票json 转化方法 
+		  /mobile/ticket_queryTicketListApp.action
+		  参数 
+		  	//fromDate  出发时间
+			  //beginCity 出发城市
+		    //endCity  到达城市 必填3项目
+		
+	     // 排序条件
+		   // 查询 条件   时间排序  flytimeorder  up down
+		   // 按航空公司条件查询 airlines  航空公司縮寫 
+		   // 价格排序         brethprice    up down
+		   simple:
+		   http://www.htyou.com/mobile/ticket_queryTicketListApp.action?fromDate=2015-10-27&fromCity=北京&toCity=长沙
+		   
+		   返回ticketvo 对象 具体对象构造参考 /WEB-INF/weixin/ticket_show.html
+		   
+		   
+		   
+		   国内机票 仓位查询方法
+		     /mobile/ticket_getMoreTickeBrethInFoApp.action
+		     
+		    参数 sendinfo="${ticketvo.flightlist[i].scvo.head}"
+		    sample:
+		    http://www.htyou.com/mobile/ticket_getMoreTickeBrethInFoApp.action?sendinfo=<HBS><HEAD>27OCT(TUE) BJSCSX DIRECT ONLY<\/HEAD><HZWZ>a<\/HZWZ><HB><XH>8+<\/XH><HBH>CA1349<\/HBH><DS>DS#<\/DS><CW>FA AA YA BA MA HA KA LA QA GQ SA N3 VQ US TQ EQ M1A V1Q<\/CW><HC>PEKCSX<\/HC><CFSJ>1925<\/CFSJ><DDSJ>2200<\/DDSJ><JX>32A<\/JX><TLCY>0^L<\/TLCY><E>E<\/E><FH>&gt;<\/FH><GXHBH/><CW2/><SUBCW>M1A V1Q<\/SUBCW><OTHER>T3 T2  2:35<\/OTHER><ZDGBYJCW>QA<\/ZDGBYJCW><\/HB><\/HBS>
+		    http://www.htyou.com/mobile/ticket_getMoreTickeBrethInFoApp.action?sendinfo=%3CHBS%3E%3CHEAD%3E27OCT(TUE)%20BJSCSX%20DIRECT%20ONLY%3C%2FHEAD%3E%3CHZWZ%3Ea%3C%2FHZWZ%3E%3CHB%3E%3CXH%3E8%2B%3C%2FXH%3E%3CHBH%3ECA1349%3C%2FHBH%3E%3CDS%3EDS%23%3C%2FDS%3E%3CCW%3EFA%20AA%20YA%20BA%20MA%20HA%20KA%20LA%20QA%20GQ%20SA%20N3%20VQ%20US%20TQ%20EQ%20M1A%20V1Q%3C%2FCW%3E%3CHC%3EPEKCSX%3C%2FHC%3E%3CCFSJ%3E1925%3C%2FCFSJ%3E%3CDDSJ%3E2200%3C%2FDDSJ%3E%3CJX%3E32A%3C%2FJX%3E%3CTLCY%3E0%5EL%3C%2FTLCY%3E%3CE%3EE%3C%2FE%3E%3CFH%3E%26gt%3B%3C%2FFH%3E%3CGXHBH%2F%3E%3CCW2%2F%3E%3CSUBCW%3EM1A%20V1Q%3C%2FSUBCW%3E%3COTHER%3ET3%20T2%20%202%3A35%3C%2FOTHER%3E%3CZDGBYJCW%3EQA%3C%2FZDGBYJCW%3E%3C%2FHB%3E%3C%2FHBS%3E
+		    
+		    
+		    返回 seatlist json 文本
+		    
+		    国际机票仓位 自带查询返回 不需要额外查询
+
+
+
 select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=石牛寨一日游&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
 
 http://www.htyou.com/mobile/tourorder_addTourOrder.action?select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=石牛寨一日游&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
@@ -53,3 +86,11 @@ http://www.htyou.com/mobile/tourorder_addTourOrder.action?tourOrderVO.order_amou
  pic/photo/1260698db1f035833b44c07e88c26b58-1.jpg",
 "pic/photo/1260698db1f035833b44c07e88c26b58-2.jpg",
 "pic/photo/1260698db1f035833b44c07e88c26b58-3.jpg"
+
+
+
+
+
+27OCT(TUE) BJSCSX DIRECT ONLY</HEAD>a</HZWZ>7</XH>CA1349</HBH>DS#</DS>FA AA YA BA MA HA KA LA QA GQ SA N3 VQ US TQ EQ M1A V1Q</CW>PEKCSX</HC>1925</CFSJ>2200</DDSJ>32A</JX>0^L</TLCY>E</E>></FH>M1A V1Q</SUBCW>T3 T2 2:35</OTHER>QA</ZDGBYJCW></HB></HBS>
+
+27OCT(TUE) BJSCSX DIRECT ONLY</HEAD>a</HZWZ>7</XH>CA1349</HBH>DS#</DS>FA AA YA BA MA HA KA LA QA GQ SA N3 VQ US TQ EQ M1A V1Q</CW>PEKCSX</HC>1925</CFSJ>2200</DDSJ>32A</JX>0^L</TLCY>E</E>></FH>M1A V1Q</SUBCW>T3 T2 2:35</OTHER>QA</ZDGBYJCW></HB></HBS>
