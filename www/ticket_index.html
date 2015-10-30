@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>华天旅游网 移动版</title>
+	<script type="text/javascript" src="cordova.js"></script>
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+
+	<script>
+		//Avalon模型
+
+	</script>
+	<style>
+		body {
+			background-color: #f9f9f9;
+		}
+	</style>
+</head>
+<body>
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu"
+		   onclick="window.history.back()"></i>
+		<!--/下拉菜单-->
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			机票查询
+		</a>
+	</h1>
+	<!--右侧在线客服-->
+	<div class="am-header-right am-header-nav">
+		<a href="http://tb.53kf.com/webCompany.php?arg=10102842&style=1" class="">
+			<i class="am-header-icon am-icon-comments-o"></i>
+		</a>
+	</div>
+	<!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+<!--题图-->
+<img src="./images/ticket_index_title_bg.jpg" alt="" class="am-img-responsive"/>
+<!--/题图-->
+
+<!--查询表单-->
+<style>
+	[class*="am-u-"] {
+		padding-left:0;
+		padding-right: 0;
+	}
+	#search-form {
+		margin-top:1em;
+	}
+	#search-form .am-g {
+		padding: 0 .5rem;
+	}
+	.btn-swap-section {
+		text-align: center;
+		vertical-align: middle;
+	}
+	.btn-swap {
+		width:40px;
+		height:40px;
+		line-height:40px;
+	}
+	#search-form input[type=text] {
+		box-shadow: 1px 1px 5px 0 #dfdfdf inset;
+	}
+</style>
+<form id="search-form" class="am-form" role="form" action="ticket_list.html" target="_self" method="get">
+	<div class="am-g">
+		<div class="am-form-group am-form-icon am-u-sm-5">
+			<i class="am-icon-sign-out"></i>
+			<input type="text" class="am-form-field" name="fromCity" id="fromCity" placeholder="出发城市">
+		</div>
+		<div class="am-u-sm-2 btn-swap-section">
+			<span class="am-icon-btn am-warning am-icon-refresh btn-swap"></span>
+		</div>
+
+		<div class="am-form-group am-form-icon am-u-sm-5">
+			<i class="am-icon-sign-in"></i>
+			<input type="text" class="am-form-field" name="toCity" id="toCity" placeholder="到达城市">
+		</div>
+
+		<div class="am-form-group am-form-icon am-u-sm-12">
+			<i class="am-icon-calendar"></i>
+			<input type="date" class="am-form-field" name="fromDate" id="fromDate" placeholder="出发日期">
+		</div>
+
+		<button type="submit" class="am-btn am-btn-primary am-btn-block">
+			<i class="am-icon-search"></i>
+			搜索
+		</button>
+	</div>
+
+</form>
+
+<!--/查询表单-->
+</body>
+</html>
