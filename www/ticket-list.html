@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>华天旅游网 移动版</title>
+	<script type="text/javascript" src="cordova.js"></script>
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+
+	<script>
+		//获得url参数
+		var fromCity    = getParameterValue(window.location.href,'fromCity');
+		var toCity      = getParameterValue(window.location.href,'toCity');
+		var fromDate    = getParameterValue(window.location.href,'fromDate');
+		var getURL      = server_addr+'/mobile/ticket_queryTicketListApp.action?jsoncallback=?&fromDate='+fromDate+'&fromCity='+fromCity+'&toCity='+toCity;
+		//检查url参数
+		console.log(fromCity, toCity, fromDate);
+		console.log(getURL);
+		$.getJSON(getURL, function(result){
+			console.log(result);
+		});
+		//Avalon模型
+		avalon.ready(function(){
+			//机票VM
+			var ticketVM = avalon.define({
+				$id: 'ticket',
+				list:[]
+			});
+
+			avalon.scan();
+
+			//载入机票数据
+			$.getJSON(getURL, function(result){
+				ticketVM.list   = result.flightlist;
+			});
+		});
+	</script>
+	<style>
+		body {
+			background-color: #f9f9f9;
+		}
+	</style>
+</head>
+<body>
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu"
+		   onclick="window.history.back()"></i>
+		<!--/下拉菜单-->
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			机票查询结果
+		</a>
+	</h1>
+	<!--右侧在线客服-->
+	<div class="am-header-right am-header-nav">
+		<a href="http://tb.53kf.com/webCompany.php?arg=10102842&style=1" class="">
+			<i class="am-header-icon am-icon-comments-o"></i>
+		</a>
+	</div>
+	<!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+
+<!--查询表单-->
+<div id="ticket-list" ms-controller="ticket">
+	<div ms-repeat-unit="list" ms-attr-scvodata="{{unit.scvo.head}}">
+		<img ms-attr-src="http://www.htyou.com/{{unit.airlogo}}" alt=""/>{{unit.airname}} <br/>
+		{{unit.fromAirportName}} - {{unit.toAirportName}} <br/>
+		起飞时间: {{unit.qifeitime}} {{unit.lowcodename}} {{unit.price}} <br/>
+		<hr/>
+	</div>
+</div>
+
+<!--/查询表单-->
+</body>
+</html>

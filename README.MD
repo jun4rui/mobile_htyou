@@ -69,6 +69,7 @@ addTourOrder
 		    
 		    国际机票仓位 自带查询返回 不需要额外查询
 
+			Test URL:http://localhost:63342/mobile_htyou/www/ticket_list.html?fromCity=%E9%95%BF%E6%B2%99&toCity=%E5%8C%97%E4%BA%AC&fromDate=2015-10-31
 
 
 select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=石牛寨一日游&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
