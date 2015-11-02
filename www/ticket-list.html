@@ -86,16 +86,152 @@
 <!--/头部-->
 
 
+<div class="am-g">
 <!--查询表单-->
+<style>
+	.ticket-unit {
+		padding:2px;
+		border-bottom:1px solid #c1c1c1;
+	}
+	.ticket-unit table {
+		width: 100%;
+	}
+	.ticket-unit .ticket-unit-sub {
+		height:0;
+		overflow:hidden;
+	}
+	.ticket-unit.active .ticket-unit-sub {
+		height:auto;
+	}
+
+	.ticket-unit td.strong {
+		color:#F55002;
+		font-weight:bold;
+	}
+
+	.ticket-list-item {
+		background-color: #FFF;
+	}
+	.ticket-list-item td.icon {
+		color: #007AFF; font-size: 16px; text-align: right;
+	}
+	.ticket-list-item td.corp-name {
+		color: #7e7e7f;
+		font-size:0.8em;
+	}
+	.ticket-list-item td.price {
+		color: #F55002;
+		font-size: 13px;
+		font-weight: bold;
+		text-align: right;
+	}
+	.s-ticket-list-item td.s-price {
+		color: #F55002;
+		font-size: 13px;
+		font-weight: bold;
+		text-align: right;
+	}
+
+	.ticket-list-item td.start-time {
+		color: #007AFF; font-size: 16px; font-weight:bold;
+	}
+	.ticket-list-item td.start-place {
+		font-size: 14px;
+	}
+	.ticket-list-item td.type {
+		font-size: 13px; text-align: right;
+	}
+	.s-ticket-list-item td.s-type {
+		font-size: 13px; text-align: left;
+	}
+	.ticket-list-item td.end-time {
+		color: #78B1F0; font-size: 15px; font-weight:bold;
+	}
+	.ticket-list-item td.end-place {
+		font-size: 14px;
+	}
+	.ticket-list-item td.remain {
+		color:#111111;
+		font-size:12px;
+		text-align:right;
+	}
+
+	.ticket-unit-sub tr {
+		border-top:1px solid #c1c1c1;
+		background-color: #EEE;
+	}
+	.ticket-unit-sub td {
+		font-size: 14px;
+		line-height:20px;
+	}
+</style>
 <div id="ticket-list" ms-controller="ticket">
-	<div ms-repeat-unit="list" ms-attr-scvodata="{{unit.scvo.head}}">
-		<img ms-attr-src="http://www.htyou.com/{{unit.airlogo}}" alt=""/>{{unit.airname}} <br/>
+	<div ms-repeat-unit="list" ms-attr-subsection="tus-{{$index}}" ms-attr-scvodata="{{unit.scvo.head}}" class="ticket-unit">
+<!--
+		<img ms-attr-src="" alt=""/> <br/>
 		{{unit.fromAirportName}} - {{unit.toAirportName}} <br/>
-		起飞时间: {{unit.qifeitime}} {{unit.lowcodename}} {{unit.price}} <br/>
-		<hr/>
+		起飞时间: {{unit.qifeitime}} {{unit.lowcodename}}  <br/>
+-->
+		<table class="ticket-list-item">
+			<tr>
+				<td nowrap width="20%" class="icon">
+					<img ms-attr-src="http://www.htyou.com/{{unit.airlogo}}" alt="">
+				</td>
+				<td nowrap width="60%" class="corp-name">{{unit.airname}} - {{unit.code}}</td>
+				<td nowrap width="20%" class="price">
+					<span ms-if="unit.price!=0">{{unit.price}}({{unit.lowzk}}折/{{unit.lowcode}})</span>
+					<span ms-if="unit.price==0">价格待定</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="start-time">{{unit.dpttime}}</td>
+				<td class="start-place">{{unit.fromAirportName}}</td>
+				<td class="type">{{unit.lowcodename}}</td>
+			</tr>
+			<tr>
+				<td class="end-time">{{unit.arrtime}}</td>
+				<td class="end-place">{{unit.toAirportName}}</td>
+				<td class="remain">
+					<span ms-if="unit.lowstatus=='A'">座位充足</span>
+					<span ms-if="unit.lowstatus!='A'">剩余{{unit.lowstatus}}张</span>
+				</td>
+			</tr>
+		</table>
+		<div ms-attr-id="tus-{{$index}}" class="ticket-unit-sub">
+
+		</div>
 	</div>
 </div>
-
 <!--/查询表单-->
+</div>
+<script>
+	$(document).ready(function(){
+		$('#ticket-list').delegate('.ticket-unit','click',function(){
+			var getURL  = server_addr+'/mobile/ticket_getMoreTickeBrethInFoApp.action?jsoncallback=?&sendinfo='+encodeURIComponent($(this).attr('scvodata'));
+			var targetDOM   = '#'+$(this).attr('subsection');
+			/*console.log('getURL:'+getURL);*/
+			if ( $(this).hasClass('active') ){
+				$(this).removeClass('active');
+			}else{
+				$(this).addClass('active');
+			}
+			$('.ticket-uni-sub').html('');  //清空各种仓位数据
+			$.getJSON(getURL,function(result){
+				var tempHTMLStr = '';
+				for (var i=0; i<result.length; i++){
+					console.log(result[i].lowcodename+'='+result[i].price);
+					var ticketStatus    = '座位充足';
+					if (result[i].lowstatus!='A'){
+						ticketStatus    = '剩余'+result[i].lowstatus+'张';
+					}
+					tempHTMLStr += '<tr><td>'+result[i].lowcodename+'</td><td class="strong">&yen;'+result[i].price+'</td><td class="strong">'+result[i].lowzk+'折/'+result[i].lowcode+'</td><td>'+ticketStatus+'</td></tr>';
+				}
+				$(targetDOM).html('<table>'+tempHTMLStr+'</table>');
+			});
+		});
+	});
+</script>
+
+
 </body>
 </html>

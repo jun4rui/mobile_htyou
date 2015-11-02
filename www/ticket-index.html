@@ -18,7 +18,25 @@
 	<script src="./config.js"></script>
 
 	<script>
-		//Avalon模型
+		function swapFromTo() {
+			var fromCity = $("#fromCity").val(),
+					toCity = $("#toCity").val(),
+					tempCity = fromCity;
+			// fromCity	= [toCity, toCity=fromCity][0];	// Swap fromCity and toCity.
+			fromCity = toCity;
+			toCity = tempCity;
+
+			$("#fromCity").val(fromCity);
+			$("#toCity").val(toCity);
+		}
+		// 补０函数
+		function padLeft(str, lenght) {
+			console.log(str + "," + str.length)
+			if (str.length >= lenght)
+				return str;
+			else
+				return padLeft("0" + str, lenght);
+		}
 
 	</script>
 	<style>
@@ -84,7 +102,7 @@
 	.btn-swap {
 		width:40px;
 		height:40px;
-		line-height:40px;
+		line-height:38px;
 	}
 	#search-form input[type=text] {
 		box-shadow: 1px 1px 5px 0 #dfdfdf inset;
@@ -94,15 +112,15 @@
 	<div class="am-g">
 		<div class="am-form-group am-form-icon am-u-sm-5">
 			<i class="am-icon-sign-out"></i>
-			<input type="text" class="am-form-field" name="fromCity" id="fromCity" placeholder="出发城市">
+			<input type="text" class="am-form-field" name="fromCity" id="fromCity" placeholder="出发城市" value="长沙">
 		</div>
-		<div class="am-u-sm-2 btn-swap-section">
+		<div class="am-u-sm-2 btn-swap-section" onClick="swapFromTo();">
 			<span class="am-icon-btn am-warning am-icon-refresh btn-swap"></span>
 		</div>
 
 		<div class="am-form-group am-form-icon am-u-sm-5">
 			<i class="am-icon-sign-in"></i>
-			<input type="text" class="am-form-field" name="toCity" id="toCity" placeholder="到达城市">
+			<input type="text" class="am-form-field" name="toCity" id="toCity" placeholder="到达城市" value="北京">
 		</div>
 
 		<div class="am-form-group am-form-icon am-u-sm-12">
@@ -117,7 +135,17 @@
 	</div>
 
 </form>
-
 <!--/查询表单-->
+<script>
+	$('document').ready(function(){
+		var today = new Date();
+		$("#fromDate").val(
+				today.getFullYear()
+				+ "-" + padLeft((today.getMonth()+1).toString(), 2)
+				+ "-" + padLeft(today.getDate().toString(), 2)
+		);
+
+	});
+</script>
 </body>
 </html>
