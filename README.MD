@@ -1,20 +1,20 @@
-# »ªÌìÂÃÓÎÍø ÒÆ¶¯°æ ¿ª·¢±Ê¼Ç
+# åå¤©æ—…æ¸¸ç½‘ ç§»åŠ¨ç‰ˆ å¼€å‘ç¬”è®°
 
-## WindowsÆ½Ì¨°²×°¿ª·¢»·¾³
+## Windowså¹³å°å®‰è£…å¼€å‘ç¯å¢ƒ
 
-1. ÏÈÓÃ NPM install -g cordova °²×°ºÃ
-2. °²×° android studio
-3. °²×°SDK 22£¬²»¹ıÒª×¢Òâ¿ÉÄÜ°æ±¾²»Í¬ÒªÇó²»Í¬
-4. ÏÖÔÚCordova 5×Ô´øÁËcrosstalk£¬²»ÓÃÒ²Ã»°ì·¨¶îÍâ°²×°
+1. å…ˆç”¨ NPM install -g cordova å®‰è£…å¥½
+2. å®‰è£… android studio
+3. å®‰è£…SDK 22ï¼Œä¸è¿‡è¦æ³¨æ„å¯èƒ½ç‰ˆæœ¬ä¸åŒè¦æ±‚ä¸åŒ
+4. ç°åœ¨Cordova 5è‡ªå¸¦äº†crosstalkï¼Œä¸ç”¨ä¹Ÿæ²¡åŠæ³•é¢å¤–å®‰è£…
 
-## WEBÇ°¶ËÓÃ¿â
-±¾À´ÊÇ×¼±¸ÓÃMaterial-design-lite×öµÄ£¬µ«ÊÇ·¢ÏÖÔÚÖĞÎÄ»¯¡¢¹úÄÚ»¹ÓĞ¹úÄÚÉçÇøÉÏÓĞºÜ´óµÄÖÆÔ¼£¬»¹ÊÇ·ÅÆúÁË¡£
-»¹ÓĞMVVM¿ò¼Ü±¾À´×¼±¸ÓÃangularjs£¬½á¹ûÓÖÉı¼¶ÁË£¬ÍêÈ«ÖØĞÂ¿ª·¢·¢ÏÖµ÷ÓÃjsonp½Ó¿ÚÀÏÊÇ³öÎÊÌâ£¬»»getµ÷ÓÃÍêÈ«Ã»ÎÊÌâ£¬ÑĞ¾¿ÁËÒ»ÌìÎŞ¹û£¬Ëì·ÅÆú»¹ÊÇÓÃÕıÃÀµÄavalonÊ¡ĞÄµã¡£
-ajaxÔØÈëÊı¾İÓÃjquery£¬Ò»À´ÊÇamazeuiÒÀÀµ²¢ÇÒ×Ô´øÁË£¬¶şÀ´ÊÇavalonµÄÒ²Òª¶îÍâ×°×é¼ş»¹²»ÈçÖ±½ÓjqueryÊ¡ĞÄËãÁË¡£
+## WEBå‰ç«¯ç”¨åº“
+æœ¬æ¥æ˜¯å‡†å¤‡ç”¨Material-design-liteåšçš„ï¼Œä½†æ˜¯å‘ç°åœ¨ä¸­æ–‡åŒ–ã€å›½å†…è¿˜æœ‰å›½å†…ç¤¾åŒºä¸Šæœ‰å¾ˆå¤§çš„åˆ¶çº¦ï¼Œè¿˜æ˜¯æ”¾å¼ƒäº†ã€‚
+è¿˜æœ‰MVVMæ¡†æ¶æœ¬æ¥å‡†å¤‡ç”¨angularjsï¼Œç»“æœåˆå‡çº§äº†ï¼Œå®Œå…¨é‡æ–°å¼€å‘å‘ç°è°ƒç”¨jsonpæ¥å£è€æ˜¯å‡ºé—®é¢˜ï¼Œæ¢getè°ƒç”¨å®Œå…¨æ²¡é—®é¢˜ï¼Œç ”ç©¶äº†ä¸€å¤©æ— æœï¼Œé‚æ”¾å¼ƒè¿˜æ˜¯ç”¨æ­£ç¾çš„avalonçœå¿ƒç‚¹ã€‚
+ajaxè½½å…¥æ•°æ®ç”¨jqueryï¼Œä¸€æ¥æ˜¯amazeuiä¾èµ–å¹¶ä¸”è‡ªå¸¦äº†ï¼ŒäºŒæ¥æ˜¯avalonçš„ä¹Ÿè¦é¢å¤–è£…ç»„ä»¶è¿˜ä¸å¦‚ç›´æ¥jqueryçœå¿ƒç®—äº†ã€‚
 
 
 
-»ñÈ¡ĞÂÎÅµÄ½Ó¿ÚDEMO£º
+è·å–æ–°é—»çš„æ¥å£DEMOï¼š
 http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoID=1215
 
 
@@ -22,62 +22,62 @@ http://www.htyou.com/common/websinfo_queryHTClass.action?datatype=json&classId=7
 
 adpic_queryAdPic ok
 
-´ıremote»¯´¦Àí½Ó¿Ú
+å¾…remoteåŒ–å¤„ç†æ¥å£
 /tour/tourpro_queryTourOtherData.action?queryTourOtherType=1_2_3_4&datatype=json
 
 <@s.action name='websinfo_queryWebsInfos' infoClass="414" pageSize='4' namespace='/common' executeResult='false' />
-//ÔİÈ±
+//æš‚ç¼º
 
 <@s.action name='tourpro_listTourProWithQuery' commendtype='14' namespace='/tour' executeResult='false' pagesize='6'/>
-¶ÔÓ¦ipad½Ó¿ÚÀïÃæµÄ/mobile/ipad_queryTourLine.action
+å¯¹åº”ipadæ¥å£é‡Œé¢çš„/mobile/ipad_queryTourLine.action
 
 
 '''
-¶©µ¥Ìá½»ºÍÎ¢ĞÅ°æÒ»Ñù£¬µ«ÊÇÒª¶àÔö¼ÓÒ»¸ötourOrderVO.order_source=16 ÓÃÀ´È·¶¨×Ö·û¼¯
+è®¢å•æäº¤å’Œå¾®ä¿¡ç‰ˆä¸€æ ·ï¼Œä½†æ˜¯è¦å¤šå¢åŠ ä¸€ä¸ªtourOrderVO.order_source=16 ç”¨æ¥ç¡®å®šå­—ç¬¦é›†
 MobileTourOrderAction
 addTourOrder
 '''
 
-		  »úÆ±json ×ª»¯·½·¨ 
+		  æœºç¥¨json è½¬åŒ–æ–¹æ³• 
 		  /mobile/ticket_queryTicketListApp.action
-		  ²ÎÊı 
-		  	//fromDate  ³ö·¢Ê±¼ä
-			  //beginCity ³ö·¢³ÇÊĞ
-		    //endCity  µ½´ï³ÇÊĞ ±ØÌî3ÏîÄ¿
+		  å‚æ•° 
+		  	//fromDate  å‡ºå‘æ—¶é—´
+			  //beginCity å‡ºå‘åŸå¸‚
+		    //endCity  åˆ°è¾¾åŸå¸‚ å¿…å¡«3é¡¹ç›®
 		
-	     // ÅÅĞòÌõ¼ş
-		   // ²éÑ¯ Ìõ¼ş   Ê±¼äÅÅĞò  flytimeorder  up down
-		   // °´º½¿Õ¹«Ë¾Ìõ¼ş²éÑ¯ airlines  º½¿Õ¹«Ë¾¿sŒ‘ 
-		   // ¼Û¸ñÅÅĞò         brethprice    up down
+	     // æ’åºæ¡ä»¶
+		   // æŸ¥è¯¢ æ¡ä»¶   æ—¶é—´æ’åº  flytimeorder  up down
+		   // æŒ‰èˆªç©ºå…¬å¸æ¡ä»¶æŸ¥è¯¢ airlines  èˆªç©ºå…¬å¸ç¸®å¯« 
+		   // ä»·æ ¼æ’åº         brethprice    up down
 		   simple:
-		   http://www.htyou.com/mobile/ticket_queryTicketListApp.action?fromDate=2015-10-27&fromCity=±±¾©&toCity=³¤É³
+		   http://www.htyou.com/mobile/ticket_queryTicketListApp.action?fromDate=2015-10-27&fromCity=åŒ—äº¬&toCity=é•¿æ²™
 		   
-		   ·µ»Øticketvo ¶ÔÏó ¾ßÌå¶ÔÏó¹¹Ôì²Î¿¼ /WEB-INF/weixin/ticket_show.html
+		   è¿”å›ticketvo å¯¹è±¡ å…·ä½“å¯¹è±¡æ„é€ å‚è€ƒ /WEB-INF/weixin/ticket_show.html
 		   
 		   
 		   
-		   ¹úÄÚ»úÆ± ²ÖÎ»²éÑ¯·½·¨
+		   å›½å†…æœºç¥¨ ä»“ä½æŸ¥è¯¢æ–¹æ³•
 		     /mobile/ticket_getMoreTickeBrethInFoApp.action
 		     
-		    ²ÎÊı sendinfo="${ticketvo.flightlist[i].scvo.head}"
+		    å‚æ•° sendinfo="${ticketvo.flightlist[i].scvo.head}"
 		    sample:
 		    http://www.htyou.com/mobile/ticket_getMoreTickeBrethInFoApp.action?sendinfo=<HBS><HEAD>27OCT(TUE) BJSCSX DIRECT ONLY<\/HEAD><HZWZ>a<\/HZWZ><HB><XH>8+<\/XH><HBH>CA1349<\/HBH><DS>DS#<\/DS><CW>FA AA YA BA MA HA KA LA QA GQ SA N3 VQ US TQ EQ M1A V1Q<\/CW><HC>PEKCSX<\/HC><CFSJ>1925<\/CFSJ><DDSJ>2200<\/DDSJ><JX>32A<\/JX><TLCY>0^L<\/TLCY><E>E<\/E><FH>&gt;<\/FH><GXHBH/><CW2/><SUBCW>M1A V1Q<\/SUBCW><OTHER>T3 T2  2:35<\/OTHER><ZDGBYJCW>QA<\/ZDGBYJCW><\/HB><\/HBS>
 		    http://www.htyou.com/mobile/ticket_getMoreTickeBrethInFoApp.action?sendinfo=%3CHBS%3E%3CHEAD%3E27OCT(TUE)%20BJSCSX%20DIRECT%20ONLY%3C%2FHEAD%3E%3CHZWZ%3Ea%3C%2FHZWZ%3E%3CHB%3E%3CXH%3E8%2B%3C%2FXH%3E%3CHBH%3ECA1349%3C%2FHBH%3E%3CDS%3EDS%23%3C%2FDS%3E%3CCW%3EFA%20AA%20YA%20BA%20MA%20HA%20KA%20LA%20QA%20GQ%20SA%20N3%20VQ%20US%20TQ%20EQ%20M1A%20V1Q%3C%2FCW%3E%3CHC%3EPEKCSX%3C%2FHC%3E%3CCFSJ%3E1925%3C%2FCFSJ%3E%3CDDSJ%3E2200%3C%2FDDSJ%3E%3CJX%3E32A%3C%2FJX%3E%3CTLCY%3E0%5EL%3C%2FTLCY%3E%3CE%3EE%3C%2FE%3E%3CFH%3E%26gt%3B%3C%2FFH%3E%3CGXHBH%2F%3E%3CCW2%2F%3E%3CSUBCW%3EM1A%20V1Q%3C%2FSUBCW%3E%3COTHER%3ET3%20T2%20%202%3A35%3C%2FOTHER%3E%3CZDGBYJCW%3EQA%3C%2FZDGBYJCW%3E%3C%2FHB%3E%3C%2FHBS%3E
 		    
 		    
-		    ·µ»Ø seatlist json ÎÄ±¾
+		    è¿”å› seatlist json æ–‡æœ¬
 		    
-		    ¹ú¼Ê»úÆ±²ÖÎ» ×Ô´ø²éÑ¯·µ»Ø ²»ĞèÒª¶îÍâ²éÑ¯
+		    å›½é™…æœºç¥¨ä»“ä½ è‡ªå¸¦æŸ¥è¯¢è¿”å› ä¸éœ€è¦é¢å¤–æŸ¥è¯¢
 
 			Test URL:http://localhost:63342/mobile_htyou/www/ticket_list.html?fromCity=%E9%95%BF%E6%B2%99&toCity=%E5%8C%97%E4%BA%AC&fromDate=2015-10-31
 
 
-select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=Ê¯Å£Õ¯Ò»ÈÕÓÎ&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
+select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=çŸ³ç‰›å¯¨ä¸€æ—¥æ¸¸&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
 
-http://www.htyou.com/mobile/tourorder_addTourOrder.action?select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=Ê¯Å£Õ¯Ò»ÈÕÓÎ&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
+http://www.htyou.com/mobile/tourorder_addTourOrder.action?select-date=2015-10-31&chengren-fill=1&ertong-fill=0&tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=çŸ³ç‰›å¯¨ä¸€æ—¥æ¸¸&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
 
 
-http://www.htyou.com/mobile/tourorder_addTourOrder.action?tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=Ê¯Å£Õ¯Ò»ÈÕÓÎ&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
+http://www.htyou.com/mobile/tourorder_addTourOrder.action?tourOrderVO.order_amount=198&tourOrderVO.preferential_price=198&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=çŸ³ç‰›å¯¨ä¸€æ—¥æ¸¸&tourOrderVO.tourproid=7823&tourOrderVO.jzl_cteamcode=HT-HNS-2151017-00095&tourOrderVO.start_date=2015-10-17&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16
 
 
 

@@ -14,8 +14,11 @@
 	<script src="./bower_components/avalon/avalon.js"></script>
 	<!--fontawesome图标库-->
 	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--mixitup2-->
+	<script src="./bower_components/mixitup/build/jquery.mixitup.min.js"></script>
 	<!--js配置文件-->
 	<script src="./config.js"></script>
+
 
 	<script>
 		//获得url参数
@@ -24,17 +27,35 @@
 		var fromDate    = getParameterValue(window.location.href,'fromDate');
 		var getURL      = server_addr+'/mobile/ticket_queryTicketListApp.action?jsoncallback=?&fromDate='+fromDate+'&fromCity='+fromCity+'&toCity='+toCity;
 		//检查url参数
-		console.log(fromCity, toCity, fromDate);
-		console.log(getURL);
+		/*console.log(fromCity, toCity, fromDate);*/
+		/*console.log(getURL);*/
 		$.getJSON(getURL, function(result){
 			console.log(result);
 		});
+
 		//Avalon模型
 		avalon.ready(function(){
 			//机票VM
 			var ticketVM = avalon.define({
 				$id: 'ticket',
-				list:[]
+				list:[],
+				filterKey:'',
+				airnameList:[],
+				ticketRendered: function(){
+					//console.log('渲染完毕');
+					//渲染完以后，将所有的航空公司放在anList数组中
+					var anList = [];
+					for (var i in ticketVM.list){
+						if (typeof(ticketVM.list[i].airname)!='undefined' ){
+							anList.push(ticketVM.list[i].airname);
+							console.log(ticketVM.list[i].airname);
+						}
+					}
+					//console.log(anList.length,anList);
+					$.unique(anList)
+					ticketVM.airnameList = anList;
+					//console.log(anList.length,anList);
+				}
 			});
 
 			avalon.scan();
@@ -42,6 +63,40 @@
 			//载入机票数据
 			$.getJSON(getURL, function(result){
 				ticketVM.list   = result.flightlist;
+			});
+
+			//将接口过来的数字时间转换成时间格式
+			avalon.filters.num2time = function(str){
+				return str.substr(0,2)+':'+str.substr(2);
+			}
+
+			//价格排序操作
+			$('#filter-panel').delegate('#sort_price', 'click', function(){
+				if ($('#sort_price').attr('sort')=='desc'){
+					$('#sort_price').attr('sort','asc');
+					ticketVM.list.sort(function(a,b){
+						return a.price-b.price;
+					});
+				}else{
+					$('#sort_price').attr('sort','desc');
+					ticketVM.list.sort(function(a,b){
+						return b.price-a.price;
+					});
+				}
+			});
+			//起飞时间排序
+			$('#filter-panel').delegate('#sort_time', 'click', function(){
+				if ($('#sort_price').attr('sort')=='desc'){
+					$('#sort_price').attr('sort','asc');
+					ticketVM.list.sort(function(a,b){
+						return a.dpttime-b.dpttime;
+					});
+				}else{
+					$('#sort_price').attr('sort','desc');
+					ticketVM.list.sort(function(a,b){
+						return b.dpttime-a.dpttime;
+					});
+				}
 			});
 		});
 	</script>
@@ -51,7 +106,7 @@
 		}
 	</style>
 </head>
-<body>
+<body ms-controller="ticket">
 <!--头部-->
 <style>
 	header.am-header .am-header-title {
@@ -87,6 +142,20 @@
 
 
 <div class="am-g">
+	<div id="filter-panel">
+		<!--排序机票价格-->
+		<button id="sort_time" sort="asc">按起飞时间排序</button>
+		<!--/排序机票价格-->
+		<!--过滤航空公司-->
+		<select name="" id="" ms-duplex="filterKey">
+			<option value="">全部</option>
+			<option ms-repeat-unit="airnameList" ms-attr-value="{{unit}}">{{unit}}</option>
+		</select>
+		<!--/过滤航空公司-->
+		<!--排序机票价格-->
+		<button id="sort_price" sort="asc">按价格排序</button>
+		<!--/排序机票价格-->
+	</div>
 <!--查询表单-->
 <style>
 	.ticket-unit {
@@ -165,13 +234,8 @@
 		line-height:20px;
 	}
 </style>
-<div id="ticket-list" ms-controller="ticket">
-	<div ms-repeat-unit="list" ms-attr-subsection="tus-{{$index}}" ms-attr-scvodata="{{unit.scvo.head}}" class="ticket-unit">
-<!--
-		<img ms-attr-src="" alt=""/> <br/>
-		{{unit.fromAirportName}} - {{unit.toAirportName}} <br/>
-		起飞时间: {{unit.qifeitime}} {{unit.lowcodename}}  <br/>
--->
+<div id="ticket-list">
+	<div ms-repeat-unit="list" ms-if-loop="unit.airname.indexOf(filterKey)>-1" ms-attr-subsection="tus-{{$index}}" ms-attr-scvodata="{{unit.scvo.head}}" class="ticket-unit" data-repeat-rendered="ticketRendered">
 		<table class="ticket-list-item">
 			<tr>
 				<td nowrap width="20%" class="icon">
@@ -184,12 +248,12 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="start-time">{{unit.dpttime}}</td>
+				<td class="start-time">{{unit.dpttime|num2time}}</td>
 				<td class="start-place">{{unit.fromAirportName}}</td>
 				<td class="type">{{unit.lowcodename}}</td>
 			</tr>
 			<tr>
-				<td class="end-time">{{unit.arrtime}}</td>
+				<td class="end-time">{{unit.arrtime|num2time}}</td>
 				<td class="end-place">{{unit.toAirportName}}</td>
 				<td class="remain">
 					<span ms-if="unit.lowstatus=='A'">座位充足</span>
@@ -219,7 +283,7 @@
 			$.getJSON(getURL,function(result){
 				var tempHTMLStr = '';
 				for (var i=0; i<result.length; i++){
-					console.log(result[i].lowcodename+'='+result[i].price);
+					//console.log(result[i].lowcodename+'='+result[i].price);
 					var ticketStatus    = '座位充足';
 					if (result[i].lowstatus!='A'){
 						ticketStatus    = '剩余'+result[i].lowstatus+'张';
