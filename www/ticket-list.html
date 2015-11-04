@@ -70,32 +70,49 @@
 				return str.substr(0,2)+':'+str.substr(2);
 			}
 
+			//航空公司过滤
+			$('#airname-list').delegate('.filter-airname', 'click', function(){
+				ticketVM.filterKey  = $(this).attr('airname');
+			});
+
 			//价格排序操作
 			$('#filter-panel').delegate('#sort_price', 'click', function(){
+				//修改时间排序按钮图标
+				$('#sort_time>i').removeClass().addClass('am-icon-sort');
 				if ($('#sort_price').attr('sort')=='desc'){
 					$('#sort_price').attr('sort','asc');
 					ticketVM.list.sort(function(a,b){
 						return a.price-b.price;
 					});
+					//修改图标
+					$('#sort_price>i').removeClass().addClass('am-icon-sort-amount-asc');
 				}else{
 					$('#sort_price').attr('sort','desc');
 					ticketVM.list.sort(function(a,b){
 						return b.price-a.price;
 					});
+					//修改图标
+					$('#sort_price>i').removeClass().addClass('am-icon-sort-amount-desc');
 				}
 			});
 			//起飞时间排序
 			$('#filter-panel').delegate('#sort_time', 'click', function(){
+				//修改价格排序按钮图标
+				$('#sort_price>i').removeClass().addClass('am-icon-sort');
 				if ($('#sort_price').attr('sort')=='desc'){
 					$('#sort_price').attr('sort','asc');
 					ticketVM.list.sort(function(a,b){
 						return a.dpttime-b.dpttime;
 					});
+					//修改图标
+					$('#sort_time>i').removeClass().addClass('am-icon-sort-amount-asc');
 				}else{
 					$('#sort_price').attr('sort','desc');
 					ticketVM.list.sort(function(a,b){
 						return b.dpttime-a.dpttime;
 					});
+					//修改图标
+					$('#sort_time>i').removeClass().addClass('am-icon-sort-amount-desc');
 				}
 			});
 		});
@@ -104,9 +121,12 @@
 		body {
 			background-color: #f9f9f9;
 		}
+		.ms-controller,.ms-important,[ms-controller],[ms-important]{
+			visibility: hidden;
+		}
 	</style>
 </head>
-<body ms-controller="ticket">
+<body ms-controller="ticket" class="ms-controller">
 <!--头部-->
 <style>
 	header.am-header .am-header-title {
@@ -141,132 +161,164 @@
 <!--/头部-->
 
 
+
 <div class="am-g">
+
+	<style>
+		#filter-panel button {
+			padding: 10px 8px;
+		}
+	</style>
 	<div id="filter-panel">
 		<!--排序机票价格-->
-		<button id="sort_time" sort="asc">按起飞时间排序</button>
+		<!--<button id="sort_time" sort="asc">
+			<i class="am-icon-minus"></i>&nbsp;起飞时间
+		</button>-->
 		<!--/排序机票价格-->
 		<!--过滤航空公司-->
-		<select name="" id="" ms-duplex="filterKey">
-			<option value="">全部</option>
-			<option ms-repeat-unit="airnameList" ms-attr-value="{{unit}}">{{unit}}</option>
-		</select>
+		<!--<select name="" id="" ms-duplex="filterKey">-->
+		<!--<option value="">全部</option>-->
+		<!--<option ms-repeat-unit="airnameList" ms-attr-value="{{unit}}">{{unit}}</option>-->
+		<!--</select>-->
+		<!--
+		normal  am-icon-sort
+		asc     am-icon-sort-amount-asc
+		desc    am-icon-sort-amount-desc
+		-->
+		<div class="am-btn-group am-btn-group-justify">
+			<button id="sort_time" sort="asc" type="button" class="am-btn am-btn-secondary">
+				起飞时间&nbsp;<i class="am-icon-sort"></i>
+			</button>
+			<button class="am-btn am-btn-secondary">航空公司</button>
+			<div class="am-dropdown" data-am-dropdown>
+				<button class="am-btn am-btn-secondary am-dropdown-toggle" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></button>
+				<ul id="airname-list" class="am-dropdown-content">
+					<li class="filter-airname" airname="">全部</li>
+					<li class="filter-airname" ms-repeat-unit="airnameList" ms-attr-airname="{{unit}}">{{unit}}</li>
+				</ul>
+			</div>
+			<button id="sort_price" sort="asc" type="button" class="am-btn am-btn-secondary">
+				票价&nbsp;<i class="am-icon-sort"></i>
+			</button>
+		</div>
 		<!--/过滤航空公司-->
 		<!--排序机票价格-->
-		<button id="sort_price" sort="asc">按价格排序</button>
+		<!--<button id="sort_price" sort="asc">
+			<i class="am-icon-arrow-up"></i>&nbsp;最低价格
+		</button>-->
 		<!--/排序机票价格-->
 	</div>
-<!--查询表单-->
-<style>
-	.ticket-unit {
-		padding:2px;
-		border-bottom:1px solid #c1c1c1;
-	}
-	.ticket-unit table {
-		width: 100%;
-	}
-	.ticket-unit .ticket-unit-sub {
-		height:0;
-		overflow:hidden;
-	}
-	.ticket-unit.active .ticket-unit-sub {
-		height:auto;
-	}
+	<!--查询表单-->
+	<style>
+		.ticket-unit {
+			padding:2px;
+			border-bottom:1px solid #c1c1c1;
+		}
+		.ticket-unit table {
+			width: 100%;
+		}
+		.ticket-unit .ticket-unit-sub {
+			height:0;
+			overflow:hidden;
+		}
+		.ticket-unit.active .ticket-unit-sub {
+			height:auto;
+		}
 
-	.ticket-unit td.strong {
-		color:#F55002;
-		font-weight:bold;
-	}
+		.ticket-unit td.strong {
+			color:#F55002;
+			font-weight:bold;
+		}
 
-	.ticket-list-item {
-		background-color: #FFF;
-	}
-	.ticket-list-item td.icon {
-		color: #007AFF; font-size: 16px; text-align: right;
-	}
-	.ticket-list-item td.corp-name {
-		color: #7e7e7f;
-		font-size:0.8em;
-	}
-	.ticket-list-item td.price {
-		color: #F55002;
-		font-size: 13px;
-		font-weight: bold;
-		text-align: right;
-	}
-	.s-ticket-list-item td.s-price {
-		color: #F55002;
-		font-size: 13px;
-		font-weight: bold;
-		text-align: right;
-	}
+		.ticket-list-item {
+			background-color: #FFF;
+		}
+		.ticket-list-item td.icon {
+			color: #007AFF; font-size: 16px; text-align: right;
+		}
+		.ticket-list-item td.corp-name {
+			color: #7e7e7f;
+			font-size:0.8em;
+		}
+		.ticket-list-item td.price {
+			color: #F55002;
+			font-size: 13px;
+			font-weight: bold;
+			text-align: right;
+		}
+		.s-ticket-list-item td.s-price {
+			color: #F55002;
+			font-size: 13px;
+			font-weight: bold;
+			text-align: right;
+		}
 
-	.ticket-list-item td.start-time {
-		color: #007AFF; font-size: 16px; font-weight:bold;
-	}
-	.ticket-list-item td.start-place {
-		font-size: 14px;
-	}
-	.ticket-list-item td.type {
-		font-size: 13px; text-align: right;
-	}
-	.s-ticket-list-item td.s-type {
-		font-size: 13px; text-align: left;
-	}
-	.ticket-list-item td.end-time {
-		color: #78B1F0; font-size: 15px; font-weight:bold;
-	}
-	.ticket-list-item td.end-place {
-		font-size: 14px;
-	}
-	.ticket-list-item td.remain {
-		color:#111111;
-		font-size:12px;
-		text-align:right;
-	}
+		.ticket-list-item td.start-time {
+			color: #007AFF; font-size: 16px; font-weight:bold;
+		}
+		.ticket-list-item td.start-place {
+			font-size: 14px;
+		}
+		.ticket-list-item td.type {
+			font-size: 13px; text-align: right;
+		}
+		.s-ticket-list-item td.s-type {
+			font-size: 13px; text-align: left;
+		}
+		.ticket-list-item td.end-time {
+			color: #78B1F0; font-size: 15px; font-weight:bold;
+		}
+		.ticket-list-item td.end-place {
+			font-size: 14px;
+		}
+		.ticket-list-item td.remain {
+			color:#111111;
+			font-size:12px;
+			text-align:right;
+		}
 
-	.ticket-unit-sub tr {
-		border-top:1px solid #c1c1c1;
-		background-color: #EEE;
-	}
-	.ticket-unit-sub td {
-		font-size: 14px;
-		line-height:20px;
-	}
-</style>
-<div id="ticket-list">
-	<div ms-repeat-unit="list" ms-if-loop="unit.airname.indexOf(filterKey)>-1" ms-attr-subsection="tus-{{$index}}" ms-attr-scvodata="{{unit.scvo.head}}" class="ticket-unit" data-repeat-rendered="ticketRendered">
-		<table class="ticket-list-item">
-			<tr>
-				<td nowrap width="20%" class="icon">
-					<img ms-attr-src="http://www.htyou.com/{{unit.airlogo}}" alt="">
-				</td>
-				<td nowrap width="60%" class="corp-name">{{unit.airname}} - {{unit.code}}</td>
-				<td nowrap width="20%" class="price">
-					<span ms-if="unit.price!=0">{{unit.price}}({{unit.lowzk}}折/{{unit.lowcode}})</span>
-					<span ms-if="unit.price==0">价格待定</span>
-				</td>
-			</tr>
-			<tr>
-				<td class="start-time">{{unit.dpttime|num2time}}</td>
-				<td class="start-place">{{unit.fromAirportName}}</td>
-				<td class="type">{{unit.lowcodename}}</td>
-			</tr>
-			<tr>
-				<td class="end-time">{{unit.arrtime|num2time}}</td>
-				<td class="end-place">{{unit.toAirportName}}</td>
-				<td class="remain">
-					<span ms-if="unit.lowstatus=='A'">座位充足</span>
-					<span ms-if="unit.lowstatus!='A'">剩余{{unit.lowstatus}}张</span>
-				</td>
-			</tr>
-		</table>
-		<div ms-attr-id="tus-{{$index}}" class="ticket-unit-sub">
+		.ticket-unit-sub tr {
+			border-top:1px solid #c1c1c1;
+			background-color: #EEE;
+		}
+		.ticket-unit-sub td {
+			font-size: 14px;
+			line-height:20px;
+		}
+	</style>
+	<div id="ticket-list">
+		<div ms-repeat-unit="list" ms-if-loop="unit.airname.indexOf(filterKey)>-1" ms-attr-subsection="tus-{{$index}}" ms-attr-scvodata="{{unit.scvo.head}}" class="ticket-unit" data-repeat-rendered="ticketRendered">
+			<table class="ticket-list-item">
+				<tr>
+					<td nowrap width="20%" class="icon">
+						<img ms-attr-src="http://www.htyou.com/{{unit.airlogo}}" alt="">
+					</td>
+					<td nowrap width="60%" class="corp-name">{{unit.airname}} - {{unit.code}}</td>
+					<td nowrap width="20%" class="price">
+						<span ms-if="unit.price!=0">{{unit.price}}({{unit.lowzk}}折/{{unit.lowcode}})</span>
+						<span ms-if="unit.price==0">价格待定</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="start-time">{{unit.dpttime|num2time}}</td>
+					<td class="start-place">{{unit.fromAirportName}}</td>
+					<td class="type">{{unit.lowcodename}}</td>
+				</tr>
+				<tr>
+					<td class="end-time">{{unit.arrtime|num2time}}</td>
+					<td class="end-place">{{unit.toAirportName}}</td>
+					<td class="remain">
+						<span ms-if="unit.lowstatus=='A'">座位充足</span>
+						<span ms-if="unit.lowstatus!='A'">剩余{{unit.lowstatus}}张</span>
+					</td>
+				</tr>
+			</table>
+			<div ms-attr-id="tus-{{$index}}" class="ticket-unit-sub">
 
+			</div>
 		</div>
 	</div>
-</div>
-<!--/查询表单-->
+	<!--/查询表单-->
 </div>
 <script>
 	$(document).ready(function(){
