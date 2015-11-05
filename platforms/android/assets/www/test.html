@@ -1,92 +1,291 @@
-<!DOCTYPE html>
-<html lang="zh_CN">
+<!doctype html>
+<html lang="zh-CN">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<title>华天旅游网 移动版</title>
-	<!--jQuery框架-->
-	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
-	<!--amaze框架 需要jQuery支持-->
-	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
-	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
-	<!--avalon框架-->
-	<script src="./bower_components/avalon/avalon.js"></script>
-	<!--fontawesome图标库-->
-	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
-	<!--js配置文件-->
-	<script src="./config.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- TODO:	舱位信息做成叶面条转形势
+				底部要有固定的拨打电话号码预定的功能
+				顶部要有排序和过滤功能
+				要能回到搜索叶面或者直接弹出搜索
+	-->
+	<!--<link rel="stylesheet" href="./jquerymobile/jquery.mobile.structure-1.4.3.min.css">-->
+	<link rel="stylesheet" href="/common/weixin_include/jquerymobile/jquery.mobile-1.4.3.min.css">
+	<script src="/common/weixin_include/jquery-1.11.1.min.js"></script>
+	<script src="/common/weixin_include/jquerymobile/jquery.mobile-1.4.3.min.js"></script>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
+	<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+	<!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<!--<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+	<script src="/common/weixin_include/jquery.mixitup.min.js"></script>
+	<title>华天旅游移动版 - 机票查询</title>
+	<style>
+		/*机票显示单元的样式*/
+		.ui-listview>li {
+			width: 100%;
+		}
+		table.ticket-list-item {
+			width:100%;
+			font-family: 'Arial';
+			font-style: normal;
+			font-weight: normal;
+		}
+		table.s-ticket-list-item {
+			width:100%;
+			font-family: 'Arial';
+			font-style: normal;
+			font-weight: normal;
+		}
+
+		.ticket-list-item td.icon {
+			color: #007AFF; font-size: 16px; text-align: right;
+		}
+		.ticket-list-item td.corp-name {
+			color: #7e7e7f;
+			font-size:0.8em;
+		}
+		.ticket-list-item td.price {
+			color: #F55002;
+			font-size: 13px;
+			font-weight: bold;
+			text-align: right;
+		}
+		.s-ticket-list-item td.s-price {
+			color: #F55002;
+			font-size: 13px;
+			font-weight: bold;
+			text-align: right;
+		}
+
+		.ticket-list-item td.start-time {
+			color: #007AFF; font-size: 16px; font-weight:bold;
+		}
+		.ticket-list-item td.start-place {
+			font-size: 14px;
+		}
+		.ticket-list-item td.type {
+			font-size: 13px; text-align: right;
+		}
+		.s-ticket-list-item td.s-type {
+			font-size: 13px; text-align: left;
+		}
+		.ticket-list-item td.end-time {
+			color: #78B1F0; font-size: 15px; font-weight:bold;
+		}
+		.ticket-list-item td.end-place {
+			font-size: 14px;
+		}
+		.ticket-list-item td.remain {
+			color:#111111;
+			font-size:12px;
+			text-align:right;
+		}
+		.s-ticket-list-item td.s-remain {
+			color:#111111;
+			font-size:12px;
+			text-align:center;
+		}
+
+		.ui-listview>.mix.ui-li-static {
+			display: none;
+		}
+		.ui-bar-b {
+			background-color: #2F90DB !important;
+			border-color: #597DB3 !important;
+			color: #FFF !important;
+			text-shadow: 0 1px 0 #8B8888 !important;
+			font-weight: 700;
+		}
+		.ui-bar-b .ui-btn,.ui-bar-b .ui-btn:hover {
+			background-color: #3276B4 !important;
+			border-color: #3276B4 !important;
+			color: #fff !important;
+			text-shadow: 0 1px 0 #111 !important;
+		}
+	</style>
 </head>
 <body>
-<script>
-	$.getJSON('http://www.htyou.com/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount=3799&tourOrderVO.preferential_price=3799&tourOrderVO.pay_type=121604&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=&tourOrderVO.tourproid=20748&tourOrderVO.jzl_cteamcode=HT-YLZ-5151016-00002&tourOrderVO.start_date=2015-10-16&tourOrderVO.adult_num=11&tourOrderVO.child_num=0&tourOrderVO.order_source=16', function (result, status) {
-		console.log(status, result);
-	});
+<div data-role="page" id="main-page">
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>${fromCity} - ${toCity}</h1>
+		<a href="/mobile/ticket_goSearch.action" data-icon="back" target="_top">返回</a>
+		<a href="tel:073155555555" data-icon="phone" target="_top" style="background-color: #EB5501 !important;">预定</a>
+	</div>
 
-	[{
-		"text": "11月首尔一地半自由行五日（大韩）",
-		"picuri2": "",
-		"createdate": "2013-04-09",
-		"excol3": "",
-		"show": "11",
-		"excol2": "",
-		"actlabel": "",
-		"excol1": "3390",
-		"type": "220089",
-		"picuri": "pic/adpic/2015-05-05_10-11-08_2130.jpg",
-		"id": 181,
-		"alink": "tour/type/month/keyword韩国.htm",
-		"grade": "99",
-		"notes": "韩国",
-		"enddate": ""
-	}, {
-		"text": "日本本州逍遥6日游（名进阪出1118）",
-		"picuri2": "",
-		"createdate": "2015-02-15",
-		"excol3": "",
-		"show": "11",
-		"excol2": "",
-		"actlabel": "",
-		"excol1": "4790",
-		"type": "220089",
-		"picuri": "pic/adpic/2015-05-05_10-03-36_1954.jpg",
-		"id": 183,
-		"alink": "tour/type/month/keyword日本.htm",
-		"grade": "95",
-		"notes": "日本",
-		"enddate": ""
-	}, {
-		"text": "广州/珠海长隆活力家庭亲子游套餐（2大1小）（10月01-15日）",
-		"picuri2": "",
-		"createdate": "2015-02-15",
-		"excol3": "",
-		"show": "11",
-		"excol2": "",
-		"actlabel": "",
-		"excol1": "900",
-		"type": "220089",
-		"picuri": "pic/adpic/cl.jpg",
-		"id": 222,
-		"alink": "tour/type/month/keyword长隆.htm",
-		"grade": "85",
-		"notes": "长隆",
-		"enddate": ""
-	}, {
-		"text": "澳大利亚10天精彩之旅-1216",
-		"picuri2": "",
-		"createdate": "2015-10-14",
-		"excol3": "",
-		"show": "11",
-		"excol2": "",
-		"actlabel": "",
-		"excol1": "11590",
-		"type": "220089",
-		"picuri": "pic/adpic/2015-10-14_09-48-50_2915.jpg",
-		"id": 279,
-		"alink": "tour/type/month/keyword澳新.htm",
-		"grade": "0",
-		"notes": "澳新",
-		"enddate": ""
-	}]
+	<div data-role="controlgroup" data-type="horizontal" data-mini="true" style="text-align: center;">
+		<button id="button-sort-price" onclick="sortPrice();" data-icon="minus" data-iconpos="right">价格</button>
+		<select id="select-filter-corp" onchange="filterCorp();" name="select-choice-mini" id="select-choice-mini" data-mini="true" data-inline="true">
+			<option value="all">筛选</option>
+			<option value="all">所有公司</option>
+			<script>
+				$("document").ready(function(){
+					var corpList	= new Array();
+					//console.log("len:"+$(".mix").length);
+					$(".mix").each(function(){
+						//console.log($(this));
+						corpList.push($(this).attr("data-corp"));
+					});
+					$.unique(corpList);
+					var tempStr	= "";
+					for (var i=0; i<corpList.length; i++){
+						var tempVal	=  corpList[i].split("|");
+						console.log(tempVal);
+						tempStr	 += '<option value="'+tempVal[1]+'">'+tempVal[0]+'</option>';
+					}
+					$("#select-filter-corp").append(tempStr);
+					//console.log(corpList);
+				});
+			</script>
+		</select>
+		<button id="button-sort-time" onclick="sortTime();" data-icon="minus" data-iconpos="right">时间</button>
+	</div>
+	<script>
+		var flag_sortPrice	= "";
+		var flag_sortTime	= "";
+		function sortPrice(){
+			$("#button-sort-price").removeClass("ui-icon-minus");
+			if (flag_sortPrice=="" || flag_sortPrice=="desc"){
+				$('#ticket-list-panel').mixItUp("sort","price:asc");
+				flag_sortPrice	= "asc";
+				$("#button-sort-price").removeClass("ui-icon-arrow-d").addClass("ui-icon-arrow-u");
+			}else{
+				$('#ticket-list-panel').mixItUp("sort","price:desc");
+				flag_sortPrice	= "desc";
+				$("#button-sort-price").removeClass("ui-icon-arrow-u").addClass("ui-icon-arrow-d");
+			}
+		}
+		function sortTime(){
+			$("#button-sort-time").removeClass("ui-icon-minus");
+			if (flag_sortTime=="" || flag_sortTime=="desc"){
+				$('#ticket-list-panel').mixItUp("sort","time:asc");
+				flag_sortTime	= "asc";
+				$("#button-sort-time").removeClass("ui-icon-arrow-d").addClass("ui-icon-arrow-u");
+			}else{
+				$('#ticket-list-panel').mixItUp("sort","time:desc");
+				flag_sortTime	= "desc";
+				$("#button-sort-time").removeClass("ui-icon-arrow-u").addClass("ui-icon-arrow-d");
+			}
+		}
+		function filterCorp(){
+			if ($("#select-filter-corp").val()=="all"){
+				$('#ticket-list-panel').mixItUp("filter","all");
+			}else{
+				$('#ticket-list-panel').mixItUp("filter",("."+$("#select-filter-corp").val()),function(state){
+					//console.log(state);
+				});
+			}
+
+			//console.log(("."+$("#select-filter-corp").val()));
+		}
+	</script>
+
+	<!-- List View -->
+	<div id="ticket-list-panel" data-role="listview" data-filter="false" data-filter-placeholder="快速搜索，请填写关键字...">
+		<!--  正常机票信息 -->
+		<#list ticketvo.flightlist as bin>
+			<!-- 机票单元 -->
+			<li class="mix ${bin.carrier}" data-corp="${bin.airname}|${bin.carrier}" data-price="${bin.price}" data-time="${bin.dpttime[0..1]}:${bin.dpttime[2..3]}" data-role="collapsible" data-iconpos="right" data-inset="false" style="padding:0;">
+				<h2 style="margin:0;">
+					<table class="ticket-list-item">
+						<tr>
+							<td nowrap width="20%" class="icon"><img src="${stack.findValue('@com.transfar.htonline.Util.ResultConstants@getPhotoUrl()')}/${bin.airlogo}" alt=""></td>
+							<td nowrap width="60%" class="corp-name">${bin.airname} - ${bin.code}</td>
+							<td nowrap width="20%" class="price">
+								<#if bin.price==0>
+									暂无价格
+									<#else>
+										&yen;${bin.price}(${bin.lowzk}折/${bin.lowcode})
+								</#if>
+							</td>
+						</tr>
+						<tr>
+							<td class="start-time">${bin.dpttime[0..1]}:${bin.dpttime[2..3]}</td>
+							<td class="start-place">${bin.fromAirportName}</td>
+							<td class="type">${bin.lowcodename}</td>
+						</tr>
+						<tr>
+							<td class="end-time">${bin.arrtime[0..1]}:${bin.arrtime[2..3]}</td>
+							<td class="end-place">${bin.toAirportName}</td>
+							<td class="remain">
+								<#if bin.lowstatus=="A">
+									座位充足
+									<#else>
+										剩${bin.lowstatus}张票
+								</#if>
+							</td>
+						</tr>
+					</table>
+				</h2>
+				<!-- 舱位信息 -->
+				<ul data-role="listview">
+					<!-- 国内机票的处理方法 -->
+					<#if tiaozhuanflg=="1">
+						<@s.action name="ticketorder_getMoreTickeBrethInFo" executeResult="false" namespace="/ticketpro" sendinfo="${bin.scvo.head}"/>
+						<#list seatlist as infoUnit>
+							<!-- 舱位Unit -->
+							<li>
+								<table class="s-ticket-list-item">
+									<tr>
+										<td nowrap width="22%" class="s-type">${infoUnit.lowcodename}</td>
+										<td nowrap width="22%" class="s-price">&yen;${infoUnit.price}</td>
+										<td nowrap width="22%" class="s-price">${infoUnit.lowzk}折/${infoUnit.lowcode}</td>
+										<td nowrap width="22%" class="s-remain">
+											<#if infoUnit.lowstatus=="A">
+												座位充足
+												<#else>
+													剩${infoUnit.lowstatus}张票
+											</#if>
+										</td>
+									</tr>
+								</table>
+							</li>
+							<!-- /舱位Unit -->
+						</#list>
+					</#if>
+					<!-- /国内机票的处理方法 -->
+					<!-- 国际机票的处理方法 -->
+					<#if tiaozhuanflg=="0">
+						<#list bin.cabinlist as infoUnit>
+							<!-- 舱位Unit -->
+							<li>
+								<table class="ticket-list-item">
+									<tr>
+										<td nowrap width="25%" class="type">${cabbin.code}舱</td>
+										<td nowrap width="25%" class="price">&yen;${infoUnit.price}</td>
+										<td nowrap width="25%" class="price">${infoUnit.lowzk}折/${infoUnit.lowcode}</td>
+										<td nowrap width="25%" class="remain">
+											<#if infoUnit.lowstatus=="A">
+												座位充足
+												<#else>
+													剩${infoUnit.status}张票
+											</#if>
+										</td>
+									</tr>
+								</table>
+							</li>
+							<!-- /舱位Unit -->
+						</#list>
+					</#if>
+					<!-- /国际机票的处理方法 -->
+				</ul>
+				<!-- /舱位信息 -->
+			</li>
+			<!-- /机票单元 -->
+		</#list>
+		<!-- /正常机票信息 -->
+	</div>
+	<!-- /ListView -->
+</div><!--/main-Page  -->
+
+<script>
+	$("document").ready(function(){
+		$('#ticket-list-panel').mixItUp({
+			layout: {
+				containerClass: "Chao"
+			}
+		});
+	});
 </script>
 </body>
 </html>

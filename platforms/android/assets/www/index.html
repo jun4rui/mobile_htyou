@@ -119,7 +119,7 @@
 	<ul class="am-slides" ms-controller="gallery">
 		<!--渲染完毕后执行galleryRendered-->
 		<li ms-repeat-unit="list" data-repeat-rendered="galleryRendered">
-			<a ms-attr-href="tour-list.html?a={{unit.notes}}">
+			<a ms-attr-href="tour-list.html?q={{unit.notes}}">
 				<img ms-attr-src="http://www.htyou.com/{{unit.picuri}}" style="object-fit:fill;">
 				<!--<div class="am-slider-desc">{{unit.text}}</div>-->
 			</a>
@@ -155,22 +155,22 @@
 		<a href="tour-list.html?a=湖南" class="am-btn am-btn-success am-btn-block am-animation-scale-down">
 			<i class="fa fa-bus fa-lg"></i>&nbsp;周边游</a>
 	</li>
-	<!--
 	<li class="func-unit">
-		<a href="#" class="am-btn am-btn-success am-btn-block am-animation-scale-down">
+		<a href="ticket-index.html" class="am-btn am-btn-success am-btn-block am-animation-scale-down">
 			<i class="fa fa-credit-card fa-lg"></i>&nbsp;机票
 		</a>
 	</li>
-	<li class="func-unit">
-		<a href="#" class="am-btn am-btn-secondary am-btn-block am-animation-scale-down">
-			<i class="fa fa-ticket fa-lg"></i>&nbsp;签证</a>
-	</li>
-	<li class="func-unit">
-		<a href="#" class="am-btn am-btn-secondary am-btn-block am-animation-scale-down">
-			<i class="fa fa-users fa-lg"></i>&nbsp;自由行及定制
-		</a>
-	</li>
-	-->
+	<!--
+<li class="func-unit">
+	<a href="#" class="am-btn am-btn-secondary am-btn-block am-animation-scale-down">
+		<i class="fa fa-ticket fa-lg"></i>&nbsp;签证</a>
+</li>
+<li class="func-unit">
+	<a href="#" class="am-btn am-btn-secondary am-btn-block am-animation-scale-down">
+		<i class="fa fa-users fa-lg"></i>&nbsp;自由行及定制
+	</a>
+</li>
+-->
 </ul>
 <!--/六大功能模块-->
 
@@ -203,7 +203,7 @@
 <div id="hot-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
 	<h2 class="am-titlebar-title">热门线路</h2>
 	<nav class="am-titlebar-nav">
-		<a href="javascript:void(0)" class="" onclick="slide('tour-list.html')">更多 &raquo;</a>
+		<a href="tour-list.html" class="">更多 &raquo;</a>
 	</nav>
 </div>
 <!--/热门线路标题-->
@@ -227,7 +227,7 @@
 <div id="tourlist-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
 	<h2 class="am-titlebar-title">产品推荐</h2>
 	<nav class="am-titlebar-nav">
-		<a href="javascript:void(0)" onclick="slide('tour-list.html')" class="">更多 &raquo;</a>
+		<a href="tour-list.html" class="">更多 &raquo;</a>
 	</nav>
 </div>
 <!--/产品推荐标题-->
@@ -281,7 +281,7 @@
 		<ul class="am-list">
 			<!--list单元-->
 			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
-				<a ms-attr-href="slide('tour-detail.html?lineid={{unit.lineid}}')" class="">
+				<a ms-attr-href="tour-detail.html?lineid={{unit.lineid}}" class="">
 					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
 					<div class="am-u-sm-8 am-list-main">
@@ -301,7 +301,7 @@
 <!--/产品推荐list-->
 <!--/产品推荐-->
 <!--更多按钮-->
-<a href="javascript:void(0)" onclick="slide('tour-list.html')" class="am-btn am-btn-primary am-btn-block">更多线路&gt;&gt;</a>
+<a href="tour-list.html" class="am-btn am-btn-primary am-btn-block">更多线路&gt;&gt;</a>
 <!--/更多按钮-->
 </body>
 </html>
