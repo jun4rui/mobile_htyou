@@ -1,307 +1,331 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh_CN">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
-	<title>åå¤©æ—…æ¸¸ç½‘ ç§»åŠ¨ç‰ˆ</title>
-	<script type="text/javascript" src="cordova.js"></script>
-	<!--jQueryæ¡†æ¶-->
-	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
-	<!--amazeæ¡†æ¶ éœ€è¦jQueryæ”¯æŒ-->
-	<link  href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
-	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
-	<!--avalonæ¡†æ¶-->
-	<script src="./bower_components/avalon/avalon.js"></script>
-	<!--fontawesomeå›¾æ ‡åº“-->
-	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
-	<!--jsé…ç½®æ–‡ä»¶-->
-	<script src="./config.js"></script>
+	<meta charset="GBK">
+	<title>»ªÌìÂÃÓÎÍø µÇÂ½</title>
+	<script src="http://www.htyou.com/common/jquery-1.11.0.min.js" charset="utf-8"></script>
+
 	<style>
 		body {
-			background-color:#f3f3f3;
+			margin:0;
+			padding:0;
+			color:#333;
 		}
-		.hide {
-			display:none;
+		a {
+			text-decoration:none;
+			color: #0053AA;
+		}
+		#logo-section {
+			width:980px;
+			height:90px;
+			margin:0 auto;
+			display:block;
+
+		}
+		#logo-section img {
+			margin-left: 61px;
 		}
 	</style>
+
 	<script>
-		//Avalonæ¨¡å‹
-		avalon.ready(function(){
-			//å…¨å±€VM
-			//é¡¶éƒ¨å¹¿å‘Šè½®æ’­VM
-			var galleryVM = avalon.define({
-				$id: 'gallery',
-				list: [],
-				galleryRendered: function(type){
-					$('#galleryAD').show();
-					//æ¿€æ´»æ»‘åŠ¨gallery
-					$('.am-slider-manual').flexslider({"directionNav":false});
-					//è§£å†³å›¾ç‰‡é«˜åº¦ä¸ä¸€è‡´çš„é—®é¢˜ï¼Œæœ€ç»ˆé«˜åº¦å’Œå®½åº¦çš„ä¾‹å¦‚110:44çš„æ¯”ä¾‹æ¥æ˜¾ç¤º
-					$('#galleryAD a img').height(parseInt($('#galleryAD').width()/110*44));
-				}
-			});
-			//æ¨èäº§å“VM
-			var recommendTourVM = avalon.define({
-				$id: 'recommendTour',
-				list:[]
-			});
-			//çƒ­é—¨ç›®çš„åœ°VM
-			var hotTourVM   = avalon.define({
-				$id:'hotTour',
-				list:[]
-			});
-			avalon.scan();
+		//ÑéÖ¤Âë
+		function doSubmit(){
+			if ($('#code').val()=="" || $('#userPassword').val()=="" || $('#checkcode').val()==""){
+				alert("±íµ¥ĞÅÏ¢²»ÍêÕû£¬Çë¼ì²é²¹³äºóÖØĞÂÌá½»");
+				return false;
+			}else{
+				$.get("/common/common_ajaxcode.action?&identifyingCard=" + $('#checkcode').val(), function (quanjubianliang) {
+					console.log("return: "+quanjubianliang);
+					if (quanjubianliang == 'ok') {
+						$("#yanzhengma").val("ok");
+						document.getElementById('login-form').submit();
+					}else {
+						alert("ÑéÖ¤Âë´íÎó£¬ÇëÖØĞÂÊäÈë");
+					}
+				});
+			}
 
-			//Ajaxè½½å…¥é¡¶éƒ¨å¹¿å‘Šè½®æ’­æ•°æ®
-			$.getJSON(server_addr+'/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?', function (result, status) {
-				galleryVM.list = result;
-			});
-			//Ajaxè½½å…¥æ¨èäº§å“æ•°æ®
-			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?commendtype=14&jsoncallback=?', function(result, status){
-				//console.log(status, result);
-				recommendTourVM.list = result.value;
-			});
-			//Ajaxè½½å…¥çƒ­é—¨ç›®çš„åœ°æ•°æ®
-			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&infoClass=414&jsoncallback=?', function(result, status){
-				console.log(status, result);
-				hotTourVM.list = result;
-			});
 
+		}
+		$(document).ready(function(){
+			$('#code, #userPassword').bind('focus', function(){
+				$(this).select();
+			});
 		});
+
+		$(document).ready(function(){
+			$('#userPassword').bind('focus', function(){
+				$(this).attr('type','password').val('');
+			});
+		});
+
+		var errorMessage = '${errorMessage}';
+		if (errorMessage.length>0){
+			alert(errorMessage);
+		}
 	</script>
+
 </head>
 <body>
-<!--å¤´éƒ¨-->
-<style>
-	header.am-header .am-header-title {
-		margin:0 3em;
-	}
-	.htyou-header-menu {
-		color:#FFF;
-	}
-</style>
-<header data-am-widget="header" class="am-header am-header-default">
-	<div class="am-header-left am-header-nav">
-		<!--ä¸‹æ‹‰èœå•
-		<div data-am-dropdown>
-			<a href="#left-link">
-				<i class="am-header-icon am-icon-bars am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
-			</a>
-			<ul class="am-dropdown-content">
-				<li class="am-dropdown-header">å¯¼èˆªèœå•</li>
-				<li class="am-divider"></li>
-				<li><a href="tour-area.html?classParent=423">å‡ºå¢ƒæ¸¸</a></li>
-				<li><a href="tour-area.html?classParent=424">å›½å†…æ¸¸</a></li>
-				<li><a href="#">å‘¨è¾¹æ¸¸</a></li>
-			</ul>
-		</div>
-		<!--/ä¸‹æ‹‰èœå•-->
-	</div>
-
-	<h1 class="am-header-title">
-		<a href="#title-link" class="">
-			åå¤©æ—…æ¸¸ æ¸¸ä¸ºç²¾å½©
-		</a>
-	</h1>
-	<!--å³ä¾§åœ¨çº¿å®¢æœ-->
-	<div class="am-header-right am-header-nav">
-		<a href="http://tb.53kf.com/webCompany.php?arg=10102842&style=1" class="">
-			<i class="am-header-icon am-icon-comments-o"></i>
-		</a>
-	</div>
-	<!--/å³ä¾§åœ¨çº¿å®¢æœ-->
-</header>
-<!--/å¤´éƒ¨-->
-
-<!--é¡¶éƒ¨è½®æ’­å¹¿å‘Š-->
-
-<div data-am-widget="slider" id="galleryAD" class="am-slider-manual am-slider am-slider-a1">
-	<ul class="am-slides" ms-controller="gallery">
-		<!--æ¸²æŸ“å®Œæ¯•åæ‰§è¡ŒgalleryRendered-->
-		<li ms-repeat-unit="list" data-repeat-rendered="galleryRendered">
-			<a ms-attr-href="tour-list.html?q={{unit.notes}}">
-				<img ms-attr-src="http://www.htyou.com/{{unit.picuri}}" style="object-fit:fill;">
-				<!--<div class="am-slider-desc">{{unit.text}}</div>-->
-			</a>
-		</li>
-	</ul>
-</div>
-<!--/é¡¶éƒ¨è½®æ’­å¹¿å‘Š-->
-
-<!--å…­å¤§åŠŸèƒ½æ¨¡å—-->
-<style>
-	#func-panel li {
-		padding:2px;
-	}
-	#func-panel i.fa {
-		vertical-align: middle;
-	}
-	#func-panel .func-unit a {
-		text-align: left;
-		text-indent: .5em;
-	}
-</style>
-<ul class="am-avg-sm-2" id="func-panel">
-	<li class="func-unit">
-		<a href="tour-area.html?classParent=423" class="am-btn am-btn-warning am-btn-block am-animation-scale-down">
-			<i class="fa fa-plane fa-lg"></i>&nbsp;å‡ºå¢ƒæ¸¸
-		</a>
-	</li>
-	<li class="func-unit">
-		<a href="tour-area.html?classParent=424" class="am-btn am-btn-warning am-btn-block am-animation-scale-down">
-			<i class="fa fa-ship fa-lg"></i>&nbsp;å›½å†…æ¸¸</a>
-	</li>
-	<li class="func-unit">
-		<a href="tour-list.html?a=æ¹–å—" class="am-btn am-btn-success am-btn-block am-animation-scale-down">
-			<i class="fa fa-bus fa-lg"></i>&nbsp;å‘¨è¾¹æ¸¸</a>
-	</li>
-	<li class="func-unit">
-		<a href="ticket-index.html" class="am-btn am-btn-success am-btn-block am-animation-scale-down">
-			<i class="fa fa-credit-card fa-lg"></i>&nbsp;æœºç¥¨
-		</a>
-	</li>
-	<!--
-<li class="func-unit">
-	<a href="#" class="am-btn am-btn-secondary am-btn-block am-animation-scale-down">
-		<i class="fa fa-ticket fa-lg"></i>&nbsp;ç­¾è¯</a>
-</li>
-<li class="func-unit">
-	<a href="#" class="am-btn am-btn-secondary am-btn-block am-animation-scale-down">
-		<i class="fa fa-users fa-lg"></i>&nbsp;è‡ªç”±è¡ŒåŠå®šåˆ¶
+<!--LOGO bar-->
+<div id="logo-section">
+	<a href="http://www.htyou.com" target="_self">
+		<img src="http://www.htyou.com/images/2015_2/htyou_logo.png" alt="htyou logo">
 	</a>
-</li>
--->
-</ul>
-<!--/å…­å¤§åŠŸèƒ½æ¨¡å—-->
-
-<!--æœç´¢æ -->
-<style>
-	#search-form {
-		margin:2px;
-	}
-</style>
-<form action="tour-list.html" class="am-form am-form-inline" id="search-form">
-	<div class="am-form-group am-form-icon">
-		<i class="am-icon-search"></i>
-		<input type="text" name="q" class="am-form-field" placeholder="è¯·è¾“å‡ºæ‚¨è¦æœç´¢å…³é”®å­—"/>
-	</div>
-</form>
-<!--/æœç´¢æ -->
-<!--çƒ­é—¨ç›®çš„åœ°-->
-<style>
-	.am-titlebar {
-		margin:0 2px;
-	}
-	#hot-section.am-gallery {
-		padding:0;
-	}
-	#hot-section.am-gallery-overlay > li {
-		padding:2px;
-	}
-</style>
-<!--çƒ­é—¨çº¿è·¯æ ‡é¢˜-->
-<div id="hot-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
-	<h2 class="am-titlebar-title">çƒ­é—¨çº¿è·¯</h2>
-	<nav class="am-titlebar-nav">
-		<a href="tour-list.html" class="">æ›´å¤š &raquo;</a>
-	</nav>
 </div>
-<!--/çƒ­é—¨çº¿è·¯æ ‡é¢˜-->
-<ul id="hot-section" ms-controller="hotTour" data-am-widget="gallery" class="ms-controller am-gallery am-avg-sm-2 am-gallery-overlay" data-am-gallery="{ pureview: false }">
-	<!--çƒ­é—¨çº¿è·¯unit-->
-	<li ms-repeat-unit="list">
-		<div class="am-gallery-item">
-			<a ms-attr-href="tour-list.html?q={{unit.info_name}}">
-				<img ms-attr-src="http://www.htyou.com/{{unit.info_thumbpic}}" alt=""/>
-				<h3 class="am-gallery-title">{{unit.info_name}}</h3>
-				<div class="am-gallery-desc"></div>
-			</a>
+<!--/LOGO bar-->
+
+<!--µÇÂ½ÇøÓò-->
+<style>
+	#login-section {
+		width:980px;
+		height:440px;
+		margin:0 auto 0px auto;
+		position:relative;
+	}
+</style>
+<div id="login-section">
+	<!--¹ã¸æÃæ°å-->
+	<style>
+		#ad-panel {
+			width:440px;
+			height:490px;
+			float:left;
+			text-align: center;
+			position: absolute;
+			top: -15px;
+			left: 40px;
+			z-index: 1;
+		}
+		#ad-panel>a {
+			margin:0 auto;
+		}
+
+	</style>
+	<div id="ad-panel">
+		<a href="#" target="_blank">
+			<img src="" alt="">
+		</a>
+	</div>
+	<script>
+		$('#ad-panel').ready(function(){
+			$.getJSON('http://www.htyou.com/common/adpic_queryAdPic.action?adPicType=220093&datatype=json&jsoncallback=?', function(result){
+				$('#ad-panel>a').attr('href','http://www.htyou.com/'+result[0].alink);
+				$('#ad-panel>a>img').attr('src','http://www.htyou.com/'+result[0].picuri);
+			});
+		});
+	</script>
+	<!--/¹ã¸æÃæ°å-->
+	<!--µÇÂ½Ãæ°å-->
+	<style>
+		#login-panel {
+			width:388px;
+			/*height:430px;*/
+			float:left;
+			border:1px solid #AFD0F1;
+			position: absolute;
+			left:535px;
+			top:0;
+			z-index:1;
+		}
+		#login-panel>h2 {
+			margin: 0 29px 15px;
+			padding: 15px 0 10px;
+			font: normal 16px "microsoft yahei";
+			border-bottom: 1px solid #D8E8F8;
+		}
+		#login-panel>form {
+			padding-left:30px;
+		}
+		#login-panel>form ul,
+		#login-panel>form li {
+			padding:0;
+			margin:0;
+		}
+		#login-panel>form li {
+			list-style: none;
+			padding-bottom: 16px;
+			font-family: "Microsoft YaHei", SimSun,sans-serif;
+			font-size: 16px;
+		}
+		#login-panel>form input {
+			width: 188px;
+			padding-left: 3px;
+			margin-left: 10px;
+			border-color: #bbb #ddd #ddd #bbb;
+			border-style: solid;
+			border-width: 1px;
+			height: 28px;
+			font: 14px/28px "Microsoft YaHei", SimSun, Tahoma, Verdana, Arial, sans-serif;
+			outline: none;
+			color: #333;
+			box-shadow: 1px 1px 1px #ddd inset;
+		}
+		#login-panel>form button {
+			margin-left: 75px;
+			/*background-color: #f79700;*/
+			border-color: #de7800;
+			text-shadow: 1px 1px 0 #cf7000;
+			background-color: #ffb000;
+			border: solid 1px #e77c00;
+			width: 191px;
+			height: 33px;
+			color: #fff;
+			font-size: 16px;
+			font-family: "Microsoft YaHei", SimSun, Tahoma, Verdana, Arial, sans-serif;
+			font-weight: bold;
+			cursor: pointer;
+			text-align: center;
+			letter-spacing: 0.4em;
+			box-shadow: 0 1px 0 rgba(95,50,0,0.7);
+			border-radius: 3px;
+		}
+		#login-panel>form button:hover {
+			background-color:#f79700;
+		}
+
+		#login-panel>form li>a {
+			font-size: 12px;
+			font-family: Tahoma;
+		}
+		#login-panel>h2>span {
+			margin-left: 2em;
+			color: #555;
+			font: 12px arial,simsun;
+		}
+	</style>
+	<div id="login-panel">
+		<h2>
+			»áÔ±µÇÂ¼
+				<span>
+					<a href="http://www.htyou.com/register.htm">Á¢¼´×¢²á</a>£¬Á¢¿ÌÏíÊÜ»áÔ±×¨ÊôÌØÈ¨£¡
+				</span>
+		</h2>
+
+		<form id="login-form" method="post" onsubmit="return false;" action="http://www.htyou.com/user/user_login.action">
+			<ul>
+				<li>
+					µÇÂ¼Ãû£º<input type="text" name="code" id="code" placeholder="ÇëÌîĞ´ÓÃ»§Ãû/ÊÖ»úÕËºÅ">
+				</li>
+				<li>
+					ÃÜ¡¡Âë£º<input type="text" name="userPassword" id="userPassword" placeholder="ÇëÌîĞ´ÃÜÂë">&nbsp;<a href="http://www.htyou.com/page/common/finderps.htm">Íü¼ÇÃÜÂë£¿</a>
+				</li>
+				<li>
+					ÑéÖ¤Âë£º<input type="text" name="checkcode" id="checkcode" maxlength="4" style="width:100px !important;">
+
+					<div style="float: right;margin-right: 80px;font-size: 12px; color:#0095FF; text-align: center;">
+						<img src="http://www.htyou.com/users/identifyingCard.jsp" alt="" style="height:26px;cursor:pointer" onclick="this.src=this.src+'?'">
+						<br/>
+						µã»÷Í¼Æ¬¸ü»»
+					</div>
+
+
+				</li>
+				<li>
+					<button onclick="doSubmit()">µÇÂ½</button>
+				</li>
+			</ul>
+			<input type="hidden" name="codeType" value="account">
+			<input type="hidden" name="url" value="{base}/">
+			<input type="hidden" name="loginReferer" value="${loginReferer}">
+		</form>
+		<style>
+			#other-login {
+				padding:30px;
+				background-color: #FFFBF5;
+				font-size: 12px;
+				color: #4A4A4A;
+
+				/*display: none; ÒòÎªµÚÈı·½µÇÂ¼½Ó¿Ú¶¼Î´ÊµÏÖÔİÊ±ÆÁ±Î*/
+			}
+			#other-login a {
+				position: relative;
+				width: 42px;
+				margin-left: 3px;
+				margin-right: 3px;
+				line-height: 20px;
+				padding: 2px 20px 2px 20px;
+			}
+			.hticon {
+				background-image: url(http://www.htyou.com/images/bg_ico_16x16.png);
+				background-repeat: no-repeat;
+			}
+			.hticon_alipay {
+				background-position: 0 -383px;
+			}
+			.hticon_qq {
+				background-position: 0 -320px;
+			}
+			.hticon_weibo {
+				background-position: 0 -224px;
+			}
+		</style>
+		<div id="other-login">
+			<p>Äú»¹¿ÉÒÔÊ¹ÓÃÒÔÏÂ·½Ê½µÇÂ¼£º</p>
+			<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101262151" data-redirecturi="http://www.htyou.com/common/return.jsp?a=1" charset="utf-8"></script>
+			<span id="qqLoginBtn"></span>
+			<script type="text/javascript">
+				QC.Login({
+					btnId:"qqLoginBtn"	//²åÈë°´Å¥µÄ½Úµãid
+				});
+			</script>
+			<!--
+			<a href="" class="hticon hticon_alipay">Ö§¸¶±¦</a>
+			<a href="" class="hticon hticon_qq">QQ</a>
+			<a href="" class="hticon hticon_weibo">ĞÂÀËÎ¢²©</a>
+			-->
 		</div>
-	</li>
-	<!--/çƒ­é—¨çº¿è·¯unit-->
-</ul>
-<!--/çƒ­é—¨ç›®çš„åœ°-->
 
-<!--äº§å“æ¨è-->
-<!--äº§å“æ¨èæ ‡é¢˜-->
-<div id="tourlist-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
-	<h2 class="am-titlebar-title">äº§å“æ¨è</h2>
-	<nav class="am-titlebar-nav">
-		<a href="tour-list.html" class="">æ›´å¤š &raquo;</a>
-	</nav>
+	</div>
+	<!--/µÇÂ½Ãæ°å-->
 </div>
-<!--/äº§å“æ¨èæ ‡é¢˜-->
-
-<!--äº§å“æ¨èlist-->
+<!--/µÇÂ½ÇøÓò-->
+<!--Ò³½ÅÇøÓò-->
 <style>
-	#tourlist-section-list {
-		margin:0;
+	#footer {
+		width:950px;
+		margin:0 auto;
+		text-align: center;
+		border-top: 1px dashed #9ECCF5;
+		padding-top: 18px;
+		clear:both;
+		font-size:12px;
 	}
-	.tourlist-unit {
-		margin:0 2px !important;
-		overflow:hidden;
-		border-top:0 !important;
-		padding:0 !important;
-		width: auto !important;
+	#footer a {
+		color: #00478E;
 	}
-	.tourlist-unit .am-list-main {
-		padding-left: 5px !important;
+	#footer #about-link {
+		line-height:18px;
+		color:#8B8B8B;
 	}
-	#tourlist-section-title {
-		margin-top: 1em;
-	}
-	#tourlist-section-list .am-list-thumb {
-		width:25%;
-		padding-bottom:25%;
-		height:80%;
-	}
-	.tourlist-unit-price {
-		color: #FF6C00;
-		font-size: 18px;
-		position: absolute;
-		right: 10px;
-		bottom: 5%;
-		background-color: #FFF;
-		padding-left: 1em;
-	}
-	#tourlist-section-list .am-list {
-		margin-bottom:0;
-	}
-	#tourlist-section-list .am-list-item-hd {
-		color:#555;
-		height: 3em;
-		overflow: hidden;
-	}
-	#tourlist-section-list .am-badge {
-		background-color:#398421;
+	#footer #copyright {
+		font-family: Verdana,simsun,sans-serif;
+		display: block;
+		line-height: 200%;
 	}
 </style>
-<div id="tourlist-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
-	<div class="am-list-news-bd">
-		<ul class="am-list">
-			<!--listå•å…ƒ-->
-			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
-				<a ms-attr-href="tour-detail.html?lineid={{unit.lineid}}" class="">
-					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
-					</div>
-					<div class="am-u-sm-8 am-list-main">
-						<h3 class="am-list-item-hd">
-							<span class="am-badge am-badge-warning am-radius"><!--<i class="am-icon-tag"></i>&nbsp;-->{{unit.tourtype}}</span>&nbsp;{{unit.tourproname}}
-						</h3>
-					</div>
-					<div class="tourlist-unit-price">
-						&nbsp;&yen;{{unit.leastprice}}èµ·
-					</div>
-				</a>
-			</li>
-			<!--/listå•å…ƒ-->
-		</ul>
+
+<div id="footer">
+	<div id="about-link">
+
+	</div>
+	<div id="copyright">
+		Copyright &copy; 2015 <a href="http://www.htyou.com" target="_blank">www.htyou.com</a> ºşÄÏ»ªÌì¹ú¼ÊÂÃĞĞÉçÓĞÏŞÔğÈÎ¹«Ë¾°æÈ¨ËùÓĞ
 	</div>
 </div>
-<!--/äº§å“æ¨èlist-->
-<!--/äº§å“æ¨è-->
-<!--æ›´å¤šæŒ‰é’®-->
-<a href="tour-list.html" class="am-btn am-btn-primary am-btn-block">æ›´å¤šçº¿è·¯&gt;&gt;</a>
-<!--/æ›´å¤šæŒ‰é’®-->
+<!--/Ò³½ÅÇøÓò-->
+<script>
+	$(document).ready(function(){
+		$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoClass=12&jsoncallback=?',function(result){
+			console.log(result);
+			for (var i=0; i<result.length; i++){
+				$('#about-link').append('<a href="'+result[i].url+'" target="_blank">'+result[i].info_name+'</a>');
+				if (i<result.length) {
+					$('#about-link').append(' | ');
+				}
+			}
+		});
+	});
+</script>
 </body>
 </html>
