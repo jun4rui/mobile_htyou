@@ -1,0 +1,18 @@
+{
+  "android": {
+    "debug": {
+      "keystore": "htyou-release-key.keystore",
+      "storePassword": "huatian803",
+      "alias": "htyou",
+      "password" : "huatian803",
+      "keystoreType": ""
+    },
+    "release": {
+      "keystore": "htyou-release-key.keystore",
+      "storePassword": "huatian803",
+      "alias": "htyou",
+      "password" : "huatian803",
+      "keystoreType": ""
+    }
+  }
+}

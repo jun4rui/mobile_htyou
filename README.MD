@@ -97,7 +97,11 @@ http://www.htyou.com/mobile/tourorder_addTourOrder.action?tourOrderVO.order_amou
 27OCT(TUE) BJSCSX DIRECT ONLY</HEAD>a</HZWZ>7</XH>CA1349</HBH>DS#</DS>FA AA YA BA MA HA KA LA QA GQ SA N3 VQ US TQ EQ M1A V1Q</CW>PEKCSX</HC>1925</CFSJ>2200</DDSJ>32A</JX>0^L</TLCY>E</E>></FH>M1A V1Q</SUBCW>T3 T2 2:35</OTHER>QA</ZDGBYJCW></HB></HBS>
 
 
+#### Cordova打包成为APK，安装好以后，偶尔出现“The connection to the server was unsuccessful(file:///android_asset/www/index.html)”的解决方案：
+1.
 
 
+#### 签名
+keytool -genkey -v -keystore htyou-release-key.keystore -alias htyou -keyalg RSA -validity 365
 
-
+**Cordova 5.x开始不用ant.properties了，改在项目root目录下新建build.json代替
