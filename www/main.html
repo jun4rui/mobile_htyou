@@ -48,7 +48,10 @@
 			//热门目的地VM
 			var hotTourVM   = avalon.define({
 				$id:'hotTour',
-				list:[]
+				list:[],
+				hotSectionRendered: function(){
+					$('#hot-section .am-gallery-item img').css({'height':parseInt($(window).innerWidth()/2/450*260)});
+				}
 			});
 			avalon.scan();
 
@@ -221,7 +224,7 @@
 <!--/热门线路标题-->
 <ul id="hot-section" ms-controller="hotTour" data-am-widget="gallery" class="ms-controller am-gallery am-avg-sm-2 am-gallery-overlay" data-am-gallery="{ pureview: false }">
 	<!--热门线路unit-->
-	<li ms-repeat-unit="list">
+	<li ms-repeat-unit="list" data-repeat-rendered="hotSectionRendered">
 		<div class="am-gallery-item">
 			<a ms-attr-href="tour-list.html?q={{unit.info_name}}">
 				<img ms-attr-src="http://www.htyou.com/{{unit.info_thumbpic}}" alt=""/>
