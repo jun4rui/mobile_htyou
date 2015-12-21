@@ -57,7 +57,7 @@
 							var classid = $(this).attr('classid');
 							$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classParent=' + classid + '&jsoncallback=?', function(result){
 								for (var i=0; i<result.length; i++){
-									var tempHTML    = '<!--热门线路unit--> <li> <div class="am-gallery-item"> <a href="tour-list.html?a='+result[i].typename+'"> <img src="http://www.htyou.com/pic/class/'+result[i].pic+'" alt=""/> <h3 class="am-gallery-title">'+result[i].typename+'</h3> <div class="am-gallery-desc"></div> </a> </div> </li> <!--/热门线路unit-->';
+									var tempHTML    = '<!--热门线路unit--> <li> <div class="am-gallery-item"> <a href="tour-list.html?a='+result[i].typename+'"> <img src="http://www.htyou.com/'+result[i].pic+'" alt=""/> <h3 class="am-gallery-title">'+result[i].typename+'</h3> <div class="am-gallery-desc"></div> </a> </div> </li> <!--/热门线路unit-->';
 									$('.point-panel[classid='+result[0].parent_id+']').append(tempHTML);
 								}
 							});
