@@ -63,3 +63,8 @@ function flip(href) {
         'href': href
     });
 }
+
+//…Ë÷√∑µªÿ¡¥Ω”
+function setBack(inSelecter){
+    $(inSelecter).attr('href',document.referrer);
+}

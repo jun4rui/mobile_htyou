@@ -1,3 +1,4 @@
+<!--TODO:CSS3动画切换-->
 <!doctype html>
 <html lang="zh_CN">
 <head>
@@ -454,6 +455,207 @@
 </div>
 <!--/订购区-->
 
+
+
+<!--日历选择器-->
+<div class="panel-heading" style="text-align:center;"><span class="glyphicon glyphicon-chevron-left pull-left" onClick="gotoMonth(-1);">&lt;</span><span id="year-month"></span><span class="glyphicon glyphicon-chevron-right pull-right" onClick="gotoMonth(1);">&gt;</span></div>
+<table style="width:100%" id="calendar_table">
+	<tr class="tag_tr">
+		<td>周日</td>
+		<td>周一</td>
+		<td>周二</td>
+		<td>周三</td>
+		<td>周四</td>
+		<td>周五</td>
+		<td>周六</td>
+	</tr>
+	<tr class="num_tr">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr class="num_tr">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr class="num_tr">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr class="num_tr">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr class="num_tr">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr class="num_tr">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+</div>
+<script>
+	var tourListJson = {
+		"2015-12-31":[1150,"大于9",0,"8154_2015-12-31.htm"]
+	};
+	var index_i	= 0;
+	for (i in tourListJson) {
+		if (index_i>0)
+			$(".panel-body").append(',&nbsp;');
+		$(".panel-body").append( (i.replace('-', '年').replace('-', '月') + '日').substring(5) );
+		index_i++;
+	}
+	var tourList	= new Array();
+	for (i in tourListJson){
+		tourList.push(new Array(i,tourListJson[i][0],tourListJson[i][1],tourListJson[i][2],tourListJson[i][3]));
+	}
+
+
+	console.log('===================== Cal star =================');
+	// 绘制日历函数, 20140721 by Caojun
+	// Example:
+	// 		inYear	= 2014
+	//		inMonth	= 7,[0-11]
+	// PS: 会用到tourListJson变量
+
+	var today	= new Date();
+	var currentYear		= today.getFullYear();
+	var currentMonth 	= today.getMonth();
+
+	function drawCal(inYear, inMonth){
+		console.log('开始绘制日历内容');
+		var inCalDate	= new Date(inYear,inMonth);	// 获得日期的date对象
+		var maxDate		= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDate();	//获得该月有多少天
+		//var startDay	= new Date(inCalDate.getFullYear()+"-"+(inCalDate.getMonth()+1)).getDay();	//获得该月第一天是星期几
+		var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDay();	//获得该月第一天是星期几
+
+		//console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
+		// Clear calendar
+		$("#calendar_table tr.num_tr td").text(" ");
+		$("#calendar_table tr td.flag_day").removeClass("flag_day");
+		// 画日历
+		console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
+		for (var i=0; i<maxDate; i++){
+			//console.log('在'+"#calendar_table tr td:eq("+(startDay+i+7)+")"+"中绘制数字"+(i+1));
+			$("#calendar_table tr td:eq("+(startDay+i+7)+")").text(i+1);
+			// 取得这一天的日期
+			var currentDrawDay = inYear+"-"+(inMonth+1)+"-"+(i+1);
+			// 如果这一天在行程表中则加亮显示
+			if (checkDate(currentDrawDay)){
+				$("#calendar_table tr td:eq("+(startDay+i+7)+")").addClass("flag_day").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay)[2]}).attr({"pop_num":checkDate(currentDrawDay)[1]});
+			}
+		}
+		// 绘制时间显示
+		$("#year-month").text(inYear+"年"+(inMonth+1)+"月");
+		currentYear	= inYear;
+		currentMonth= inMonth;
+	}
+
+	//月份前进后退操作
+	function gotoMonth(inNum){
+		//alert(inMonth);
+		if (currentMonth==0 && inNum==-1){
+			currentYear	= currentYear-1;
+			currentMonth= 11;
+		}
+		if (currentMonth==11 && inNum==1){
+			currentYear	= currentYear+1;
+			currentMonth= 0;
+		}
+		currentMonth	= currentMonth+inNum
+		drawCal(currentYear,currentMonth);
+	}
+
+	//如果有,则显示最早行程的月份
+	if (tourList.length>0){
+		var tempDateStr	= tourList[0][0].split("-");
+		drawCal(parseInt(tempDateStr[0]),parseInt(tempDateStr[1])-1);
+		console.log(tempDateStr);
+	}else{
+		//否则初始化日期为当前月
+		var today	= new Date();
+		drawCal(currentYear,currentMonth);
+	}
+
+		//检查时间是否在tourListJson中
+	function checkDate(inDateStr){
+		for (i in tourListJson){
+			console.log(i+"=="+inDateStr);
+			// 如果日期匹配
+			if (i==inDateStr){
+				console.log("PRICE: "+tourListJson[i]);
+				return tourListJson[i];
+			}
+		}
+		return false;
+	}
+	// 设置日历点击行为
+	//$("td.flag_day").bind("click",function(){
+	$("#calendar_table").delegate("td.flag_day","click",function(){
+		console.log("Bind flag_day");
+		if ($(this).attr('pop_num')=='已满'){	// 人满
+			alert('人数已满，请选择其它日期。');
+		}else{	// 人未满
+			// 设定最大人数
+			var maxPop	= 30;
+			if ($(this).attr('pop_num')!='大于9'){
+				maxPop	= parseInt($(this).attr('pop_num'));
+			}
+			console.log(currentYear+"-"+(currentMonth+1)+"-"+$(this).text());
+			$("#chengren-price").text( "("+$(this).attr('price')+"元/人)");
+			$("#ertong-price").text( "("+$(this).attr('rt_price')+"元/人)");
+			adultprice	= $(this).attr('price');
+			childprice	= $(this).attr('rt_price');
+			$("#chengren-fill").val(1);
+			$("#ertong-fill").val(0);
+			$("#chengren-fill").attr({"max":maxPop});
+			$("#chengren-fill,#ertong-fill").slider("refresh");
+			$("#select-date").val(currentYear+"-"+(currentMonth+1)+"-"+$(this).text());
+			$(".btn-post").removeAttr("disabled");
+			sumPrice();
+		}
+
+	});
+	console.log('===================== Cal end =================');
+</script>
+
+<div class="ui-field-contain">
+	<label for="select-date">选择出行日期:</label>
+	<input type="text" name="select-date" id="select-date" readonly placeholder="请点上方日历黄色日期">
+</div>
+
+<!--/日历选择器-->
 
 <!--TODO
 1. 有些行程某些天数没有图片的处理
