@@ -68,3 +68,7 @@ function flip(href) {
 function setBack(inSelecter){
     $(inSelecter).attr('href',document.referrer);
 }
+//Ö´ÐÐ·µ»Ø
+function doBack(){
+    window.location.href= document.referrer;
+}
