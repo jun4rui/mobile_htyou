@@ -74,7 +74,7 @@
 				avalon.scan();
 
 				//Ajax载入推荐产品数据
-				$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classParent='+tourAreaVM.classID+'&jsoncallback=?', function (result) {
+				$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classParent='+tourAreaVM.classID+'&pagesize=8&jsoncallback=?', function (result) {
 					tourAreaVM.areaList = result;
 				});
 				//Ajax载入推荐产品数据

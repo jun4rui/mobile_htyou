@@ -63,3 +63,12 @@ function flip(href) {
         'href': href
     });
 }
+
+//设置返回链接
+function setBack(inSelecter){
+    $(inSelecter).attr('href',document.referrer);
+}
+//执行返回
+function doBack(){
+    window.location.href= document.referrer;
+}
