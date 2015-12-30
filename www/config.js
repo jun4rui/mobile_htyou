@@ -70,5 +70,38 @@ function setBack(inSelecter){
 }
 //执行返回
 function doBack(){
-    window.location.href= document.referrer;
+    /*window.location.href= document.referrer;*/
+    var pathLog     = window.localStorage.getItem('PATH_LOG');
+    var lastPath    = pathLog.split(',')[pathLog.split(',').length-1];  //最后一条记录的URL
+    //如果当前页面在队列末尾，则删除当前页
+    if (lastPath==window.location.href){
+        window.localStorage.setItem('PATH_LOG',pathLog.substring(0,pathLog.lastIndexOf(',')));
+        lastPath    = window.localStorage.getItem('PATH_LOG').split(',')[window.localStorage.getItem('PATH_LOG').split(',').length-1];
+    }
+    window.location.href = lastPath;
 }
+
+//需要JQuery，匿名自执行函数，用来控制历史纪录
+(function(){
+    //到首页后将清空路径记录（考虑首页没有回退，而且首页作为起点）
+    if (window.location.href.indexOf('main.html')!=-1){
+        window.localStorage.setItem('PATH_LOG','');
+    }
+    //如果没有PATH_LOG则初始化
+    if ( window.localStorage.getItem('PATH_LOG')==null){
+        window.localStorage.setItem('PATH_LOG','');
+    }
+    console.log('[Path log START]')
+    var pathLog     = window.localStorage.getItem('PATH_LOG');
+    var lastPath    = pathLog.split(',')[pathLog.split(',').length-1];  //最后一条记录的URL
+    //如果最后一条记录不是自己，就把自己加到队列末尾
+    if (window.location.href != lastPath){
+        window.localStorage.setItem( 'PATH_LOG',pathLog+','+window.location.href);
+    }
+    //后台打印路径记录
+    var pathList    =  window.localStorage.getItem('PATH_LOG').split(',');
+    //alert(pathList+'\n'+document.referrer+'\n'+window.location.href);
+    for (var i in pathList){
+        console.log(pathList[i]);
+    }
+})();

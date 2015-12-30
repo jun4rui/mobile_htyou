@@ -50,6 +50,7 @@
 			var hotTourVM   = avalon.define({
 				$id:'hotTour',
 				list:[],
+				//渲染后调整图片尺寸来适应屏幕尺寸
 				hotSectionRendered: function(){
 					$('#hot-section .am-gallery-item img').css({'height':parseInt($(window).innerWidth()/2/450*260)});
 				}
@@ -79,7 +80,25 @@
 			});
 			//Ajax载入热门目的地数据
 			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&infoClass=414&jsoncallback=?', function(result, status){
-				console.log(status, result);
+				//console.log(status, result);
+				var status	= false;	//记录链接是否被处理过的状态位
+				for (var i=0; i<result.length; i++){
+					status	= false;	//重制状态位
+					//直达产品的处理
+					if (result[i].url.indexOf('/mobileTour/tourbrowse/')==0){
+						result[i].url	= 'tour-detail.html?lineid='+result[i].url.substring(result[i].url.lastIndexOf('/')+1,result[i].url.lastIndexOf('.'));
+						status = true;
+					}
+					//搜索关键字的处理
+					if (result[i].url.indexOf('/mobileTour/isnative/area/keyword')==0){
+						result[i].url	= 'tour-list.html?q='+result[i].url.substring(result[i].url.lastIndexOf('/keyword')+8,result[i].url.lastIndexOf('.'));
+						status = true;
+					}
+					//其它的处理
+					if (!status){
+						result[i].url	= 'otherframe.html?inurl='+encodeURIComponent(result[i].url);
+					}
+				}
 				hotTourVM.list = result;
 			});
 
@@ -227,7 +246,7 @@
 	<!--热门线路unit-->
 	<li ms-repeat-unit="list" data-repeat-rendered="hotSectionRendered">
 		<div class="am-gallery-item">
-			<a ms-attr-href="tour-list.html?q={{unit.info_name}}">
+			<a ms-attr-href="{{unit.url}}">
 				<img ms-attr-src="http://www.htyou.com/{{unit.info_thumbpic}}" alt=""/>
 				<h3 class="am-gallery-title">{{unit.info_name}}</h3>
 				<div class="am-gallery-desc"></div>
@@ -321,7 +340,7 @@
 <!--/更多按钮-->
 
 
-<!--底部工具栏-->
+<!--底部工具栏
 <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" id="" style="display:none !important;">
 	<ul class="am-navbar-nav am-cf am-avg-sm-4">
 		<li >
