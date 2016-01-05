@@ -91,7 +91,7 @@ function doBack(){
     if ( window.localStorage.getItem('PATH_LOG')==null){
         window.localStorage.setItem('PATH_LOG','');
     }
-    console.log('[Path log START]')
+    //console.log('[Path log START]')
     var pathLog     = window.localStorage.getItem('PATH_LOG');
     var lastPath    = pathLog.split(',')[pathLog.split(',').length-1];  //最后一条记录的URL
     //如果最后一条记录不是自己，就把自己加到队列末尾
@@ -99,9 +99,9 @@ function doBack(){
         window.localStorage.setItem( 'PATH_LOG',pathLog+','+window.location.href);
     }
     //后台打印路径记录
-    var pathList    =  window.localStorage.getItem('PATH_LOG').split(',');
+    /*var pathList    =  window.localStorage.getItem('PATH_LOG').split(',');
     //alert(pathList+'\n'+document.referrer+'\n'+window.location.href);
     for (var i in pathList){
         console.log(pathList[i]);
-    }
+    }*/
 })();
