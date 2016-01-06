@@ -23,8 +23,26 @@
 		.hide {
 			display:none;
 		}
+		/*TEST CSS3*/
+		@keyframes fadein {
+			from	{opacity:0;transform: scale(1.5) }
+			to		{opacity:1;transform: scale(1.0) }
+		}
+		#hot-section .am-gallery-item img {
+			animation:fadein 2s;
+		}
+		@keyframes slidedown {
+			from 	{margin-top:-500px}
+			to		{margin-top:0;}
+		}
+		#galleryAD.load {
+			animation: slidedown 13s;
+		}
 	</style>
 	<script>
+		$('#galleryAD').ready(function(){
+			$('#galleryAD').height(parseInt($(window).width()/110*44));
+		});
 		//Avalon模型
 		avalon.ready(function(){
 			//全局VM
@@ -214,7 +232,7 @@
 		margin:2px;
 	}
 </style>
-<form action="tour-list.html" class="am-form am-form-inline" id="search-form">
+<form action="tour-list.html" class="am-form" id="search-form">
 	<div class="am-form-group am-form-icon">
 		<i class="am-icon-search"></i>
 		<input type="text" name="q" class="am-form-field" placeholder="请输出您要搜索关键字"/>
