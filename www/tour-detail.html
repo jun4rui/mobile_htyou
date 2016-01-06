@@ -397,8 +397,10 @@
 
 <!--购买窗口-->
 <style>
-	#calendar_table tr:first-child td {
+	#calendar_table tr th {
 		color:#0c80ba;
+		text-align: center;
+		font-size:14px;
 	}
 	#calendar_table tr,
 	#calendar_table td {
@@ -431,13 +433,13 @@
 			</div>
 			<table style="width:100%;background: #FFF;" id="calendar_table" class="am-text-center">
 				<tr>
-					<td>周日</td>
-					<td>周一</td>
-					<td>周二</td>
-					<td>周三</td>
-					<td>周四</td>
-					<td>周五</td>
-					<td>周六</td>
+					<th>周日</th>
+					<th>周一</th>
+					<th>周二</th>
+					<th>周三</th>
+					<th>周四</th>
+					<th>周五</th>
+					<th>周六</th>
 				</tr>
 				<tr>
 					<td></td>
@@ -512,27 +514,27 @@
 
 				// 绘制日历函数，其中调用checkDate会需要检查json数据
 				function drawCal(inYear, inMonth){
-					//console.log('开始绘制日历内容');
+					console.log('开始绘制日历内容',inYear,inMonth);
 					var inCalDate	= new Date(inYear,inMonth);	// 获得日期的date对象
 					var maxDate		= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDate();	//获得该月有多少天
 					//var startDay	= new Date(inCalDate.getFullYear()+"-"+(inCalDate.getMonth()+1)).getDay();	//获得该月第一天是星期几
-					var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDay();	//获得该月第一天是星期几
+					var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth(), 0).getDay();	//获得该月第一天是星期几
 
-					//console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
+					console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
 					// Clear calendar
-					$("#calendar_table tr.num_tr td").text(" ");
+					$("#calendar_table tr td").text(" ");
 					$("#calendar_table tr td.flag_day").removeClass("flag_day");
 					// 画日历
-					//console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
+					console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
 					for (var i=0; i<maxDate; i++){
 						//console.log('在'+"#calendar_table tr td:eq("+(startDay+i+7)+")"+"中绘制数字"+(i+1));
-						$("#calendar_table tr td:eq("+(startDay+i+7)+")").text(i+1);
+						$("#calendar_table tr td:eq("+(startDay+i)+")").text(i+1);
 						// 取得这一天的日期
 						var currentDrawDay = inYear+"-"+(inMonth+1)+"-"+(i+1);
 						// 如果这一天在行程表中则加亮显示
-						console.log('====',currentDrawDay);
+						//console.log('====',currentDrawDay);
 						if (checkDate(currentDrawDay)){
-							$("#calendar_table tr td:eq("+(startDay+i+7)+")").addClass("flag_day").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
+							$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
 						}
 					}
 					// 绘制时间显示
@@ -573,7 +575,7 @@
 						//console.log(i+"=="+tourList[i].tourdate);
 						// 如果日期匹配
 						if (tourList[i].tourdate.replace(/-0/g,'-')==inDateStr){
-							console.log("PRICE: "+tourList[i].tourproname);
+							//console.log("PRICE: "+tourList[i].tourproname);
 							return tourList[i];
 						}
 					}
