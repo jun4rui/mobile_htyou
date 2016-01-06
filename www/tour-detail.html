@@ -514,13 +514,17 @@
 
 				// 绘制日历函数，其中调用checkDate会需要检查json数据
 				function drawCal(inYear, inMonth){
-					console.log('开始绘制日历内容',inYear,inMonth);
+					//console.log('开始绘制日历内容',inYear,inMonth);
 					var inCalDate	= new Date(inYear,inMonth);	// 获得日期的date对象
-					var maxDate		= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDate();	//获得该月有多少天
+					//var maxDate		= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDate();	//获得该月有多少天
+					var tempDate	= new Date(inYear,inMonth+1,1);
+					//console.log('tempdate:'+tempDate);
+					tempDate.setHours(tempDate.getHours()-3);
+					var maxDate		= tempDate.getDate();
 					//var startDay	= new Date(inCalDate.getFullYear()+"-"+(inCalDate.getMonth()+1)).getDay();	//获得该月第一天是星期几
 					var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth(), 0).getDay();	//获得该月第一天是星期几
 
-					console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
+					//console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
 					// Clear calendar
 					$("#calendar_table tr td").text(" ");
 					$("#calendar_table tr td.flag_day").removeClass("flag_day");
