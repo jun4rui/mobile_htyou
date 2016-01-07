@@ -28,20 +28,22 @@
 			from	{opacity:0;transform: scale(1.5) }
 			to		{opacity:1;transform: scale(1.0) }
 		}
-		#hot-section .am-gallery-item img {
+		#hot-section .am-gallery-item {
 			animation:fadein 2s;
+
+			transition: transform .5s;
 		}
-		@keyframes slidedown {
-			from 	{margin-top:-500px}
-			to		{margin-top:0;}
-		}
-		#galleryAD.load {
-			animation: slidedown 13s;
+		#hot-section .am-gallery-item:hover {
+			transform: scale(1.05);
+			z-index:999;
 		}
 	</style>
 	<script>
 		$('#galleryAD').ready(function(){
 			$('#galleryAD').height(parseInt($(window).width()/110*44));
+		});
+		$('#hot-section').ready(function(){
+			$('#hot-section .am-gallery-item img').css({'height':parseInt($(window).innerWidth()/2/450*260)});
 		});
 		//Avalon模型
 		avalon.ready(function(){
