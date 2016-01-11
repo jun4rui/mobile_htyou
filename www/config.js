@@ -117,20 +117,6 @@ function doBack(){
 (function(){
 	var infoID  = getParameterValue(window.location.href,'infoid');
 	var userID  = getParameterValue(window.location.href,'url');
-	var beforeULTime    = 0;
-	var nowULTime       = 0;
-
-	//INFO_DATA
-	$(window).bind('beforeunload',function(){
-		beforeULTime = (new Date).getTime();
-		console.log('BEFORE:'+(new Date).getTime());
-	});
-	$(window).bind('unload',function(){
-		console.log('UNLOAD:'+(new Date).getTime());
-		nowULTime = (new Date).getTime();
-		console.log('VAL',nowULTime-beforeULTime);
-		console.log('END.');
-	});
 
 	//展现销售人员UI的函数
 	function showSellerUI(){
