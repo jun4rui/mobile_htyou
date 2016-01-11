@@ -3,105 +3,152 @@
  */
 var server_addr = 'http://www.htyou.com';
 
-//²éÑ¯url²ÎÊıº¯Êı
-//ÓĞÔò·µ»Ø²ÎÊıÁĞ±ílist
-//Ã»ÓĞÔò·µ»Ø¿Õ´®
-function getParameters(inUrl/*ÍêÕûµÄURL×Ö·û´®*/){
-    //urlÖĞÓĞ?ºÅ²Å¼ÌĞø
-    if (inUrl.indexOf('\?')>=0){
-        return inUrl.substring(inUrl.indexOf('?')+1).split('&');    //ÓĞÔò·µ»ØËùÓĞ²ÎÊıµÄlist
-    }else{
-        return '';  //Ã»ÓĞÔò·µ»Ø''
-    }
+//æŸ¥è¯¢urlå‚æ•°å‡½æ•°
+//æœ‰åˆ™è¿”å›å‚æ•°åˆ—è¡¨list
+//æ²¡æœ‰åˆ™è¿”å›ç©ºä¸²
+function getParameters(inUrl/*å®Œæ•´çš„URLå­—ç¬¦ä¸²*/){
+	//urlä¸­æœ‰?å·æ‰ç»§ç»­
+	if (inUrl.indexOf('\?')>=0){
+		return inUrl.substring(inUrl.indexOf('?')+1).split('&');    //æœ‰åˆ™è¿”å›æ‰€æœ‰å‚æ•°çš„list
+	}else{
+		return '';  //æ²¡æœ‰åˆ™è¿”å›''
+	}
 }
 
-//»ñµÃurlÖĞÄ³¸ö²ÎÊıµÄÖµ
-//ÓĞÔò·µ»Ø²ÎÊıµÄÖµ
-//Ã»ÓĞÔò·µ»Ø¿Õ´®
-function getParameterValue(inUrl/*ÊäÈëUrl*/, inName/*²ÎÊıÃû*/){
-    var paraList = getParameters(inUrl);
-    for (var i=0; i<paraList.length; i++){
-        //Èç¹ûÃ»ÓĞ'='ÔòÌø¹ı
-        if (paraList[i].indexOf('=')<0){
-            continue;
-        }
-        //Èç¹û²ÎÊıÃû=inNameÔò·µ»Ø²ÎÊıÖµ
-        var tempVal = paraList[i].split('=');
-        if (tempVal[0]==inName){
-            return tempVal[1];
-        }
-    }
-    return '';
+//è·å¾—urlä¸­æŸä¸ªå‚æ•°çš„å€¼
+//æœ‰åˆ™è¿”å›å‚æ•°çš„å€¼
+//æ²¡æœ‰åˆ™è¿”å›ç©ºä¸²
+function getParameterValue(inUrl/*è¾“å…¥Url*/, inName/*å‚æ•°å*/){
+	var paraList = getParameters(inUrl);
+	for (var i=0; i<paraList.length; i++){
+		//å¦‚æœæ²¡æœ‰'='åˆ™è·³è¿‡
+		if (paraList[i].indexOf('=')<0){
+			continue;
+		}
+		//å¦‚æœå‚æ•°å=inNameåˆ™è¿”å›å‚æ•°å€¼
+		var tempVal = paraList[i].split('=');
+		if (tempVal[0]==inName){
+			return tempVal[1];
+		}
+	}
+	return '';
 }
-//TEST: getParameterValue('http://www.htyou.com/index.html?q=±±¾©&asdf=123&zxcv=123&a=fasdf','q');
+//TEST: getParameterValue('http://www.htyou.com/index.html?q=åŒ—äº¬&asdf=123&zxcv=123&a=fasdf','q');
 
-//µ×²¿ÉÏ»®ÔØÈëÌØĞ§
+//åº•éƒ¨ä¸Šåˆ’è½½å…¥ç‰¹æ•ˆ
 function slide(hrf){
-    var options = {
-        "href"           : hrf,
-        "direction"      : "up", // 'left|right|up|down', default 'left' (which is like 'next')
-        "duration"       :  1000, // in milliseconds (ms), default 400
-        "slowdownfactor" :    4, // overlap views (higher number is more) or no overlap (1), default 3
-        "iosdelay"       :  100, // ms to wait for the iOS webview to update before animation kicks in, default 50
-        "androiddelay"   :  50  // same as above but for Android, default 50
-    };
-    window.plugins.nativepagetransitions.slide(
-        options,
-        function (msg) {console.log("success: "+msg)}, // called when the animation has finished
-        function (msg) {alert("error: "+msg)} // called in case you pass in weird values
-    );
+	var options = {
+		"href"           : hrf,
+		"direction"      : "up", // 'left|right|up|down', default 'left' (which is like 'next')
+		"duration"       :  1000, // in milliseconds (ms), default 400
+		"slowdownfactor" :    4, // overlap views (higher number is more) or no overlap (1), default 3
+		"iosdelay"       :  100, // ms to wait for the iOS webview to update before animation kicks in, default 50
+		"androiddelay"   :  50  // same as above but for Android, default 50
+	};
+	window.plugins.nativepagetransitions.slide(
+		options,
+		function (msg) {console.log("success: "+msg)}, // called when the animation has finished
+		function (msg) {alert("error: "+msg)} // called in case you pass in weird values
+	);
 }
 
-//·­×ªÔØÈë¶¯»­ÌØĞ§
+//ç¿»è½¬è½½å…¥åŠ¨ç”»ç‰¹æ•ˆ
 function flip(href) {
-    window.plugins.nativepagetransitions.flip({
-        'duration': 1000,
-        'direction': 'right',
-        'iosdelay': 100,
-        'androiddelay': 50,
-        'winphonedelay': 800,
-        'href': href
-    });
+	window.plugins.nativepagetransitions.flip({
+		'duration': 1000,
+		'direction': 'right',
+		'iosdelay': 100,
+		'androiddelay': 50,
+		'winphonedelay': 800,
+		'href': href
+	});
 }
 
-//ÉèÖÃ·µ»ØÁ´½Ó
+//è®¾ç½®è¿”å›é“¾æ¥
 function setBack(inSelecter){
-    $(inSelecter).attr('href',document.referrer);
+	$(inSelecter).attr('href',document.referrer);
 }
-//Ö´ĞĞ·µ»Ø
+//æ‰§è¡Œè¿”å›
 function doBack(){
-    /*window.location.href= document.referrer;*/
-    var pathLog     = window.localStorage.getItem('PATH_LOG');
-    var lastPath    = pathLog.split(',')[pathLog.split(',').length-1];  //×îºóÒ»Ìõ¼ÇÂ¼µÄURL
-    //Èç¹ûµ±Ç°Ò³ÃæÔÚ¶ÓÁĞÄ©Î²£¬ÔòÉ¾³ıµ±Ç°Ò³
-    if (lastPath==window.location.href){
-        window.localStorage.setItem('PATH_LOG',pathLog.substring(0,pathLog.lastIndexOf(',')));
-        lastPath    = window.localStorage.getItem('PATH_LOG').split(',')[window.localStorage.getItem('PATH_LOG').split(',').length-1];
-    }
-    window.location.href = lastPath;
+	/*window.location.href= document.referrer;*/
+	var pathLog     = window.localStorage.getItem('PATH_LOG');
+	var lastPath    = pathLog.split(',')[pathLog.split(',').length-1];  //æœ€åä¸€æ¡è®°å½•çš„URL
+	//å¦‚æœå½“å‰é¡µé¢åœ¨é˜Ÿåˆ—æœ«å°¾ï¼Œåˆ™åˆ é™¤å½“å‰é¡µ
+	if (lastPath==window.location.href){
+		window.localStorage.setItem('PATH_LOG',pathLog.substring(0,pathLog.lastIndexOf(',')));
+		lastPath    = window.localStorage.getItem('PATH_LOG').split(',')[window.localStorage.getItem('PATH_LOG').split(',').length-1];
+	}
+	window.location.href = lastPath;
 }
 
-//ĞèÒªJQuery£¬ÄäÃû×ÔÖ´ĞĞº¯Êı£¬ÓÃÀ´¿ØÖÆÀúÊ·¼ÍÂ¼
+//éœ€è¦JQueryï¼ŒåŒ¿åè‡ªæ‰§è¡Œå‡½æ•°ï¼Œç”¨æ¥æ§åˆ¶å†å²çºªå½•
 (function(){
-    //µ½Ê×Ò³ºó½«Çå¿ÕÂ·¾¶¼ÇÂ¼£¨¿¼ÂÇÊ×Ò³Ã»ÓĞ»ØÍË£¬¶øÇÒÊ×Ò³×÷ÎªÆğµã£©
-    if (window.location.href.indexOf('main.html')!=-1){
-        window.localStorage.setItem('PATH_LOG','');
-    }
-    //Èç¹ûÃ»ÓĞPATH_LOGÔò³õÊ¼»¯
-    if ( window.localStorage.getItem('PATH_LOG')==null){
-        window.localStorage.setItem('PATH_LOG','');
-    }
-    //console.log('[Path log START]')
-    var pathLog     = window.localStorage.getItem('PATH_LOG');
-    var lastPath    = pathLog.split(',')[pathLog.split(',').length-1];  //×îºóÒ»Ìõ¼ÇÂ¼µÄURL
-    //Èç¹û×îºóÒ»Ìõ¼ÇÂ¼²»ÊÇ×Ô¼º£¬¾Í°Ñ×Ô¼º¼Óµ½¶ÓÁĞÄ©Î²
-    if (window.location.href != lastPath){
-        window.localStorage.setItem( 'PATH_LOG',pathLog+','+window.location.href);
-    }
-    //ºóÌ¨´òÓ¡Â·¾¶¼ÇÂ¼
-    /*var pathList    =  window.localStorage.getItem('PATH_LOG').split(',');
-    //alert(pathList+'\n'+document.referrer+'\n'+window.location.href);
-    for (var i in pathList){
-        console.log(pathList[i]);
-    }*/
+	//åˆ°é¦–é¡µåå°†æ¸…ç©ºè·¯å¾„è®°å½•ï¼ˆè€ƒè™‘é¦–é¡µæ²¡æœ‰å›é€€ï¼Œè€Œä¸”é¦–é¡µä½œä¸ºèµ·ç‚¹ï¼‰
+	if (window.location.href.indexOf('main.html')!=-1){
+		window.localStorage.setItem('PATH_LOG','');
+	}
+	//å¦‚æœæ²¡æœ‰PATH_LOGåˆ™åˆå§‹åŒ–
+	if ( window.localStorage.getItem('PATH_LOG')==null){
+		window.localStorage.setItem('PATH_LOG','');
+	}
+	//console.log('[Path log START]')
+	var pathLog     = window.localStorage.getItem('PATH_LOG');
+	var lastPath    = pathLog.split(',')[pathLog.split(',').length-1];  //æœ€åä¸€æ¡è®°å½•çš„URL
+	//å¦‚æœæœ€åä¸€æ¡è®°å½•ä¸æ˜¯è‡ªå·±ï¼Œå°±æŠŠè‡ªå·±åŠ åˆ°é˜Ÿåˆ—æœ«å°¾
+	if (window.location.href != lastPath){
+		window.localStorage.setItem( 'PATH_LOG',pathLog+','+window.location.href);
+	}
+	//åå°æ‰“å°è·¯å¾„è®°å½•
+	/*var pathList    =  window.localStorage.getItem('PATH_LOG').split(',');
+	//alert(pathList+'\n'+document.referrer+'\n'+window.location.href);
+	for (var i in pathList){
+		console.log(pathList[i]);
+	}*/
 })();
+
+
+
+//Caojun 20160108 æ–°å¢:é”€å”®äººå‘˜ä¿¡æ¯è¯»å–å‡½æ•°
+//é”€å”®äººå‘˜æ ¹æ®urlä¸­infoid=???å‚æ•°è¿›è¡Œè¯†åˆ«,???ä»£è¡¨é”€å”®äººå‘˜çš„IDç¼–å·ï¼Œé€šè¿‡æ¥å£
+//    http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoID=431
+//è·å–ï¼Œè¿”å›å€¼ä¸ºjsonæ ¼å¼ï¼Œé”€å”®äººå‘˜è¿”å›å€¼ä¸­å¿…é¡»æ˜¯"info_class": 421
+(function(){
+	var infoID  = getParameterValue(window.location.href,'infoid');
+
+	//å±•ç°é”€å”®äººå‘˜UIçš„å‡½æ•°
+	function showSellerUI(){
+		var infoData= '';
+		//è¯»å–localStorageä¸­çš„INFO_DATAæ•°æ®
+		if ((infoData = window.localStorage.getItem('INFO_DATA'))!=null){
+            console.log(infoData);
+			$('#seller').ready(function(){
+				//è®¾ç½®å®¢æœå‚æ•°
+                $('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
+                $('#seller .content strong').text(infoData.split(',')[0]);
+                $('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
+				//å¼¹å‡ºUI
+				$('#seller').animate({'left':'1rem','bottom:':'1rem'});
+			});
+		}
+	}
+
+	//å¤„ç†æµç¨‹
+	if (infoID!=''){
+		$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&infoID='+infoID,function(result){
+			//æ˜¯å¦æ‰¾åˆ°é”€å”®äººå‘˜
+			if (result.length!=0){
+				//åˆ¤æ–­æ˜¯å¦æ˜¯é”€å”®äººå‘˜ç±»å‹
+				if (result[0].info_class=='421'){
+					console.log(result[0]);
+					//ä¿å­˜åˆ°localStorageä¸­çš„INFO_DATAä¸­
+					window.localStorage.setItem('INFO_DATA',''+result[0].info_name+','+result[0].description+','+'http://www.htyou.com/'+result[0].info_thumbpic);
+				}
+			}
+			//ç„¶ååœ¨å½“å‰é¡µé¢åŠ å…¥é”€å”®äººå‘˜UIæ•ˆæœ
+			showSellerUI();
+		});
+	}else{
+		//æ²¡æœ‰åˆ™ç›´æ¥å±•ç¤ºé”€å”®UI(localStorageä¸­æœ‰æ•°æ®æ‰ä¼šå±•ç¤º)
+		showSellerUI();
+	}
+})(window);
