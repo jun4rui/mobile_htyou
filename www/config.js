@@ -129,14 +129,25 @@ function doBack(){
 				//console.log((new Date).getTime()-parseInt(infoData.split(',')[3]));
 				window.localStorage.removeItem('INFO_DATA');
 			}else{
-				$('#seller').ready(function(){
-					//设置客服参数
-					$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
-					$('#seller .content strong').text(infoData.split(',')[0]);
-					$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
-					//弹出UI
-					$('#seller').animate({'left':'1rem','bottom:':'1rem'});
-				});
+                $(document).ready(function(){
+                    $('body').append('<div id="seller-section"></div>');
+                    $('#seller-section').load('seller.html',function(){
+                        $('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
+                        $('#seller .content strong').text(infoData.split(',')[0]);
+                        $('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
+                        $('#seller').animate({'left':'1rem','bottom:':'1rem'});
+                    });
+
+                });
+
+				//$('#seller').ready(function(){
+				//	//设置客服参数
+				//	$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
+				//	$('#seller .content strong').text(infoData.split(',')[0]);
+				//	$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
+				//	//弹出UI
+				//	$('#seller').animate({'left':'1rem','bottom:':'1rem'});
+				//});
 			}
 
 		}
