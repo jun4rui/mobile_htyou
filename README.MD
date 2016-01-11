@@ -24,6 +24,9 @@ http://www.htyou.com/common/websinfo_queryHTClass.action?datatype=json&classId=7
 http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoID=431
 销售人员的类型必须是"info_class": 421
 
+### 从UID获取销售人员信息的sample
+http://www.htyou.com/common/websinfo_queryWebsInfos.action?url=oiZKXjjPYlSmiN3yndvDLZ7-E-jA&submit=ajax
+
 
 adpic_queryAdPic ok
 
