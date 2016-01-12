@@ -129,16 +129,16 @@ function doBack(){
 				//console.log((new Date).getTime()-parseInt(infoData.split(',')[3]));
 				window.localStorage.removeItem('INFO_DATA');
 			}else{
-                $(document).ready(function(){
-                    $('body').append('<div id="seller-section"></div>');
-                    $('#seller-section').load('seller.html',function(){
-                        $('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
-                        $('#seller .content strong').text(infoData.split(',')[0]);
-                        $('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
-                        $('#seller').animate({'left':'1rem','bottom:':'1rem'});
-                    });
+				$(document).ready(function(){
+					$('body').append('<div id="seller-section"></div>');
+					$('#seller-section').load('seller.html',function(){
+						$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
+						$('#seller .content strong').text(infoData.split(',')[0]);
+						$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
+						$('#seller').animate({'left':'1rem','bottom:':'1rem'});
+					});
 
-                });
+				});
 
 				//$('#seller').ready(function(){
 				//	//设置客服参数
@@ -193,3 +193,85 @@ function doBack(){
 		showSellerUI();
 	}
 })(window);
+
+
+
+
+//分享至weixin的函数
+function _WXShare(img, width, height, title, desc, url, appid) {
+	//初始化参数
+	img = img || 'http://www.htyou.com/images/v4/header_logo1.png';
+	width = width || 100;
+	height = height || 100;
+	title = title || document.title;
+	desc = desc || document.title;
+	url = url || document.location.href;
+	appid = appid || '';
+	//微信内置方法
+	function _ShareFriend() {
+		WeixinJSBridge.invoke('sendAppMessage', {
+				'appid': appid,
+				'img_url': img,
+				'img_width': width,
+				'img_height': height,
+				'link': url,
+				'desc': desc,
+				'title': title
+			},
+			function (res) {
+				_report('send_msg', res.err_msg);
+			}
+		)
+	}
+
+	function _ShareTL() {
+		WeixinJSBridge.invoke('shareTimeline', {
+				'img_url': img,
+				'img_width': width,
+				'img_height': height,
+				'link': url,
+				'desc': desc,
+				'title': title
+			}
+			,
+			function (res) {
+				_report('timeline', res.err_msg);
+			}
+		);
+	}
+
+	function _ShareWB() {
+		WeixinJSBridge.invoke('shareWeibo', {
+				'content': desc,
+				'url': url,
+			}
+			,
+			function (res) {
+				_report('weibo', res.err_msg);
+			}
+		);
+	}
+
+	// 当微信内置浏览器初始化后会触发WeixinJSBridgeReady事件。
+	document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+		// 发送给好友
+		WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+			_ShareFriend();
+		});
+
+		// 分享到朋友圈
+		WeixinJSBridge.on('menu:share:timeline', function (argv) {
+			_ShareTL();
+		});
+
+		// 分享到微博
+		WeixinJSBridge.on('menu:share:weibo', function (argv) {
+			_ShareWB();
+		});
+	}, false);
+}
+
+//页面载入后算出分享信息
+$("document").ready(function(){
+    _WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
+});
