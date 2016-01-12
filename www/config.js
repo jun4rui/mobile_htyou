@@ -111,7 +111,7 @@ function doBack(){
 //Caojun 20160108 新增:销售人员信息读取函数
 //销售人员根据url中infoid=???参数进行识别,???代表销售人员的ID编号，通过接口
 //http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoID=431
-//http://www.htyou.com/common/websinfo_queryWebsInfos.action?info_url=oiZKXjjPYlSmiN3yndvDLZ7-E-jA
+//http://www.htyou.com/common/websinfo_queryWebsInfos.action?url=oiZKXjjxNP3iA6iUfgkVo6H7sdmU&submit=ajax
 //获取，返回值为json格式，销售人员返回值中必须是"info_class": 421
 //INFO_DATA格式：姓名,电话,头像url,存储时间
 (function(){
@@ -272,9 +272,25 @@ function _WXShare(img, width, height, title, desc, url, appid) {
 }
 
 //页面载入后算出分享信息
+//TODO:20160112 一些页面第一张图片可能是按钮，并且title有些只有“华天旅游网”5个字
 $("document").ready(function(){
-    //设定5s后设定分享数据
-    window.setInterval(function(){
-        _WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
-    },5000);
+	//设定5s后设定分享数据
+	window.setInterval(function(){
+		_WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
+	},5000);
 });
+
+
+//判断页面处于何种浏览器框架下
+//包括:weixin,cordova,browser
+function whereami(){
+	var userAgent   = navigator.userAgent.toLowerCase();
+	//微信
+	if (userAgent.match(/micromessenger/i)=='micromessenger')
+		return 'weixin';
+    //Cordova
+    if (userAgent.match(/Crosswalk/i)=='crosswalk')
+        return 'cordova';
+    return 'other'
+}
+//alert(navigator.userAgent);

@@ -1,10 +1,9 @@
-<!--TODO:CSS3动画切换-->
 <!doctype html>
 <html lang="zh_CN">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
-	<title>华天旅游网 移动版</title>
+	<title>华天旅游网</title>
 	<!--jQuery框架-->
 	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
 	<!--amaze框架 需要jQuery支持-->
@@ -156,13 +155,13 @@
 <!--顶部轮播广告-->
 <style>
 	/*#slider-info {*/
-		/*position: absolute;*/
-		/*bottom: 5px;*/
-		/*left: 0;*/
-		/*z-index: 9;*/
+	/*position: absolute;*/
+	/*bottom: 5px;*/
+	/*left: 0;*/
+	/*z-index: 9;*/
 	/*}*/
 	/*#slider-info .am-badge {*/
-		/*opacity: 1;*/
+	/*opacity: 1;*/
 	/*}*/
 </style>
 <div data-am-widget="slider" id="galleryAD" class="ms-controller am-slider-manual am-slider am-slider-a5">
@@ -180,8 +179,8 @@
 		<span class="am-badge am-badge-success am-radius">{{tourtype}}</span>
 		<span class="am-badge am-badge-warning am-radius" ms-each-unit="nation">{{unit}}</span>
 		<!--<span class="am-badge am-badge-danger am-radius">编号:{{detail.value.jzluid}}</span>-->
-	</div>
-	<!--/MOD的线路资料栏-->
+</div>
+<!--/MOD的线路资料栏-->
 </div>
 <style>
 	.price-section {
@@ -241,7 +240,7 @@
 			查看团期
 		</h2>
 		<!--<nav class="am-titlebar-nav">-->
-			<!--<a href="#more" class="" data-am-modal="{target: '#date-modal'}">详情 &raquo;</a>-->
+		<!--<a href="#more" class="" data-am-modal="{target: '#date-modal'}">详情 &raquo;</a>-->
 		<!--</nav>-->
 	</div>
 	<div class="content">
@@ -286,7 +285,7 @@
 <div class="am-popup" id="tour-modal">
 	<div class="am-popup-inner">
 		<div class="am-popup-hd">
-			<h4 class="am-popup-title">具体行程</h4><span data-am-modal-close class="am-close">&times;</span>
+			<h4 class="am-popup-title">提交订单</h4><span data-am-modal-close class="am-close">&times;</span>
 		</div>
 		<div class="am-popup-bd">
 			<div ms-repeat-unit="detail.value1" data-each-rendered="detailRendered">
@@ -298,9 +297,9 @@
 				<img ms-repeat="unit.albumList" class="am-thumbnail" ms-attr-src="http://www.htyou.com/{{el}}" />
 				<!--/图片轮播-->
 				<p>
-					<div>交通工具：{{unit.dinner}}</div>
-					<div>住宿酒店：{{unit.hotel}}</div>
-					{{unit.journeycontent|nl2br|html}}
+				<div>交通工具：{{unit.dinner}}</div>
+				<div>住宿酒店：{{unit.hotel}}</div>
+				{{unit.journeycontent|nl2br|html}}
 				</p>
 			</div>
 		</div>
@@ -388,274 +387,306 @@
 </div>
 <!--/预定指南-->
 
-<!--订购区-->
-<div class="widget-unit ms-controller">
-	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi">
-		<h2 class="am-titlebar-title">
-			提交订单
-		</h2>
+
+
+<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px;">
+	<button type="button" class="am-btn am-btn-success am-btn-block" data-am-modal="{target:'#order-modal'}">
+		开始预定
+	</button>
+</div>
+
+<!--购买窗口-->
+<style>
+	#calendar_table tr th {
+		color:#0c80ba;
+		text-align: center;
+		font-size:14px;
+	}
+	#calendar_table tr,
+	#calendar_table td {
+		background-color: #FFF;
+		font-weight:normal;
+	}
+	#calendar_table td.flag_day {
+		color: #0084c7;
+		background: #F4D842;
+		border-radius: 50%;
+	}
+	.calendar_title>i.fa {
+		padding:.3em 1em;
+	}
+	.am-popup-bd {
+		background-color:#DFDFDF;
+	}
+</style>
+<div class="am-popup" id="order-modal">
+	<div class="am-popup-inner">
+		<div class="am-popup-hd">
+			<h4 class="am-popup-title">填写订单</h4><span data-am-modal-close class="am-close">&times;</span>
+		</div>
+		<div class="am-popup-bd">
+			<!--日历选择器-->
+			<div class="calendar_title panel-heading" style="text-align:center;text-align: center;background: #3BB4F2;color: #FFF;font-size: 18px;">
+				<i class="fa fa-angle-left pull-left" onClick="gotoMonth(-1);"></i>
+				<span id="year-month"></span>
+				<i class="fa fa-angle-right pull-right" onClick="gotoMonth(1);"></i>
+			</div>
+			<table style="width:100%;background: #FFF;" id="calendar_table" class="am-text-center">
+				<tr>
+					<th>周日</th>
+					<th>周一</th>
+					<th>周二</th>
+					<th>周三</th>
+					<th>周四</th>
+					<th>周五</th>
+					<th>周六</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+			<script>
+				var tourList = {
+					//"2015-12-31":[1150,"大于9",0,"8154_2015-12-31.htm"]
+				};
+
+				//console.log('===================== Cal star =================');
+				// 绘制日历函数, 20140721 by Caojun
+				// Example:
+				// 		inYear	= 2014
+				//		inMonth	= 7,[0-11]
+				// PS: 会用到tourListJson变量
+
+				var today	= new Date();
+				var currentYear		= today.getFullYear();
+				var currentMonth 	= today.getMonth();
+
+				// 绘制日历函数，其中调用checkDate会需要检查json数据
+				function drawCal(inYear, inMonth){
+					//console.log('开始绘制日历内容',inYear,inMonth);
+					var inCalDate	= new Date(inYear,inMonth);	// 获得日期的date对象
+					//var maxDate		= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDate();	//获得该月有多少天
+					var tempDate	= new Date(inYear,inMonth+1,1);
+					//console.log('tempdate:'+tempDate);
+					tempDate.setHours(tempDate.getHours()-3);//算法解释：取上个月第一天0点后减3个小时获得本月最后一天日期
+					var maxDate		= tempDate.getDate();
+					//var startDay	= new Date(inCalDate.getFullYear()+"-"+(inCalDate.getMonth()+1)).getDay();	//获得该月第一天是星期几
+					var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth(), 0).getDay();	//获得该月第一天是星期几
+
+					//console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
+					// Clear calendar
+					$("#calendar_table tr td").text(" ");
+					$("#calendar_table tr td.flag_day").removeClass("flag_day");
+					// 画日历
+					console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
+					for (var i=0; i<maxDate; i++){
+						//console.log('在'+"#calendar_table tr td:eq("+(startDay+i+7)+")"+"中绘制数字"+(i+1));
+						$("#calendar_table tr td:eq("+(startDay+i)+")").text(i+1);
+						// 取得这一天的日期
+						var currentDrawDay = inYear+"-"+(inMonth+1)+"-"+(i+1);
+						// 如果这一天在行程表中则加亮显示
+						//console.log('====',currentDrawDay);
+						if (checkDate(currentDrawDay)){
+							$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
+						}
+					}
+					// 绘制时间显示
+					$("#year-month").text(inYear+"年"+(inMonth+1)+"月");
+					currentYear	= inYear;
+					currentMonth= inMonth;
+				}
+
+				//月份前进后退操作
+				function gotoMonth(inNum){
+					//alert(inMonth);
+					if (currentMonth==0 && inNum==-1){
+						currentYear	= currentYear-1;
+						currentMonth= 11;
+					}
+					if (currentMonth==11 && inNum==1){
+						currentYear	= currentYear+1;
+						currentMonth= 0;
+					}
+					currentMonth	= currentMonth+inNum
+					drawCal(currentYear,currentMonth);
+				}
+
+				//如果有,则显示最早行程的月份
+				if (tourList.length>0){
+					var tempDateStr	= tourList[0][0].split("-");
+					drawCal(parseInt(tempDateStr[0]),parseInt(tempDateStr[1])-1);
+					//console.log(tempDateStr);
+				}else{
+					//否则初始化日期为当前月
+					var today	= new Date();
+					drawCal(currentYear,currentMonth);
+				}
+
+				//检查时间是否在tourListJson中
+				function checkDate(inDateStr){
+					for (var i in tourList){
+						//console.log(i+"=="+tourList[i].tourdate);
+						// 如果日期匹配
+						if (tourList[i].tourdate.replace(/-0/g,'-')==inDateStr){
+							//console.log("PRICE: "+tourList[i].tourproname);
+							return tourList[i];
+						}
+					}
+					return false;
+				}
+				// 设置日历点击行为
+				//$("td.flag_day").bind("click",function(){
+				$("#calendar_table").delegate("td.flag_day","click",function(){
+					console.log("Bind flag_day");
+					var inDate  = currentYear+"-"+(currentMonth+1)+"-"+$(this).text();
+					if ($(this).attr('pop_num')=='已满'){	// 人满
+						alert('人数已满，请选择其它日期。');
+					}else{	// 人未满
+						//遍历当前的下拉框
+						$("#tour-date option").each(function(index,value){
+							if(inDate==$(value).val().replace(/-0/g,'-')){
+								$("#tour-date option").eq(index).attr('selected','selected');
+							}
+						});
+					}
+				});
+
+
+				//20160104 Add 更新日历数据
+				$.getJSON(server_addr+'/mobile/ipad_queryTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
+					//console.log('[result]:',result);
+					tourList    = result.value;
+					var tempDateStr	= tourList[0].tourdate.split("-");
+					drawCal(parseInt(tempDateStr[0]),parseInt(tempDateStr[1])-1);
+					console.log(tempDateStr);
+				});
+
+				console.log('===================== Cal end =================');
+			</script>
+
+			<!--/日历选择器-->
+			<!--订购区-->
+			<div class="widget-unit ms-controller">
+				<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi">
+					<h2 class="am-titlebar-title">
+						提交订单
+					</h2>
+				</div>
+				<div class="content">
+					<form action="" class="am-form">
+						<fieldset>
+							<div class="am-form group">
+								<label for="tour-date">选择出行时间：</label>
+								<select name="" id="tour-date">
+									<option ms-attr-value="{{unit.tourdate}}" ms-repeat-unit="tourdate">{{unit.tourdate}}</option>
+								</select>
+							</div>
+							<div class="am-form-group">
+								<label for="username">联系人姓名：</label>
+								<input type="text" id="username" placeholder="请输入联系人称呼"/>
+							</div>
+							<div class="am-form group">
+								<label for="user-sex">选择出行时间：</label>
+								<select name="" id="user-sex">
+									<option value="120201">男</option>
+									<option value="120202">女</option>
+								</select>
+							</div>
+							<div class="am-form-group">
+								<label for="phone-number">联系人手机号码：</label>
+								<input type="text" id="phone-number" placeholder="请输入联系人的联系电话"/>
+							</div>
+							<div class="am-form-group">
+								<label for="persons">出行人数：</label>
+								<select name="" id="persons">
+									<option value="1">1人</option>
+									<option value="2">2人</option>
+									<option value="3">3人</option>
+									<option value="4">4人</option>
+									<option value="5">5人</option>
+									<option value="6">6人</option>
+									<option value="7">7人</option>
+									<option value="8">8人</option>
+									<option value="9">9人</option>
+									<option value="10">10人或以上</option>
+								</select>
+							</div>
+							<!--<div class="am-form-group">
+								<label for="othermemo">其它信息：</label>
+								<textarea name="" id="othermemo" placeholder="如果有其它要求请填写在这里"></textarea>
+							</div>-->
+							<div class="am-form-group" style="margin:0;">
+								<div class="am-u-sm-12 am-u-sm-center am-u-sm-centered" style="padding:0;">
+									<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()">提交</button>
+								</div>
+							</div>
+							<input type="hidden" id="order_amount" ms-attr-value="{{detail.value.adultprice}}"/>
+							<input type="hidden" id="preferential_price" ms-attr-value="{{detail.value.adultprice}}"/>
+							<input type="hidden" id="pay_type" value="121604"/>
+							<input type="hidden" id="tourproid" ms-attr-value="{{detail.value.tourproid}}"/>
+							<input type="hidden" id="jzl_cteamcode" ms-attr-value="{{detail.value.jzluid}}"/>
+
+						</fieldset>
+					</form>
+				</div>
+			</div>
+			<!--/订购区-->
+		</div>
 	</div>
-	<div class="content">
-		<form action="" class="am-form">
-			<fieldset>
-				<div class="am-form group">
-					<label for="tour-date">选择出行时间：</label>
-					<select name="" id="tour-date">
-						<option ms-attr-value="{{unit.tourdate}}" ms-repeat-unit="tourdate">{{unit.tourdate}}</option>
-					</select>
-				</div>
-				<div class="am-form-group">
-					<label for="username">联系人姓名：</label>
-					<input type="text" id="username" placeholder="请输入联系人称呼"/>
-				</div>
-				<div class="am-form group">
-					<label for="user-sex">选择出行时间：</label>
-					<select name="" id="user-sex">
-						<option value="120201">男</option>
-						<option value="120202">女</option>
-					</select>
-				</div>
-				<div class="am-form-group">
-					<label for="phone-number">联系人手机号码：</label>
-					<input type="text" id="phone-number" placeholder="请输入联系人的联系电话"/>
-				</div>
-				<div class="am-form-group">
-					<label for="persons">出行人数：</label>
-					<select name="" id="persons">
-						<option value="1">1人</option>
-						<option value="2">2人</option>
-						<option value="3">3人</option>
-						<option value="4">4人</option>
-						<option value="5">5人</option>
-						<option value="6">6人</option>
-						<option value="7">7人</option>
-						<option value="8">8人</option>
-						<option value="9">9人</option>
-						<option value="10">10人或以上</option>
-					</select>
-				</div>
-				<!--<div class="am-form-group">
-					<label for="othermemo">其它信息：</label>
-					<textarea name="" id="othermemo" placeholder="如果有其它要求请填写在这里"></textarea>
-				</div>-->
-				<div class="am-form-group" style="margin:0;">
-					<div class="am-u-sm-12 am-u-sm-center am-u-sm-centered" style="padding:0;">
-						<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()">提交</button>
-					</div>
-				</div>
-				<input type="hidden" id="order_amount" ms-attr-value="{{detail.value.adultprice}}"/>
-				<input type="hidden" id="preferential_price" ms-attr-value="{{detail.value.adultprice}}"/>
-				<input type="hidden" id="pay_type" value="121604"/>
-				<input type="hidden" id="tourproid" ms-attr-value="{{detail.value.tourproid}}"/>
-				<input type="hidden" id="jzl_cteamcode" ms-attr-value="{{detail.value.jzluid}}"/>
-
-			</fieldset>
-		</form>
-	</div>
 </div>
-<!--/订购区-->
+<!--/购买窗口-->
 
-
-
-<!--日历选择器-->
-<div class="panel-heading" style="text-align:center;"><span class="glyphicon glyphicon-chevron-left pull-left" onClick="gotoMonth(-1);">&lt;</span><span id="year-month"></span><span class="glyphicon glyphicon-chevron-right pull-right" onClick="gotoMonth(1);">&gt;</span></div>
-<table style="width:100%" id="calendar_table">
-	<tr class="tag_tr">
-		<td>周日</td>
-		<td>周一</td>
-		<td>周二</td>
-		<td>周三</td>
-		<td>周四</td>
-		<td>周五</td>
-		<td>周六</td>
-	</tr>
-	<tr class="num_tr">
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="num_tr">
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="num_tr">
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="num_tr">
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="num_tr">
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="num_tr">
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>&nbsp;</td>
-	</tr>
-</table>
-</div>
-<script>
-	var tourListJson = {
-		"2015-12-31":[1150,"大于9",0,"8154_2015-12-31.htm"]
-	};
-	var index_i	= 0;
-	for (i in tourListJson) {
-		if (index_i>0)
-			$(".panel-body").append(',&nbsp;');
-		$(".panel-body").append( (i.replace('-', '年').replace('-', '月') + '日').substring(5) );
-		index_i++;
-	}
-	var tourList	= new Array();
-	for (i in tourListJson){
-		tourList.push(new Array(i,tourListJson[i][0],tourListJson[i][1],tourListJson[i][2],tourListJson[i][3]));
-	}
-
-
-	console.log('===================== Cal star =================');
-	// 绘制日历函数, 20140721 by Caojun
-	// Example:
-	// 		inYear	= 2014
-	//		inMonth	= 7,[0-11]
-	// PS: 会用到tourListJson变量
-
-	var today	= new Date();
-	var currentYear		= today.getFullYear();
-	var currentMonth 	= today.getMonth();
-
-	function drawCal(inYear, inMonth){
-		console.log('开始绘制日历内容');
-		var inCalDate	= new Date(inYear,inMonth);	// 获得日期的date对象
-		var maxDate		= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDate();	//获得该月有多少天
-		//var startDay	= new Date(inCalDate.getFullYear()+"-"+(inCalDate.getMonth()+1)).getDay();	//获得该月第一天是星期几
-		var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDay();	//获得该月第一天是星期几
-
-		//console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
-		// Clear calendar
-		$("#calendar_table tr.num_tr td").text(" ");
-		$("#calendar_table tr td.flag_day").removeClass("flag_day");
-		// 画日历
-		console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
-		for (var i=0; i<maxDate; i++){
-			//console.log('在'+"#calendar_table tr td:eq("+(startDay+i+7)+")"+"中绘制数字"+(i+1));
-			$("#calendar_table tr td:eq("+(startDay+i+7)+")").text(i+1);
-			// 取得这一天的日期
-			var currentDrawDay = inYear+"-"+(inMonth+1)+"-"+(i+1);
-			// 如果这一天在行程表中则加亮显示
-			if (checkDate(currentDrawDay)){
-				$("#calendar_table tr td:eq("+(startDay+i+7)+")").addClass("flag_day").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay)[2]}).attr({"pop_num":checkDate(currentDrawDay)[1]});
-			}
-		}
-		// 绘制时间显示
-		$("#year-month").text(inYear+"年"+(inMonth+1)+"月");
-		currentYear	= inYear;
-		currentMonth= inMonth;
-	}
-
-	//月份前进后退操作
-	function gotoMonth(inNum){
-		//alert(inMonth);
-		if (currentMonth==0 && inNum==-1){
-			currentYear	= currentYear-1;
-			currentMonth= 11;
-		}
-		if (currentMonth==11 && inNum==1){
-			currentYear	= currentYear+1;
-			currentMonth= 0;
-		}
-		currentMonth	= currentMonth+inNum
-		drawCal(currentYear,currentMonth);
-	}
-
-	//如果有,则显示最早行程的月份
-	if (tourList.length>0){
-		var tempDateStr	= tourList[0][0].split("-");
-		drawCal(parseInt(tempDateStr[0]),parseInt(tempDateStr[1])-1);
-		console.log(tempDateStr);
-	}else{
-		//否则初始化日期为当前月
-		var today	= new Date();
-		drawCal(currentYear,currentMonth);
-	}
-
-		//检查时间是否在tourListJson中
-	function checkDate(inDateStr){
-		for (i in tourListJson){
-			console.log(i+"=="+inDateStr);
-			// 如果日期匹配
-			if (i==inDateStr){
-				console.log("PRICE: "+tourListJson[i]);
-				return tourListJson[i];
-			}
-		}
-		return false;
-	}
-	// 设置日历点击行为
-	//$("td.flag_day").bind("click",function(){
-	$("#calendar_table").delegate("td.flag_day","click",function(){
-		console.log("Bind flag_day");
-		if ($(this).attr('pop_num')=='已满'){	// 人满
-			alert('人数已满，请选择其它日期。');
-		}else{	// 人未满
-			// 设定最大人数
-			var maxPop	= 30;
-			if ($(this).attr('pop_num')!='大于9'){
-				maxPop	= parseInt($(this).attr('pop_num'));
-			}
-			console.log(currentYear+"-"+(currentMonth+1)+"-"+$(this).text());
-			$("#chengren-price").text( "("+$(this).attr('price')+"元/人)");
-			$("#ertong-price").text( "("+$(this).attr('rt_price')+"元/人)");
-			adultprice	= $(this).attr('price');
-			childprice	= $(this).attr('rt_price');
-			$("#chengren-fill").val(1);
-			$("#ertong-fill").val(0);
-			$("#chengren-fill").attr({"max":maxPop});
-			$("#chengren-fill,#ertong-fill").slider("refresh");
-			$("#select-date").val(currentYear+"-"+(currentMonth+1)+"-"+$(this).text());
-			$(".btn-post").removeAttr("disabled");
-			sumPrice();
-		}
-
-	});
-	console.log('===================== Cal end =================');
-</script>
-
-<div class="ui-field-contain">
-	<label for="select-date">选择出行日期:</label>
-	<input type="text" name="select-date" id="select-date" readonly placeholder="请点上方日历黄色日期">
-</div>
-
-<!--/日历选择器-->
 
 <!--TODO
 1. 有些行程某些天数没有图片的处理
