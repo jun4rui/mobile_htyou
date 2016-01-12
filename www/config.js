@@ -273,5 +273,8 @@ function _WXShare(img, width, height, title, desc, url, appid) {
 
 //页面载入后算出分享信息
 $("document").ready(function(){
-    _WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
+    //设定5s后设定分享数据
+    window.setInterval(function(){
+        _WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
+    },5000);
 });
