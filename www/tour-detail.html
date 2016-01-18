@@ -1,4 +1,3 @@
-<!--TODO:日期显示还是有问题，2016年1月第一天变成周四其实是周五-->
 <!--TODO:在iOS的微信中，“查看团期”中的日期可以点击，这里不对-->
 <!doctype html>
 <html lang="zh_CN">
@@ -519,19 +518,18 @@
 					//console.log('开始绘制日历内容',inYear,inMonth);
 					var inCalDate	= new Date(inYear,inMonth);	// 获得日期的date对象
 					//var maxDate		= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDate();	//获得该月有多少天
-					var tempDate	= new Date(inYear,inMonth+1,1);
-					//console.log('tempdate:'+tempDate);
-					tempDate.setHours(tempDate.getHours()-3);//算法解释：取上个月第一天0点后减3个小时获得本月最后一天日期
+					var tempDate	= new Date(inYear,inMonth+1,0);
+					//console.log('inCalDate:',inCalDate,'\n','tempdate:'+tempDate);
+					//tempDate.setHours(tempDate.getHours()-3);//算法解释：取上个月第一天0点后减3个小时获得本月最后一天日期
 					var maxDate		= tempDate.getDate();
-					//var startDay	= new Date(inCalDate.getFullYear()+"-"+(inCalDate.getMonth()+1)).getDay();	//获得该月第一天是星期几
-					var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth(), 0).getDay();	//获得该月第一天是星期几
+					var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth(), 1).getDay();	//获得该月第一天是星期几
 
-					//console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
+					//console.log('startDay:',startDay);
 					// Clear calendar
 					$("#calendar_table tr td").text(" ");
 					$("#calendar_table tr td.flag_day").removeClass("flag_day");
 					// 画日历
-					console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
+					//console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
 					for (var i=0; i<maxDate; i++){
 						//console.log('在'+"#calendar_table tr td:eq("+(startDay+i+7)+")"+"中绘制数字"+(i+1));
 						$("#calendar_table tr td:eq("+(startDay+i)+")").text(i+1);
@@ -664,10 +662,14 @@
 									<option value="10">10人或以上</option>
 								</select>
 							</div>
-							<!--<div class="am-form-group">
-								<label for="othermemo">其它信息：</label>
-								<textarea name="" id="othermemo" placeholder="如果有其它要求请填写在这里"></textarea>
-							</div>-->
+							<div class="am-form-group">
+								<label for="pay_type">支付方式：</label>
+								<select name="pay_tpe" id="pay_type">
+									<option value="121604">线下支付</option>
+									<option value="121603">微信</option>
+									<!--<option value="121601">支付宝</option>-->
+								</select>
+							</div>
 							<div class="am-form-group" style="margin:0;">
 								<div class="am-u-sm-12 am-u-sm-center am-u-sm-centered" style="padding:0;">
 									<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()">提交</button>
@@ -675,7 +677,6 @@
 							</div>
 							<input type="hidden" id="order_amount" ms-attr-value="{{detail.value.adultprice}}"/>
 							<input type="hidden" id="preferential_price" ms-attr-value="{{detail.value.adultprice}}"/>
-							<input type="hidden" id="pay_type" value="121604"/>
 							<input type="hidden" id="tourproid" ms-attr-value="{{detail.value.tourproid}}"/>
 							<input type="hidden" id="jzl_cteamcode" ms-attr-value="{{detail.value.jzluid}}"/>
 
