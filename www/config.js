@@ -114,6 +114,7 @@ function doBack(){
 //http://www.htyou.com/common/websinfo_queryWebsInfos.action?url=oiZKXjjxNP3iA6iUfgkVo6H7sdmU&submit=ajax
 //获取，返回值为json格式，销售人员返回值中必须是"info_class": 421
 //INFO_DATA格式：姓名,电话,头像url,存储时间
+//TODO: 20160112 首页还是改成原来的大头像方式；二级页面照旧；产品详情页面改成底部分成两栏模式，左边是头像和电话，右边是预定
 (function(){
 	var infoID  = getParameterValue(window.location.href,'infoid');
 	var userID  = getParameterValue(window.location.href,'url');
@@ -139,17 +140,7 @@ function doBack(){
 					});
 
 				});
-
-				//$('#seller').ready(function(){
-				//	//设置客服参数
-				//	$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
-				//	$('#seller .content strong').text(infoData.split(',')[0]);
-				//	$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
-				//	//弹出UI
-				//	$('#seller').animate({'left':'1rem','bottom:':'1rem'});
-				//});
 			}
-
 		}
 	}
 

@@ -79,33 +79,68 @@
 			if ($('phone-number').val()=='' || $('#phone-number').val().length<7){
 				errMsg  += '您输入的联系电话有误。\n';
 			}
+			if ($('#pay_type').val()=='121603' && whereami()!='weixin'){
+				errMsg += '您必须使用我们的微信版才能使用微信支付。\n';
+			}
 			if(errMsg!=''){
 				alert(errMsg);
 				return false;
 			}
-			var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16';
-			//关闭提交按钮
-			$('#submit-btn').attr('disabled','disabled');
-			//提交数据
-			$.getJSON(server_addr+getUrl, function(result, status){
-				console.log('status:'+status);
-				if (result.status==1){
-					//成功的处理
-					console.log('成功');
-					$('#order-message .order-message-title').text('订单提交成功！');
-					$('#order-message .order-message-content').text('您的操作已经被我们收集整理，很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
-					$('#order-message').modal('open');
-				}else{
-					//失败的处理
-					$('#order-message .order-message-title').text('订单提交失败！');
-					$('#order-message .order-message-content').text('因为异常原因，您的订单发生错误，请尝试重新提交。');
-					$('#order-message').modal('open');
-					console.log('失败');
-				}
-			}).done(function(){
-				//打开提交按钮
-				$('#submit-btn').removeAttr('disabled');
-			});
+
+			/*线下支付的处理流程*/
+			if ($('#pay_type').val()=='121604'){
+				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16';
+				//关闭提交按钮
+				$('#submit-btn').attr('disabled','disabled');
+				//提交数据
+				$.getJSON(server_addr+getUrl, function(result, status){
+					//console.log('status:'+status);
+					if (result.status==1){
+						//成功的处理
+						//console.log('成功');
+						$('#order-message .order-message-title').text('订单提交成功！');
+						$('#order-message .order-message-content').text('您的操作已经被我们收集整理，很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
+						$('#order-message').modal('open');
+					}else{
+						//失败的处理
+						$('#order-message .order-message-title').text('订单提交失败！');
+						$('#order-message .order-message-content').text('因为异常原因，您的订单发生错误，请稍后尝试重新提交。');
+						$('#order-message').modal('open');
+						//console.log('失败');
+					}
+				}).done(function(){
+					//打开提交按钮
+					$('#submit-btn').removeAttr('disabled');
+					return true;
+				});
+			}
+			/*微信支付的处理流程*/
+			if ($('#pay_type').val()=='121603'){
+				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16';
+				//关闭提交按钮
+				$('#submit-btn').attr('disabled','disabled');
+				//提交数据
+				$.getJSON(server_addr+getUrl, function(result, status){
+					//console.log('status:'+status);
+					if (result.status==1){
+						//成功的处理
+						//console.log('成功');
+						$('#order-message .order-message-title').text('进入微信支付流程');
+						$('#order-message .order-message-content').html('请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">微信支付</a> 付款');
+						$('#order-message').modal('open');
+					}else{
+						//失败的处理
+						$('#order-message .order-message-title').text('订单提交失败！');
+						$('#order-message .order-message-content').text('因为异常原因，您的订单发生错误，请稍后尝试重新提交。\n'/*+result.status+'\n'+'/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'*/);
+						$('#order-message').modal('open');
+						//console.log('失败');
+					}
+				}).done(function(){
+					//打开提交按钮
+					$('#submit-btn').removeAttr('disabled');
+					return true;
+				});
+			}
 
 		}
 	</script>
@@ -710,5 +745,14 @@ TODO-->
 	</div>
 </div>
 <!--/提示窗口-->
+<script>
+	$(document).ready(function(){
+		//不在微信中将删除微信支付的选项
+		if (whereami()!='weixin'){
+			$('#pay_type option[value=121603]').remove();
+		}
+
+	});
+</script>
 </body>
 </html>

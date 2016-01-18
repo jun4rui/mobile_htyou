@@ -1,3 +1,5 @@
+<!--TODO:日期显示还是有问题，2016年1月第一天变成周四其实是周五-->
+<!--TODO:在iOS的微信中，“查看团期”中的日期可以点击，这里不对-->
 <!doctype html>
 <html lang="zh_CN">
 <head>
@@ -285,7 +287,7 @@
 <div class="am-popup" id="tour-modal">
 	<div class="am-popup-inner">
 		<div class="am-popup-hd">
-			<h4 class="am-popup-title">提交订单</h4><span data-am-modal-close class="am-close">&times;</span>
+			<h4 class="am-popup-title">线路行程</h4><span data-am-modal-close class="am-close">&times;</span>
 		</div>
 		<div class="am-popup-bd">
 			<div ms-repeat-unit="detail.value1" data-each-rendered="detailRendered">
@@ -662,10 +664,14 @@
 									<option value="10">10人或以上</option>
 								</select>
 							</div>
-							<!--<div class="am-form-group">
-								<label for="othermemo">其它信息：</label>
-								<textarea name="" id="othermemo" placeholder="如果有其它要求请填写在这里"></textarea>
-							</div>-->
+							<div class="am-form-group">
+								<label for="pay_type">支付方式：</label>
+								<select name="pay_tpe" id="pay_type">
+									<option value="121604">线下支付</option>
+									<option value="121603">微信</option>
+									<!--<option value="121601">支付宝</option>-->
+								</select>
+							</div>
 							<div class="am-form-group" style="margin:0;">
 								<div class="am-u-sm-12 am-u-sm-center am-u-sm-centered" style="padding:0;">
 									<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()">提交</button>
@@ -673,7 +679,6 @@
 							</div>
 							<input type="hidden" id="order_amount" ms-attr-value="{{detail.value.adultprice}}"/>
 							<input type="hidden" id="preferential_price" ms-attr-value="{{detail.value.adultprice}}"/>
-							<input type="hidden" id="pay_type" value="121604"/>
 							<input type="hidden" id="tourproid" ms-attr-value="{{detail.value.tourproid}}"/>
 							<input type="hidden" id="jzl_cteamcode" ms-attr-value="{{detail.value.jzluid}}"/>
 
