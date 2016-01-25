@@ -126,7 +126,7 @@ function doBack(){
 		if ((infoData = window.localStorage.getItem('INFO_DATA'))!=null){
 			//console.log(infoData);
 			//如果保存时间太久超过24小时则摧毁INFO_DATA，否则显示销售员信息
-			if(((new Date).getTime()-infoData.split(',')[3])>86400000){
+			if(((new Date).getTime()-infoData.split(',')[4])>86400000){
 				//console.log((new Date).getTime()-parseInt(infoData.split(',')[3]));
 				window.localStorage.removeItem('INFO_DATA');
 			}else{
@@ -155,7 +155,7 @@ function doBack(){
 					if (result[0].info_class == '421') {
 						console.log(result[0]);
 						//保存到localStorage中的INFO_DATA中
-						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+(new Date).getTime());
+						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+result[0].info_id+','+(new Date).getTime());
 					}
 				}
 				//然后在当前页面加入销售人员UI效果
@@ -171,7 +171,7 @@ function doBack(){
 					if (result[0].info_class == '421') {
 						console.log(result[0]);
 						//保存到localStorage中的INFO_DATA中
-						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+(new Date).getTime());
+						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+result[0].info_id+','+(new Date).getTime());
 					}
 				}
 				//然后在当前页面加入销售人员UI效果
@@ -190,13 +190,32 @@ function doBack(){
 
 //分享至weixin的函数
 function _WXShare(img, width, height, title, desc, url, appid) {
+	// 获得info_id(华天旅游网微新版专用)
+	var infoID		= '';
+	var INFO_DATA	= window.localStorage.getItem('INFO_DATA');
+	var otherUrl	= document.location.href;
+	if (INFO_DATA!=null){
+		if (INFO_DATA.split(',').length==5){
+			infoID	= INFO_DATA.split(',')[3];
+			//url有参数的处理方式
+			if (otherUrl.indexOf('?')>-1){
+				otherUrl 	= otherUrl+'&infoID='+infoID;
+			}else{
+				//url没参数的处理方式
+				otherUrl 	= otherUrl+'?infoID='+infoID;
+			}
+		}
+	}
+	//console.log(infoID,INFO_DATA);
+
 	//初始化参数
 	img = img || 'http://www.htyou.com/images/v4/header_logo1.png';
 	width = width || 100;
 	height = height || 100;
 	title = title || document.title;
 	desc = desc || document.title;
-	url = url || document.location.href;
+	//url = url || document.location.href;
+	url = url || otherUrl;
 	appid = appid || '';
 	//微信内置方法
 	function _ShareFriend() {
