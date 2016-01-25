@@ -267,7 +267,34 @@ function _WXShare(img, width, height, title, desc, url, appid) {
 $("document").ready(function(){
 	//设定5s后设定分享数据
 	window.setInterval(function(){
+		//线路详情使用的分享模式
+		if (window.location.href.indexOf('tour-detail.html')>-1){
+			_WXShare($('#galleryAD img').eq(0).attr('src'),'640','480',$('.info-section h3').text(),'','');
+			return true;
+		}
+		//机票查询页面
+		if (window.location.href.indexOf('ticket-index.html')>-1){
+			_WXShare($('#galleryAD img').eq(0).attr('src'),'640','480','机票查询','','');
+			return true;
+		}
+		//机票查询结果页面
+		if (window.location.href.indexOf('ticket-index.html')>-1){
+			_WXShare('http://www.htyou.com/weixin_h5/images/ticket_index_title_bg.jpg','640','480','机票查询: 从'+decodeURI(getParameterValue(window.location.href,'fromCity'))+'到'+decodeURI(getParameterValue(window.location.href,'toCity')),'','');
+			return true;
+		}
+		//线路列表页面
+		if (window.location.href.indexOf('tour-list.html')>-1){
+			_WXShare($('#tourlist-section-list img').eq(0).attr('src'),'640','480','景点列表:'+decodeURI(getParameterValue(window.location.href,'q')),'','');
+			return true;
+		}
+		//区域列表页面
+		if (window.location.href.indexOf('tour-area.html')>-1){
+			_WXShare($('.am-gallery-item img').eq(0).attr('src'),'640','480',$('.am-header-title').text(),'','');
+			return true;
+		}
+		//一般情况下用标准的分享模式
 		_WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
+
 	},5000);
 });
 
@@ -279,9 +306,9 @@ function whereami(){
 	//微信
 	if (userAgent.match(/micromessenger/i)=='micromessenger')
 		return 'weixin';
-    //Cordova
-    if (userAgent.match(/Crosswalk/i)=='crosswalk')
-        return 'cordova';
-    return 'other'
+	//Cordova
+	if (userAgent.match(/Crosswalk/i)=='crosswalk')
+		return 'cordova';
+	return 'other'
 }
 //alert(navigator.userAgent);
