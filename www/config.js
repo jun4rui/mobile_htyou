@@ -131,14 +131,21 @@ function doBack(){
 				window.localStorage.removeItem('INFO_DATA');
 			}else{
 				$(document).ready(function(){
-					$('body').append('<div id="seller-section"></div>');
-					$('#seller-section').load('seller.html',function(){
-						$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
-						$('#seller .content strong').text(infoData.split(',')[0]);
-						$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
-						$('#seller').animate({'left':'1rem','bottom:':'1rem'});
-					});
-
+					//线路详情页面的处理方式
+					if (window.location.href.indexOf('tour-detail.html')>-1){
+						$('#btn-style-1').hide();
+						$('#btn-style-2').show();
+						$('#btn-style-2 a').attr('href','tel:'+infoData.split(',')[1]);
+					}else{
+						//一般的处理方式
+						$('body').append('<div id="seller-section"></div>');
+						$('#seller-section').load('seller.html',function(){
+							$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
+							$('#seller .content strong').text(infoData.split(',')[0]);
+							$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
+							$('#seller').animate({'left':'1rem','bottom:':'1rem'});
+						});
+					}
 				});
 			}
 		}

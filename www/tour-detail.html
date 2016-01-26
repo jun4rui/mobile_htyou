@@ -425,10 +425,53 @@
 
 
 
-<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px;">
+<div id="btn-style-1" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px;">
 	<button type="button" class="am-btn am-btn-success am-btn-block" data-am-modal="{target:'#order-modal'}">
 		开始预定
 	</button>
+</div>
+
+<style>
+	.am-navbar-nav a [class*="am-icon"] {
+		display:inherit;
+	}
+	#btn-style-2 ul li[class*="am-u-"] {
+		padding-left:0;
+		padding-right: 0;
+	}
+	#btn-style-2 .am-u-sm-2 {
+		/*width:4rem;*/
+		height:3rem;
+		text-align: center;
+	}
+	#btn-style-2 .am-icon-btn {
+		width:35px;
+		height: 35px;
+		line-height: 35px;
+
+	}
+	#btn-style-2 {
+		height:3rem;
+		line-height: 3rem;
+		display:none;
+	}
+</style>
+<div id="btn-style-2" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default">
+	<ul class="am-g">
+		<li class="am-u-sm-2" style="background-color: #F37B1D;">
+			<div class="face" style="margin:0 auto;border-radius: 50%;border: 2px solid #FFF;width:35px; height:35px;background: url(http://www.htyou.com/pic/news/2016-01-25_15-09-59_4966.jpg) 50% 0% no-repeat;"></div>
+		</li>
+		<li class="am-u-sm-2" style="background-color: #5EB95E;">
+			<a href="" class="">
+				<i class="am-icon-btn am-icon-phone am-btn-md"></i>
+			</a>
+		</li>
+		<li class="am-u-sm-8">
+			<button type="button" class="am-btn am-btn-secondary am-btn-block" data-am-modal="{target:'#order-modal'}">
+				开始预定
+			</button>
+		</li>
+	</ul>
 </div>
 
 <!--购买窗口-->
