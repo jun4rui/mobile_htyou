@@ -53,7 +53,7 @@
 				$id: 'gallery',
 				list: [],
 				galleryRendered: function(type){
-					$('#galleryAD').show();
+					//$('#galleryAD').show();
 					//激活滑动gallery
 					$('.am-slider-manual').flexslider({"directionNav":false});
 					//解决图片高度不一致的问题，最终高度和宽度的例如110:44的比例来显示
@@ -168,7 +168,6 @@
 <!--/头部-->
 
 <!--顶部轮播广告-->
-
 <div data-am-widget="slider" id="galleryAD" class="am-slider-manual am-slider am-slider-a1">
 	<ul class="am-slides" ms-controller="gallery">
 		<!--渲染完毕后执行galleryRendered-->
@@ -181,7 +180,58 @@
 	</ul>
 </div>
 <!--/顶部轮播广告-->
-
+<!--顶部销售人员栏-->
+<style>
+	#seller-panel {
+		position:relative;
+		overflow:hidden;
+		display:none;
+	}
+	#seller-panel,
+	#seller-panel .seller-panel-bg {
+		width:100%;
+		height:230px;
+	}
+	#seller-panel .seller-panel-bg {
+		z-index:-1;
+		-webkit-filter: blur(5px);
+		position: absolute;
+		left:0;
+		top:0;
+	}
+	#seller-panel img {
+		width:8rem;
+		height:8rem;
+		border:3px solid #FFF;
+		border-radius:50%;
+		display:block;
+		margin:0 auto;
+		box-shadow: 1px 1px 5px #000;
+	}
+	#seller-panel .seller-panel-info {
+		height:10rem;
+		text-align: center;
+		margin:auto;
+		position: absolute;
+		left:0;top:0;right:0;bottom:0;
+	}
+	#seller-panel .seller-panel-info a span {
+		color:red;
+	}
+	#seller-panel .seller-panel-info a {
+		text-shadow: 1px 1px 5px #FFF;
+	}
+</style>
+<div id="seller-panel" ms-controller="gallery">
+	<div class="seller-panel-bg"></div>
+	<div class="seller-panel-info">
+		<a href="#tel:1433333123">
+			<img src="" alt="">
+			您的专属旅游经理 <span></span> 为您服务
+		</a>
+	</div>
+</div>
+<!--/顶部销售人员栏-->
 <!--六大功能模块-->
 <style>
 	#func-panel li {

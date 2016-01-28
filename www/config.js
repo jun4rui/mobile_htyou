@@ -133,19 +133,30 @@ function doBack(){
 				$(document).ready(function(){
 					//线路详情页面的处理方式
 					if (window.location.href.indexOf('tour-detail.html')>-1){
+						$('#btn-style-2 a').attr('href','tel:'+infoData.split(',')[1]);
 						$('#btn-style-1').hide();
 						$('#btn-style-2').show();
-						$('#btn-style-2 a').attr('href','tel:'+infoData.split(',')[1]);
-					}else{
-						//一般的处理方式
-						$('body').append('<div id="seller-section"></div>');
-						$('#seller-section').load('seller.html',function(){
-							$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
-							$('#seller .content strong').text(infoData.split(',')[0]);
-							$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
-							$('#seller').animate({'left':'1rem','bottom:':'1rem'});
-						});
+						return true;
 					}
+					//首页的处理方式
+					if (window.location.href.indexOf('main.html')>-1){
+						$('#seller-panel').height(parseInt($(window).width()/110*44));
+						$('#seller-panel .seller-panel-bg').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+						$('#seller-panel img').attr({'src':''+infoData.split(',')[2]});
+						$('#seller-panel a').attr({'href':'tel:'+infoData.split(',')[1]});
+						$('#seller-panel a span').text(infoData.split(',')[0]);
+						$('#galleryAD').hide();
+						$('#seller-panel').show();
+
+					}
+					//一般的处理方式
+					$('body').append('<div id="seller-section"></div>');
+					$('#seller-section').load('seller.html',function(){
+						$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
+						$('#seller .content strong').text(infoData.split(',')[0]);
+						$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
+						$('#seller').animate({'left':'1rem','bottom:':'1rem'});
+					});
 				});
 			}
 		}
