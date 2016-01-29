@@ -141,8 +141,10 @@ function doBack(){
 					}
 					//首页的处理方式
 					if (window.location.href.indexOf('main.html')>-1){
-						$('#seller-panel').height(parseInt($(window).width()/110*44));
-						$('#seller-panel .seller-panel-bg').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+						$('#seller-panel').height(parseInt($(window).width()/1000*657));
+						$('#seller-panel .seller-panel-bg').height(parseInt($(window).width()/1000*657));
+						//$('#seller-panel .seller-panel-bg').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+						$('#seller-panel .seller-panel-bg').css({'background':'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat','background-size':'cover'});
 						$('#seller-panel img').attr({'src':''+infoData.split(',')[2]});
 						$('#seller-panel a').attr({'href':'tel:'+infoData.split(',')[1]});
 						$('#seller-panel a span').text(infoData.split(',')[0]);
