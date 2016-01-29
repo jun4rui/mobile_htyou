@@ -147,7 +147,7 @@ function doBack(){
 						$('#seller-panel a span').text(infoData.split(',')[0]);
 						$('#galleryAD').hide();
 						$('#seller-panel').show();
-
+						return true;
 					}
 					//一般的处理方式
 					$('body').append('<div id="seller-section"></div>');
