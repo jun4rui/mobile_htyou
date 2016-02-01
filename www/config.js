@@ -208,8 +208,8 @@ function doBack(){
 
 
 
-
-//分享至weixin的函数
+//老版分享函数 已停用
+/*//分享至weixin的函数
 function _WXShare(img, width, height, title, desc, url, appid) {
 	// 获得info_id(华天旅游网微新版专用)
 	var infoID		= '';
@@ -300,9 +300,9 @@ function _WXShare(img, width, height, title, desc, url, appid) {
 			_ShareWB();
 		});
 	}, false);
-}
+}*/
 
-//页面载入后算出分享信息
+/*//页面载入后算出分享信息
 //TODO:20160112 一些页面第一张图片可能是按钮，并且title有些只有“华天旅游网”5个字
 $("document").ready(function(){
 	//设定5s后设定分享数据
@@ -336,7 +336,7 @@ $("document").ready(function(){
 		_WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
 
 	},5000);
-});
+});*/
 
 
 //判断页面处于何种浏览器框架下
@@ -352,3 +352,183 @@ function whereami(){
 	return 'other'
 }
 //alert(navigator.userAgent);
+
+
+// 配置jquery,requirejs语法
+avalon.config({
+	paths: {
+		/*jquery: '../jquery/dist/jquery.min.js',*/
+		/*config: '../../config.js',*/
+		wx: 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js'
+	}
+});
+
+
+// 20160201 新版微信JS-SDK接口调用
+$("document").ready(function() {
+	window.setTimeout(function () {
+		//alert('3');
+		if (whereami() == 'weixin') {
+			/*alert('http://www.htyou.com/weixin/getJsConfig.action?page_url='+window.location.href);*/
+			require(['wx'], function (wx) {
+				//alert('4');
+				$.getJSON('http://www.htyou.com/weixin/getJsConfig.action?jsoncallback=?&page_url=' + window.location.href, function (result) {
+					//alert(result.timestamp+'\n'+result.appId+'\n'+result.noncestr+'\n'+result.url+'\n'+result.signature);
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: result.appId, // 必填，公众号的唯一标识
+						timestamp: result.timestamp, // 必填，生成签名的时间戳
+						nonceStr: result.noncestr, // 必填，生成签名的随机串
+						signature: result.signature,// 必填，签名，见附录1
+						jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo',
+							'onMenuShareQZone',
+							'hideMenuItems',
+							'showMenuItems',
+							'hideAllNonBaseMenuItem',
+							'showAllNonBaseMenuItem',
+							'translateVoice',
+							'startRecord',
+							'stopRecord',
+							'onVoiceRecordEnd',
+							'playVoice',
+							'onVoicePlayEnd',
+							'pauseVoice',
+							'stopVoice',
+							'uploadVoice',
+							'downloadVoice',
+							'chooseImage',
+							'previewImage',
+							'uploadImage',
+							'downloadImage',
+							'getNetworkType',
+							'openLocation',
+							'getLocation',
+							'hideOptionMenu',
+							'showOptionMenu',
+							'closeWindow',
+							'scanQRCode',
+							'chooseWXPay',
+							'openProductSpecificView',
+							'addCard',
+							'chooseCard',
+							'openCard'
+						] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+					wx.ready(function () {
+						var title = $('title').text();
+						var desc = $('title').text();
+						var link = window.location.href;
+						var imgUrl = $('body img').eq(0).attr('src');
+						if (link.indexOf('?')){
+							link = window.location.href+'&infoID='+window.localStorage.getItem('INFO_DATA');
+						}else{
+							link = window.location.href+'?infoID='+window.localStorage.getItem('INFO_DATA');
+						}
+
+						//线路详情使用的分享模式
+						if (window.location.href.indexOf('tour-detail.html') > -1) {
+							imgUrl = $('#galleryAD img').eq(0).attr('src');
+							title = $('.info-section h3').text();
+							desc = '';
+						}
+						//机票查询页面
+						if (window.location.href.indexOf('ticket-index.html') > -1) {
+							imgUrl = $('#galleryAD img').eq(0).attr('src');
+							title = '机票查询';
+						}
+						//机票查询结果页面
+						if (window.location.href.indexOf('ticket-index.html') > -1) {
+							imgUrl = 'http://www.htyou.com/weixin_h5/images/ticket_index_title_bg.jpg';
+							title = '机票查询'
+							desc = '从' + decodeURI(getParameterValue(window.location.href, 'fromCity')) + '到' + decodeURI(getParameterValue(window.location.href, 'toCity'));
+						}
+						//线路列表页面
+						if (window.location.href.indexOf('tour-list.html') > -1) {
+							imgUrl = $('#tourlist-section-list img').eq(0).attr('src');
+							title = '景点列表';
+							desc = decodeURI(getParameterValue(window.location.href, 'q'));
+						}
+						//区域列表页面
+						if (window.location.href.indexOf('tour-area.html') > -1) {
+							imgUrl = $('.am-gallery-item img').eq(0).attr('src');
+							title = $('.am-header-title').text();
+							desc = $('.am-header-title').text();
+						}
+						//alert(title + '\n' + desc + '\n' + link + '\n' + imgUrl);
+						分享到朋友圈
+						wx.onMenuShareTimeline({
+							title: title,
+							link: link,
+							imgUrl: imgUrl,
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享给朋友
+						wx.onMenuShareAppMessage({
+							title: title,	// 分享标题
+							desc: desc,		// 分享描述
+							link: link,		// 分享链接
+							imgUrl: imgUrl,	// 分享图标
+							type: 'link',	// 分享类型,music、video或link，不填默认为link
+							dataUrl: '',	// 如果type是music或video，则要提供数据链接，默认为空
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享到QQ
+						wx.onMenuShareQQ({
+							title: title,	// 分享标题
+							desc: desc,		// 分享描述
+							link: link,		// 分享链接
+							imgUrl: imgUrl,	// 分享图标
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享到腾讯微博
+						wx.onMenuShareWeibo({
+							title: title,	// 分享标题
+							desc: desc,		// 分享描述
+							link: link,		// 分享链接
+							imgUrl: imgUrl,	// 分享图标
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享到QQ空间
+						wx.onMenuShareQZone({
+							title: title,	// 分享标题
+							desc: desc,		// 分享描述
+							link: link,		// 分享链接
+							imgUrl: imgUrl,	// 分享图标
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+					});
+				});
+			});
+		}
+	}, 3000);
+});
