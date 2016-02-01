@@ -460,7 +460,8 @@ $("document").ready(function() {
 							desc = $('.am-header-title').text();
 						}
 						//alert(title + '\n' + desc + '\n' + link + '\n' + imgUrl);
-						分享到朋友圈
+						//alert(link);
+						//分享到朋友圈
 						wx.onMenuShareTimeline({
 							title: title,
 							link: link,
