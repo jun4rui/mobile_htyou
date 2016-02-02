@@ -425,9 +425,9 @@ $("document").ready(function() {
 						var link = window.location.href;
 						var imgUrl = $('body img').eq(0).attr('src');
 						if (link.indexOf('?')){
-							link = window.location.href+'&infoID='+window.localStorage.getItem('INFO_DATA').split(',')[3];
+							link = window.location.href+'&infoid='+window.localStorage.getItem('INFO_DATA').split(',')[3];
 						}else{
-							link = window.location.href+'?infoID='+window.localStorage.getItem('INFO_DATA').split(',')[3];
+							link = window.location.href+'?infoid='+window.localStorage.getItem('INFO_DATA').split(',')[3];
 						}
 
 						//线路详情使用的分享模式
