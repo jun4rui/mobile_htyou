@@ -548,11 +548,11 @@ function deviceType(){
 		return "Android";
 	}
 	//是iPhone的判断
-	if (platform.indexOf('iPhone')){
+	if (platform.indexOf('iPhone')>-1){
 		return "iPhone";
 	}
 	//是iPad的判断
-	if (platform.indexOf('iPad')){
+	if (platform.indexOf('iPad')>-1){
 		return "iPad"
 	}
 
