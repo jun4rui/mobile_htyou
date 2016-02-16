@@ -533,3 +533,29 @@ $("document").ready(function() {
 		}
 	}, 3000);
 });
+
+// 判断用户设备类型
+function deviceType(){
+	var info = window.navigator;
+	var platform	= info.platform.toLowerCase();
+	var useragent	= info.userAgent.toLowerCase();
+	//是Windows的判断
+	if (platform.indexOf('win32')>-1){
+		return "Windows";
+	}
+	//是Android的判断
+	if (platform.indexOf('linux')>-1 && useragent.indexOf('android')){
+		return "Android";
+	}
+	//是iPhone的判断
+	if (platform.indexOf('iPhone')){
+		return "iPhone";
+	}
+	//是iPad的判断
+	if (platform.indexOf('iPad')){
+		return "iPad"
+	}
+
+	//其它设备返回Ohter
+	return "Other"
+}
