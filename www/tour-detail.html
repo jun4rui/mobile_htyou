@@ -705,6 +705,7 @@
 					if ($(this).attr('pop_num')=='已满'){	// 人满
 						alert('人数已满，请选择其它日期。');
 					}else{	// 人未满
+						/*20160219 REMOVE 因为在微信中设置selected无效，故换种方式实现
 						//清除选项
 						$("#tour-date option[selected=selected]").removeAttr('selected');
 						//遍历当前的下拉框
@@ -714,7 +715,9 @@
 								$("#tour-price").val($(this).attr('rt-price'));
 								//alert($("#tour-date option[selected=selected]").attr('selected'));
 							}
-						});
+						});*/
+						$("#tour-price").val($(this).attr('rt_price'));
+						$("#tour-date").val(inDate);
 					}
 				});
 
@@ -747,11 +750,13 @@
 								<input type="text" id="tour-price" value="" disabled/>
 							</div>
 							<div class="am-form group">
-								<label for="tour-date">选择出行时间：</label>
-								<select name="" id="tour-date" onchange="$('#tour-price').val($(this).children('option:selected').attr('rt-price'))">
-									<option value="" >请选择出行日期</option>
-									<option ms-attr-value="{{unit.tourdate}}" ms-attr-rt-price="{{unit.adultprice}}" ms-repeat-unit="tourdate">{{unit.tourdate}}</option>
-								</select>
+								<!--<label for="tour-date">选择出行时间：</label>-->
+								<!--<select name="" id="tour-date" onchange="$('#tour-price').val($(this).children('option:selected').attr('rt-price'))">-->
+									<!--<option value="" >请选择出行日期</option>-->
+									<!--<option ms-attr-value="{{unit.tourdate}}" ms-attr-rt-price="{{unit.adultprice}}" ms-repeat-unit="tourdate">{{unit.tourdate}}</option>-->
+								<!--</select>-->
+								<label for="tour-date">出行时间：</label>
+								<input type="text" id="tour-date" value="" disabled/>
 							</div>
 							<div class="am-form-group">
 								<label for="username">联系人姓名：</label>
