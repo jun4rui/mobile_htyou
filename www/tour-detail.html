@@ -100,7 +100,7 @@
 						//console.log('成功');
 						var oderInfo	= ''
 							+'<strong style="color:#000;">'+result.orderParam.tourproname+'</strong><br/>'
-							+'<strong style="color:#F00;">订单单价：</strong>&yen;'+result.orderParam.preferential_price+'元<br/>'
+							+'<strong style="color:#F00;">订单单价：</strong>&yen;'+result.orderParam.personprice+'元<br/>'
 							+'<strong style="color:#F00;">参团人数：</strong>'+result.orderParam.person_num+'人<br/>'
 							+'<strong style="color:#F00;">订单总价：</strong>&yen;'+result.orderParam.order_amount+'元<br/>'
 							+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
@@ -108,7 +108,7 @@
 						$('#order-message .order-message-title').text('订单提交成功！');
 						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
 						$('#order-message').modal('open');
-						$('#submit-btn').text('已成功下单');
+						$('#submit-btn').text('已下单');
 					}else{
 						//失败的处理
 						$('#order-message .order-message-title').text('订单提交失败！');
@@ -135,15 +135,15 @@
 						//console.log('成功');
 						var oderInfo	= ''
 							+'<strong style="color:#000;">'+result.orderParam.tourproname+'</strong><br/>'
-							+'<strong style="color:#F00;">订单单价：</strong>&yen;'+result.orderParam.preferential_price+'元<br/>'
+							+'<strong style="color:#F00;">订单单价：</strong>&yen;'+result.orderParam.personprice+'元<br/>'
 							+'<strong style="color:#F00;">参团人数：</strong>'+result.orderParam.person_num+'人<br/>'
 							+'<strong style="color:#F00;">订单总价：</strong>&yen;'+result.orderParam.order_amount+'元<br/>'
 							+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
 
 						$('#order-message .order-message-title').text('进入微信支付流程');
-						$('#order-message .order-message-content').html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">微信支付</a> 付款');
+						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">微信支付</a> 付款');
 						$('#order-message').modal('open');
-						$('#submit-btn').text('已成功下单');
+						$('#submit-btn').text('已下单');
 					}else{
 						//失败的处理
 						$('#order-message .order-message-title').text('订单提交失败！');
