@@ -40,6 +40,10 @@
 			//$.getJSON('http://www.htyou.com/mobile/ipad_queryTourTeam.action?lineid=8155&jsoncallback=?',function(result){
 			console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
 			$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
+				//如果产品已经不存在的处理
+				if (result.json==null){
+					alert('该产品已经过期或不存在，请点击左上角返回首页');
+				}
 				tourVM.detail   = result;
 				tourVM.nation   = result.value.nation.split(',');
 				console.log(result.value.nation.split(','));
