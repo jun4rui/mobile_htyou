@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>用户登录</title>
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+	<script>
+
+	</script>
+	<style>
+		.ms-controller, .ms-important, [ms-controller], [ms-important] {
+			visibility: hidden;
+		}
+
+		body {
+			//background-color: #DFDFDF;
+		}
+
+		fieldset {
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu" onclick="doBack()"></i>
+		<!--/下拉菜单-->
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			{{titleText}}
+			<style>
+				header.am-header .am-header-title {
+					margin: 0 3em;
+				}
+
+				.htyou-header-menu {
+					color: #FFF;
+				}
+			</style>
+			<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+				<div class="am-header-left am-header-nav">
+					<!--下拉菜单-->
+					<i class="am-header-icon am-icon-chevron-left htyou-header-menu" onclick="doBack()"></i>
+					<!--/下拉菜单-->
+				</div>
+
+				<h1 class="am-header-title">
+					<a href="#title-link" class="">
+						会员登陆
+					</a>
+				</h1>
+				<!--右侧在线客服-->
+				<div class="am-header-right am-header-nav">
+					<a href="user_register.html">
+						注册
+					</a>
+				</div>
+				<!--/右侧在线客服-->
+			</header>
+			<!--/头部-->
+		</a>
+	</h1>
+	<!--右侧在线客服-->
+	<div class="am-header-right am-header-nav">
+		<a href="#" data-am-offcanvas="{target: '#side-panel'}">
+			<i class="am-header-icon am-icon-bars"></i>
+		</a>
+	</div>
+	<!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+<!--登陆表单-->
+<div class="am-g">
+	<div class="am-u-md-10 am-u-sm-centered">
+		<form class="am-form">
+			<fieldset class="am-form-set">
+				<input type="text" placeholder="请在这里输入您的账号">
+				<input type="password" placeholder="请输入账号对应的密码">
+			</fieldset>
+			<button type="submit" class="am-btn am-btn-warning am-btn-block">登录</button>
+		</form>
+		<div>
+			<a href="#" class="am-block am-text-sm am-text-right">忘记密码</a>
+		</div>
+	</div>
+</div>
+<!--/登陆表单-->
+
+</body>
+</html>

@@ -4,8 +4,10 @@
 var server_addr = 'http://www.htyou.com';
 var _INFODATA	= window.localStorage.getItem('INFO_DATA');
 var _INFOID		= '';
-if (_INFODATA.indexOf(',')>-1){
-	_INFOID 	= _INFODATA.split(',')[3];
+if (!_INFODATA){
+	if (_INFODATA.indexOf(',')>-1){
+		_INFOID 	= _INFODATA.split(',')[3];
+	}
 }
 
 //查询url参数函数
