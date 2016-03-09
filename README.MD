@@ -14,6 +14,16 @@ TODO:1. 首页销售大图还是按照第一个weixin版本的做 2. 销售模�
 还有MVVM框架本来准备用angularjs，结果又升级了，完全重新开发发现调用jsonp接口老是出问题，换get调用完全没问题，研究了一天无果，遂放弃还是用正美的avalon省心点。
 ajax载入数据用jquery，一来是amazeui依赖并且自带了，二来是avalon的也要额外装组件还不如直接jquery省心算了。
 
+### 关于登陆
+
+登录实际上是没办法坐在APP里面的，因为APP跳出去以后，没办法调回来，因为网页无法调回到APP的本地页面上来。
+所以，APP是不能登录的。理论上微信可以用QQ或者微信登录，支付宝、微博等可以用在网页登录上。
+
+名称|接口地址
+----|----
+支付宝接口|/user/zhifubao_Login.action
+支付宝登陆|/user/zhifubao_Login.action
+
 
 
 ### 获取新闻的接口DEMO：

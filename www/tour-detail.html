@@ -41,7 +41,7 @@
 			console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
 			$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
 				//如果产品已经不存在的处理
-				if (result.json==null){
+				if (result.status!=1){
 					alert('该产品已经过期或不存在，请点击左上角返回首页');
 				}
 				tourVM.detail   = result;
