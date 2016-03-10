@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <title>华天旅游网</title>
+    <!--jQuery框架-->
+    <script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+    <!--amaze框架 需要jQuery支持-->
+    <link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+    <script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+    <!--fontawesome图标库-->
+    <link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+    <!--js配置文件-->
+    <script src="./config.js"></script>
+    <style>
+        body {
+            background-color: #FFF;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .am-form-group {
+            margin-bottom: 2px;
+        }
+
+        .am-titlebar-default {
+            margin: auto 2px;
+        }
+    </style>
+    <script>
+        var iframeUrl   = 'http://www.htyou.com'+decodeURIComponent(getParameterValue(window.location.href,'inurl'));
+        $('#otherframe').ready(function(){
+            $('#otherframe').attr('src',iframeUrl).css({'width':window.innerWidth,'height':window.innerHeight});
+        });
+    </script>
+</head>
+<body>
+<!--头部-->
+<style>
+    header.am-header .am-header-title {
+        margin: 0 3em;
+    }
+
+    .htyou-header-menu {
+        color: #FFF;
+    }
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+    <div class="am-header-left am-header-nav">
+        <!--下拉菜单-->
+        <i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu" onclick="doBack()"></i>
+        <!--/下拉菜单-->
+    </div>
+
+    <h1 class="am-header-title">
+        <a href="#title-link" class="">
+            华天旅游网
+        </a>
+    </h1>
+    <!--右侧在线客服-->
+    <div class="am-header-right am-header-nav">
+        <a href="http://tb.53kf.com/webCompany.php?arg=10102842&style=1" class="">
+            <i class="am-header-icon am-icon-comments-o"></i>
+        </a>
+    </div>
+    <!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+<iframe src="" frameborder="0" id="otherframe" style="width:100%; height:999px;"></iframe>
+</body>
+</html>

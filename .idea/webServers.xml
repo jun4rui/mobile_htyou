@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="73462724-4bc8-49f1-a21f-74a37fef96a3" name="htyou" url="http://www.htyou.com">
+        <fileTransfer host="www.htyou.com" port="2222" rootFolder="/huatian/apache-tomcat-6.0.18-hebing/webapps/htonline-webroot" accessType="SFTP" password="dfccdfdedfdadfdfdfd9dfcfdfd8df9bdf98df99" username="userftp">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="5c77e9ca-5d9a-4b53-9874-e00931cd2760" name="Nas" url="http://jun4rui.myqnapcloud.com:88/">
+        <fileTransfer host="jun4rui.myqnapcloud.com" port="22" accessType="SFTP" password="dfd0dfc2dfcbdfc4dfcddfd8dfdfdfc3" username="jun4rui">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

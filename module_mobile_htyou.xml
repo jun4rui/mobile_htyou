@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_mobile_htyou" default="compile.module.mobile_htyou">
+  <dirname property="module.mobile_htyou.basedir" file="${ant.file.module_mobile_htyou}"/>
+  
+  <property name="module.jdk.home.mobile_htyou" value=""/>
+  <property name="module.jdk.bin.mobile_htyou" value=""/>
+  <property name="module.jdk.classpath.mobile_htyou" value=""/>
+  
+  <property name="compiler.args.mobile_htyou" value="-encoding UTF-8 -source 1.6 -target 1.6 ${compiler.args}"/>
+  
+  <property name="mobile_htyou.output.dir" value="${module.mobile_htyou.basedir}/out/production/mobile_htyou"/>
+  <property name="mobile_htyou.testoutput.dir" value="${module.mobile_htyou.basedir}/out/test/mobile_htyou"/>
+  
+  <path id="mobile_htyou.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="mobile_htyou.module.production.classpath"/>
+  
+  <path id="mobile_htyou.runtime.production.module.classpath">
+    <pathelement location="${mobile_htyou.output.dir}"/>
+  </path>
+  
+  <path id="mobile_htyou.module.classpath">
+    <pathelement location="${mobile_htyou.output.dir}"/>
+  </path>
+  
+  <path id="mobile_htyou.runtime.module.classpath">
+    <pathelement location="${mobile_htyou.testoutput.dir}"/>
+    <pathelement location="${mobile_htyou.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.mobile_htyou">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.mobile_htyou">
+    <patternset refid="excluded.from.module.mobile_htyou"/>
+  </patternset>
+  
+  
+  <target name="compile.module.mobile_htyou" depends="compile.module.mobile_htyou.production,compile.module.mobile_htyou.tests" description="Compile module mobile_htyou"/>
+  
+  <target name="compile.module.mobile_htyou.production" depends="register.custom.compilers" description="Compile module mobile_htyou; production classes"/>
+  
+  <target name="compile.module.mobile_htyou.tests" depends="register.custom.compilers,compile.module.mobile_htyou.production" description="compile module mobile_htyou; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.mobile_htyou" description="cleanup module">
+    <delete dir="${mobile_htyou.output.dir}"/>
+    <delete dir="${mobile_htyou.testoutput.dir}"/>
+  </target>
+</project>

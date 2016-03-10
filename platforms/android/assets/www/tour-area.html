@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>华天旅游网</title>
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+	<style>
+		body {
+			background-color: #FFF;
+		}
+
+		.hide {
+			display: none;
+		}
+
+		.am-form-group {
+			margin-bottom: 2px;
+		}
+
+		.am-titlebar-default {
+			margin: auto 2px;
+		}
+	</style>
+	<script>
+		var classParent = getParameterValue(window.location.href, 'classParent');
+		console.log(classParent);
+		var className   = '';
+		if (classParent==423){
+			className   = '出境热门目的地';
+		}
+		if (classParent==424){
+			className   = '国内热门目的地';
+		}
+		/*输入允许的classParent才能继续执行*/
+		if (classParent == 423 || classParent == 424) {
+			//Avalon模型
+			avalon.ready(function () {
+				//景区VM
+				var tourAreaVM = avalon.define({
+					$id: 'tourArea',
+					titleText: className,
+					classID: classParent,
+					areaList: [],
+					areaRendered: function(){
+						$('.point-panel').each(function(){
+							var classid = $(this).attr('classid');
+							$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classParent=' + classid + '&jsoncallback=?', function(result){
+								for (var i=0; i<result.length; i++){
+									var tempHTML    = '<!--热门线路unit--> <li> <div class="am-gallery-item"> <a href="tour-list.html?a='+result[i].typename+'"> <img src="http://www.htyou.com/'+result[i].pic+'" alt=""/> <h3 class="am-gallery-title">'+result[i].typename+'</h3> <div class="am-gallery-desc"></div> </a> </div> </li> <!--/热门线路unit-->';
+									$('.point-panel[classid='+result[0].parent_id+']').append(tempHTML);
+								}
+							});
+						});
+					}
+				});
+
+				//推荐线路VM
+				var recommendTourVM = avalon.define({
+					$id: 'recommendTour',
+					list: []
+				});
+
+				avalon.scan();
+
+				//Ajax载入推荐产品数据
+				$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classParent='+tourAreaVM.classID+'&jsoncallback=?', function (result) {
+					tourAreaVM.areaList = result;
+				});
+				//Ajax载入推荐产品数据
+				var searchUrl   = '';
+				if (classParent==423){
+					searchUrl   = '/mobile/ipad_queryTourLine.action?commendtype=15&isnative=4&pagesize=8&jsoncallback=?';
+				}
+				if (classParent==424){
+					searchUrl   = '/mobile/ipad_queryTourLine.action?commendtype=16&isnative=2&pagesize=8&jsoncallback=?';
+				}
+
+				$.getJSON(server_addr + searchUrl, function(result){
+					recommendTourVM.list = result.value;
+				});
+
+			});
+		} else {
+			/*输入不允许的classParent的处理*/
+			$(document).ready(function () {
+				$('body').html('');
+			});
+		}
+
+	</script>
+</head>
+<body ms-controller="tourArea">
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu" onclick="doBack()"></i>
+		<!--/下拉菜单-->
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			{{titleText}}
+		</a>
+	</h1>
+	<!--右侧在线客服-->
+	<div class="am-header-right am-header-nav">
+		<a href="#" data-am-offcanvas="{target: '#side-panel'}">
+			<i class="am-header-icon am-icon-bars"></i>
+		</a>
+	</div>
+	<!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+<!--景点列表-->
+<style>
+	.am-gallery {
+		padding:0;
+	}
+	.am-gallery li {
+		padding:1px;
+	}
+	.am-gallery-overlay .am-gallery-title {
+		height:20px;
+		line-height: 20px;
+	}
+	.am-titlebar-default {
+		background-color:#EFEFEF;
+	}
+	#tourArea-panel {
+		margin-bottom: 1em;
+
+	}
+</style>
+<div id="tourArea-panel" ms-each-unit="areaList" data-each-rendered="areaRendered">
+	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default">
+		<h2 class="am-titlebar">
+			{{unit.typename}}
+		</h2>
+	</div>
+	<ul data-am-widget="gallery" class="point-panel am-gallery am-avg-sm-3 am-gallery-overlay" ms-attr-classid="{{unit.id}}" data-am-gallery="{pureview:false}">
+	</ul>
+</div>
+<!--/景点列表-->
+
+
+<!--产品推荐list-->
+<style>
+	#tourlist-section-list {
+		margin:0;
+	}
+	.tourlist-unit {
+		margin:0 2px !important;
+		overflow:hidden;
+		border-top:0 !important;
+		padding:0 !important;
+		width: auto !important;
+	}
+	.tourlist-unit .am-list-main {
+		padding-left: 5px !important;
+	}
+	#tourlist-section-title {
+		margin-top: 1em;
+	}
+	#tourlist-section-list .am-list-thumb {
+		width:25%;
+		padding-bottom:25%;
+		height:80%;
+	}
+	.tourlist-unit-price {
+		color: #FF6C00;
+		font-size: 18px;
+		position: absolute;
+		right: 10px;
+		bottom: 5%;
+		background-color: #FFF;
+		padding-left: 1em;
+	}
+	#tourlist-section-list .am-list {
+		margin-bottom:0;
+	}
+	#tourlist-section-list .am-list-item-hd {
+		color:#555;
+		height: 3em;
+		overflow: hidden;
+	}
+	#tourlist-section-list .am-badge {
+		background-color:#398421;
+	}
+	#tourlist-section-title h2 {
+		width:100%;
+	}
+</style>
+<div id="tourlist-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default">
+	<h2 class="am-titlebar-title am-titlebar-multi">
+		产品推荐
+	</h2>
+</div>
+<div id="tourlist-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
+	<div class="am-list-news-bd">
+		<ul class="am-list">
+			<!--list单元-->
+			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
+				<a ms-attr-href="tour-detail.html?lineid={{unit.lineid}}" class="">
+					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
+					</div>
+					<div class="am-u-sm-8 am-list-main">
+						<h3 class="am-list-item-hd">
+							<span class="am-badge am-badge-warning am-radius"><!--<i class="am-icon-tag"></i>&nbsp;-->{{unit.tourtype}}</span>&nbsp;{{unit.tourproname}}
+						</h3>
+					</div>
+					<div class="tourlist-unit-price">
+						&nbsp;&yen;{{unit.leastprice}}元
+					</div>
+				</a>
+			</li>
+			<!--/list单元-->
+		</ul>
+	</div>
+</div>
+<!--/产品推荐list-->
+<!--/产品推荐-->
+
+
+
+
+
+<!--回顶部-->
+<style>
+	.am-gotop-fixed {
+		width: 47px !important;
+		max-width: 47px !important;
+	}
+
+	.am-gotop-icon-custom {
+		width: 47px;
+		max-width: 47px !important;
+		height: 47px;
+		max-height: 47px !important;
+	}
+</style>
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed">
+	<a href="#top" title="">
+		<img class="am-gotop-icon-custom" src="./images/return2top.png"/>
+	</a>
+</div>
+<!--/回顶部-->
+</body>
+</html>
