@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="./config.js"></script>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+	//$('body').append(window.location.href+':'+getParameterValue(window.location.href,'openid'));
+	var openid = getParameterValue(window.location.href, 'openid');
+	var accesstoken = getParameterValue(window.location.href, 'accesstoken');
+	$.getJSON('http://ipad.htyou.com/user/htuser_login.action?openid='+openid+'&accesstoken='+accesstoken+'&info_type=120615', function (result) {
+		alert(JSON.stringify(result));
+	});
+</script>

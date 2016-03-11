@@ -1,112 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
 	<title>Document</title>
-	<script src="bower_components/jquery/dist/jquery.min.js"></script>
-	<!--amaze框架 需要jQuery支持-->
-	<link  href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
-	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="./config.js"></script>
 </head>
 <body>
-<style>
-	body {
-		padding:0;
-		margin:0;
-		background-color: #0b6fa2;
-	}
-	@keyframes do {
-		from    {transform: translate(0px,-100px)}
-		to      {transform: translate(0px,0px)}
-	}
-	#test {
-		width:480px;
-		height:640px;
-		background-color: #0a6999;
-		animation: do 1s;
-	}
 
-</style>
-	<div id="test">
-		测试测试中文的大小看看测试测试中文的大小看看测试测试中文的大小看看测试测试中文的大小看看测试测试中文的大小看看测试测试中文的大小看看测试测试中文的大小看看测试测试中文的大小看看
-	</div>
-
-
-
-<!--销售员UI-->
-<style>
-	#seller {
-		transition: top linear 0s, left linear 0s, border-radius ease-in-out .5s, width 1s;
-		position:fixed;
-		left:-3rem;
-		bottom:3rem;
-		width: 5rem;
-		height: 5rem;
-		border-radius: 50%;
-		border: 2px solid #FFF;
-		box-shadow: 0px 1px 15px #000;
-		background:#FFF;
-		overflow:hidden;
-	}
-	#seller>.face {
-		width:5rem;
-		height:5rem;
-		background:url(http://www.htyou.com/pic/news/2014-08-28_21-27-23_4564.jpg) 50% 50% no-repeat;
-		background-size:cover;
-		position:absolute;
-		left:0;
-		top:0;
-	}
-	#seller>.content {
-		font-size:14px;
-		display:block;
-		padding-left:5.5rem;
-	}
-	#seller.expand {
-		border-radius:0;
-		width: 25rem;
-		top: 0;
-		bottom:0;
-		color:#555;
-	}
-</style>
-	<div id="seller">
-		<div class="face"></div>
-		<div class="content">
-			专属客服经理 <strong>郑波</strong> 为您服务
-			<a class="am-btn am-btn-success am-btn-sm" href="#">
-				<i class="am-icon-phone-square"></i>
-				呼叫
-			</a>
-		</div>
-	</div>
-<script>
-	$('#seller').ready(function(){
-		$('#seller').animate({'left':'3rem','bottom:':'3rem'});
-	});
-	$('#seller .face').click(function(){
-		$('#seller').toggleClass('expand');
-	});
-
-	(function(){
-		var mouseFlag = false;
-		var obj = document.getElementById('seller');
-		obj.addEventListener('touchmove',function(event){
-			if (event.targetTouches.length == 1) {
-				event.preventDefault();// 阻止浏览器默认事件，重要
-				console.log(event.targetTouches[0]);
-				$('#seller').css(
-						{
-							'left':event.targetTouches[0].clientX,
-							'top':event.targetTouches[0].clientY
-						}
-				);
-			}
-
-		});
-	})(document);
-</script>
-<!--/销售员UI-->
 </body>
 </html>
+<script>
+	//先判断是不是在微信环境下
+	if (whereami().toLowerCase()=='weixin'){
+		//window.location.href = 'http://www.htyou.com/weixin/thirdWebPageLoginHT.action?page_url='+window.location.href.substr(0,window.location.href.lastIndexOf('/'))+'/weixin_H5/temp.html';
+		window.location.href = 'http://www.htyou.com/weixin/thirdWebPageLoginHT.action?page_url='+'temp.html';
+	}else{
+		$('body').append('<h1>不在weixin中</h1>');
+	}
+</script>

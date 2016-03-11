@@ -1,9 +1,9 @@
 /**
  * Created by jun4r on 2015/9/18.
  */
-var server_addr = 'http://www.htyou.com';
-var _INFODATA	= window.localStorage.getItem('INFO_DATA');
-var _INFOID		= '';
+var server_addr = 'http://www.htyou.com';						//JSON接口服务器地址，调用接口时用，方便更换
+var _INFODATA	= window.localStorage.getItem('INFO_DATA');		//_INFODATA变量保存销售人员信息用，保存在localStorage中
+var _INFOID		= '';											//_INFOID表示销售人员的系统内部ID编号
 if (_INFODATA!=null){
 	if (_INFODATA.indexOf(',')>-1){
 		_INFOID 	= _INFODATA.split(',')[3];
@@ -176,7 +176,7 @@ function doBack(){
 	if (infoID != '' || userID != '') {
 		//用infoID的情况
 		if (infoID != '') {
-			$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&infoID=' + infoID, function (result) {
+			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&infoID=' + infoID, function (result) {
 				//是否找到销售人员
 				if (result.length != 0) {
 					//判断是否是销售人员类型
@@ -192,7 +192,7 @@ function doBack(){
 		}
 		//用userID的情况
 		if (userID != '') {
-			$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&url=' + userID, function (result) {
+			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&url=' + userID, function (result) {
 				//是否找到销售人员
 				if (result.length != 0) {
 					//判断是否是销售人员类型
