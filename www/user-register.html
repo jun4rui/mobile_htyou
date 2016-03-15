@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>用户注册</title>
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+	<script>
+		//先判断是不是在微信环境下
+		if (whereami().toLowerCase()=='weixin'){
+			var openid = getParameterValue(window.location.href, 'openid');
+			var accesstoken = getParameterValue(window.location.href, 'accesstoken');
+			if (openid=='' && accesstoken==''){
+				window.location.href = '/weixin/thirdWebPageLoginHT.action?page_url='+'user-register.html';
+			}
+		}else{
+			$('body').append('<h1>请在微信中访问</h1>');
+		}
+	</script>
+	<style>
+		.ms-controller, .ms-important, [ms-controller], [ms-important] {
+			visibility: hidden;
+		}
+
+		body {
+			/*background-color: #DFDFDF;*/
+		}
+
+		.am-input-group {
+			margin-top: .5em;
+		}
+	</style>
+</head>
+<body>
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<i class="am-header-icon am-icon-chevron-left htyou-header-menu" onclick="doBack()"></i>
+		<!--/下拉菜单-->
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			会员注册
+		</a>
+	</h1>
+	<!--右侧在线客服-->
+	<div class="am-header-right am-header-nav">
+		<a href="user-login.html">
+			登录
+		</a>
+	</div>
+	<!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+<!--注册表单-->
+<div class="am-g">
+	<div class="am-u-md-10 am-u-sm-centered">
+		<form class="am-form">
+			<!--账号*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+				<input type="text" id="username" class="am-form-field" placeholder="请输入您的账号" required>
+			</div>
+			<!--密码*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+				<input type="password" id="password" class="am-form-field" placeholder="请输入对应的密码" required>
+			</div>
+			<!--密码验证-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+				<input type="password" id="repassword" class="am-form-field" placeholder="再次输入密码" required>
+			</div>
+			<!--手机号码*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-mobile-phone am-icon-fw"></i></span>
+				<input type="text" id="phone" class="am-form-field"
+					   pattern="^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$"
+					   placeholder="请输入您的手机号码" required>
+				<span class="am-input-group-label" id="sendSms">发送验证码</span>
+			</div>
+			<!--验证码*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-check-circle am-icon-fw"></i></span>
+				<input type="text" id="checkcode" class="am-form-field" placeholder="请输入验证码" required>
+			</div>
+			<!--身份证号码*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-credit-card am-icon-fw"></i></span>
+				<input type="text" id="idcard" class="am-form-field" pattern="^([0-9]){7,18}(x|X)?$"
+					   placeholder="请输入您的身份证号码" required>
+			</div>
+			<input type="hidden" id="openid" name="openid" value="">
+			<input type="hidden" id="accesstoken" name="accesstoken" value="">
+			<!--注册按钮-->
+			<div class="am-input-group am-block">
+				<button class="am-btn am-btn-warning am-btn-block" id="register-button">注册</button>
+			</div>
+		</form>
+	</div>
+</div>
+<!--/登陆表单-->
+
+<!--其它登陆方式-->
+<style>
+	.login-unit {
+		padding: 2px;
+	}
+
+	#other-login {
+		margin-top: 20%;
+	}
+</style>
+<div class="am-g" id="other-login">
+	您还可以使用下列方式登录
+	<ul class="am-avg-sm-4 am-u-md-10 am-u-sm-centered">
+		<li class="login-unit"><a href="#" class="am-btn am-btn-primary am-btn-block"><i class="fa fa-qq fa-lg"></i>&nbsp;QQ</a>
+		</li>
+		<li class="login-unit"><a href="#" class="am-btn am-btn-secondary am-btn-block"><i
+				class="fa fa-wechat fa-lg"></i>&nbsp;微信</a></li>
+		<li class="login-unit"><a href="#" class="am-btn am-btn-danger am-btn-block">支付宝</a></li>
+		<li class="login-unit"><a href="#" class="am-btn am-btn-success am-btn-block"><i class="fa fa-weibo fa-lg"></i>&nbsp;微博</a>
+		</li>
+	</ul>
+</div>
+<!--/其它登陆方式-->
+
+<script>
+	var openid = getParameterValue(window.location.href, 'openid');
+	var accesstoken = getParameterValue(window.location.href, 'accesstoken');
+	$('#openid').val(openid);
+	$('#accesstoken').val(accesstoken);
+/*	$.getJSON('http://www.htyou.com/user/htuser_login.action?openid=' + openid + '&accesstoken=' + accesstoken + '&info_type=120615', function (result) {
+		alert(JSON.stringify(result));
+	});*/
+
+	//点击发送按钮的处理
+	(function ($) {
+		var status = false;
+		$(document).delegate('#sendSms', 'click', function (result) {
+			//如果电话号码栏目不合规范则不发送
+			if ($('#phone').val() != $('#phone').val().match(/^1[0-9]{10}$/)) {
+				alert('手机号码错误，请修改后重新发送');
+				return false;
+			}
+			var intervalid = null;
+			if ($('#sendSms').text() != '发送验证码') {
+				return false;
+			}
+			$('#sendSms').text('60');//设置60秒间隔
+			intervalid = setInterval(function () {
+				if (parseInt($('#sendSms').text()) > 0) {
+					$('#sendSms').text(parseInt($('#sendSms').text()) - 1);
+				} else {
+					$('#sendSms').text('发送验证码');
+					clearInterval(intervalid);
+				}
+			}, 1000);
+			$.getJSON('http://www.htyou.com/user/htuser_sendSmsConfirm.action?phone=13762338415',function(result){
+				if (result.status=='false'){
+					alert('验证码发送失败，请稍后尝试');
+				}
+			});
+
+		});
+	})($);
+
+	//点击注册按钮执行的操作
+	(function ($) {
+		$(document).delegate('#register-button', 'click', function () {
+			//先验证用户验证码是否正确
+			$.getJSON('/user/htuser_getSmsConfirm.action?phone=' + $('#phone').val() + '&vaildcode=' + $('#checkcode').val(), function (result) {
+				if (result.status == 1) {
+					//验证用户两次密码是否一致
+					if ($('#password').val() != $('#repassword').val()) {
+						$('#password').val('');
+						$('#repassword').val('');
+						alert('您两次输入的密码不一致，请重新填写再提交');
+						return false;
+					}
+					//如果没有openid和accesstoken也无法注册
+					if ($('#openid').val()=='' || $('#accesstoken').val()==''){
+						alert('您没有通过微信接口验证，请重新进入该页面')
+						return false;
+					}
+					//提交用户注册信息到注册接口
+					var regPort = '/user/htuser_register.action?info_type=120615';
+					regPort += '&identifyId=' + $('#idcard').val();
+					regPort += '&phone=' + $('#phone').val();
+					regPort += '&username=' + $('#username').val();
+					regPort += '&password=' + $('#password').val();
+					regPort += '&openid=' + $('#openid').val();
+					regPort += '&accesstoken=' + $('#accesstoken').val();
+					//alert(regPort);
+					$.getJSON(regPort, function(result){
+						if (result.status==0){
+							alert('注册异常失败');
+							return false;
+						}
+						if (result.status==-1){
+							alert('用户填写手机信息不正确，请重新填写！');
+							return false;
+						}
+						if (result.status==-2){
+							alert('用户身份证信息不规范，请重新填写！');
+							return false;
+						}
+						if (result.status==1){
+							alert('注册成功！系统将自动跳转到首页！');
+							window.location.href = 'index.html';
+						}
+					});
+
+				}
+				if (result.status == 0) {
+					alert('您的验证码错误，请重新获取验证码后再尝试。')
+				}
+			});
+			//验证码正确后在提交注册
+			//验证码不正确则
+			return false;
+		});
+	})($);
+</script>
+
+<!--底部LOGO-->
+<style>
+	#bottom-panel {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		text-align: center;
+	}
+</style>
+<div id="bottom-panel">
+	<img src="./images/htyou_logo.png" alt="华天旅游">
+</div>
+<!--/底部LOGO-->
+</body>
+</html>

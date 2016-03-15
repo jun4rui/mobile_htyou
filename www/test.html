@@ -14,7 +14,8 @@
 	//先判断是不是在微信环境下
 	if (whereami().toLowerCase()=='weixin'){
 		//window.location.href = 'http://www.htyou.com/weixin/thirdWebPageLoginHT.action?page_url='+window.location.href.substr(0,window.location.href.lastIndexOf('/'))+'/weixin_H5/temp.html';
-		window.location.href = 'http://www.htyou.com/weixin/thirdWebPageLoginHT.action?page_url='+'temp.html';
+		//window.location.href = '/weixin/thirdWebPageLoginHT.action?page_url='+'user-register.html';
+		window.location.href = 'user-register.html';
 	}else{
 		$('body').append('<h1>不在weixin中</h1>');
 	}

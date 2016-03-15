@@ -585,6 +585,14 @@ function deviceType(){
 	}
 })(window);
 
+//DEBUG模式
+(function(){
+	//DEBUG模式
+	if (window.location.href.toLowerCase().indexOf('mode=debug')>-1){
+		alert(window.localStorage.getItem('WEIXIN_DATA'));
+	}
+})();
+
 
 
 
