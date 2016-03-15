@@ -560,11 +560,11 @@ function deviceType(){
 	}
 	//是iPad的判断
 	if (platform.indexOf('iPad')>-1){
-		return "iPad"
+		return "iPad";
 	}
 
 	//其它设备返回Ohter
-	return "Other"
+	return "Other";
 }
 
 
