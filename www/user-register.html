@@ -206,10 +206,11 @@
 						return false;
 					}
 					//提交用户注册信息到注册接口
+					//20160316 曹熙要求把username参数改成account提交
 					var regPort = '/user/htuser_register.action?info_type=120615';
 					regPort += '&identifyId=' + $('#idcard').val();
 					regPort += '&phone=' + $('#phone').val();
-					regPort += '&username=' + $('#username').val();
+					regPort += '&account=' + $('#username').val();
 					regPort += '&password=' + $('#password').val();
 					regPort += '&openid=' + $('#openid').val();
 					regPort += '&accesstoken=' + $('#accesstoken').val();
@@ -229,6 +230,7 @@
 						}
 						if (result.status==1){
 							alert('注册成功！系统将自动跳转到首页！');
+							window.localStorage.setItem('USER_DATA', JSON.stringify(result.guestVO));
 							window.location.href = 'index.html';
 						}
 					});
