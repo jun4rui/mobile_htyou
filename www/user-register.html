@@ -54,7 +54,7 @@
 </style>
 <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
 	<div class="am-header-left am-header-nav">
-		<!--下拉菜单-->
+		<!--下拉菜单
 		<i class="am-header-icon am-icon-chevron-left htyou-header-menu" onclick="doBack()"></i>
 		<!--/下拉菜单-->
 	</div>
@@ -66,9 +66,9 @@
 	</h1>
 	<!--右侧在线客服-->
 	<div class="am-header-right am-header-nav">
-		<a href="user-login.html">
+		<!--<a href="user-login.html">
 			登录
-		</a>
+		</a>-->
 	</div>
 	<!--/右侧在线客服-->
 </header>
@@ -131,6 +131,7 @@
 
 	#other-login {
 		margin-top: 20%;
+		display:none;
 	}
 </style>
 <div class="am-g" id="other-login">
@@ -191,13 +192,19 @@
 	(function ($) {
 		$(document).delegate('#register-button', 'click', function () {
 			//先验证用户验证码是否正确
+			//alert('/user/htuser_getSmsConfirm.action?phone=' + $('#phone').val() + '&vaildcode=' + $('#checkcode').val());
 			$.getJSON('/user/htuser_getSmsConfirm.action?phone=' + $('#phone').val() + '&vaildcode=' + $('#checkcode').val(), function (result) {
-				if (result.status == 1) {
+				if (result.status == 0) {
 					//验证用户两次密码是否一致
 					if ($('#password').val() != $('#repassword').val()) {
 						$('#password').val('');
 						$('#repassword').val('');
 						alert('您两次输入的密码不一致，请重新填写再提交');
+						return false;
+					}
+					//验证用户输入的account：5～32个字符长度，不能是中文
+					if ($('#username').val().match(/^[a-zA-Z]{1}[a-zA-Z0-9]{4,31}$/)==null){
+						alert('您的帐户名称必须用英文字母开头，并且只使用英文字符和数字，长度应该在5～32个字符之间');
 						return false;
 					}
 					//如果没有openid和accesstoken也无法注册
@@ -221,11 +228,11 @@
 							return false;
 						}
 						if (result.status==-1){
-							alert('用户填写手机信息不正确，请重新填写！');
+							alert('用户填写手机信息不正确或者已存在，请重新填写！');
 							return false;
 						}
 						if (result.status==-2){
-							alert('用户身份证信息不规范，请重新填写！');
+							alert('用户身份证信息不规范或者已存在，请重新填写！');
 							return false;
 						}
 						if (result.status==1){
@@ -258,7 +265,7 @@
 	}
 </style>
 <div id="bottom-panel">
-	<img src="./images/htyou_logo.png" alt="华天旅游">
+	<img src="/static/htyou_logo.png" alt="华天旅游">
 </div>
 <!--/底部LOGO-->
 </body>

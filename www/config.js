@@ -1,13 +1,18 @@
 /**
  * Created by jun4r on 2015/9/18.
  */
-var server_addr = 'http://www.htyou.com';						//JSON接口服务器地址，调用接口时用，方便更换
+var server_addr = 'http://ipad.htyou.com';						//JSON接口服务器地址，调用接口时用，方便更换
 var _INFODATA	= window.localStorage.getItem('INFO_DATA');		//_INFODATA变量保存销售人员信息用，保存在localStorage中
 var _INFOID		= '';											//_INFOID表示销售人员的系统内部ID编号
 if (_INFODATA!=null){
 	if (_INFODATA.indexOf(',')>-1){
 		_INFOID 	= _INFODATA.split(',')[3];
 	}
+}
+var _USERDATA	= JSON.parse(window.localStorage.getItem('USER_DATA'));		//_USERDATA变量保存用户信息
+//DEBUG
+if (_USERDATA.guestAccount=="weixin35352291"){
+	alert(JSON.stringify(_USERDATA));
 }
 
 //查询url参数函数
@@ -571,15 +576,15 @@ function deviceType(){
 //20160311 用户从微信登录的相关功能
 //逻辑：如果用户是微信登录，则在index.html就会跳转到微信授权页面，授权完毕以后会跳转到main.html并传送openid和accesstoken两个参数，需要用这两个参数获取用户信息并保存到localStorage中。
 //功能：如果在main.html页面发现附带有参数：openid和accesstoken，则调用接口获取用户信息并保存到localStorage中
+//20160314 曹熙又变了，现在这个接口要用id来取
 (function(window){
 	if (window.location.href.indexOf('main.html')){
-		var openid      = getParameterValue(window.location.href, 'openid');
-		var accesstoken = getParameterValue(window.location.href, 'accesstoken');
+		var userid      = getParameterValue(window.location.href, 'id');
 		//两个参数都必须有，并且不为空才能调用接口获取用户数据
-		if (openid!='' && accesstoken!=''){
-			$.getJSON(server_addr+'/user/htuser_login.action?openid='+openid+'&accesstoken='+accesstoken+'&info_type=120615', function (result) {
+		if (userid!=''){
+			$.getJSON(server_addr+'/user/htuser_getGuestsInfoById.action?userid='+userid, function (result) {
 				//从接口获得的用户数据保存到localStorage中
-				window.localStorage.setItem('WEIXIN_DATA', JSON.stringify(result));
+				window.localStorage.setItem('USER_DATA', JSON.stringify(encodeURIComponent(result.guestVO)));
 			});
 		}
 	}
@@ -587,12 +592,11 @@ function deviceType(){
 
 //DEBUG模式
 (function(){
-	//DEBUG模式
-	if (window.location.href.toLowerCase().indexOf('mode=debug')>-1){
-		alert(window.localStorage.getItem('WEIXIN_DATA'));
-	}
+
 })();
-
-
+$.getJSON('/user/htuser_getGuestsInfoById.action?userid=626685', function (result) {
+	//从接口获得的用户数据保存到localStorage中
+	console.log(result.guse);
+});
 
 
