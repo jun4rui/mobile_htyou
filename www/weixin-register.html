@@ -195,7 +195,7 @@
 			//先验证用户验证码是否正确
 			//alert('/user/htuser_getSmsConfirm.action?phone=' + $('#phone').val() + '&vaildcode=' + $('#checkcode').val());
 			$.getJSON('/user/htuser_getSmsConfirm.action?phone=' + $('#phone').val() + '&vaildcode=' + $('#checkcode').val(), function (result) {
-				if (result.status == 0) {
+				if (result.status == 1) {
 					//验证用户两次密码是否一致
 					if ($('#password').val() != $('#repassword').val()) {
 						$('#password').val('');
