@@ -17,13 +17,7 @@
 	<script src="./config.js"></script>
 	<script>
 		//先判断是不是在微信环境下
-		if (whereami().toLowerCase()=='weixin'){
-			var openid = getParameterValue(window.location.href, 'openid');
-			var accesstoken = getParameterValue(window.location.href, 'accesstoken');
-			if (openid=='' && accesstoken==''){
-				window.location.href = '/weixin/thirdWebPageLoginHT.action?page_url='+'weixin-register.html';
-			}
-		}else{
+		if (whereami().toLowerCase()!='weixin'){
 			alert('请在微信中访问！');
 			window.location.href = './index.html';
 		}
