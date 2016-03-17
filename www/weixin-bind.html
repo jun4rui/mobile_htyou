@@ -21,11 +21,10 @@
 			var openid = getParameterValue(window.location.href, 'openid');
 			var accesstoken = getParameterValue(window.location.href, 'accesstoken');
 			if (openid=='' && accesstoken==''){
-				window.location.href = '/weixin/thirdWebPageLoginHT.action?page_url='+'weixin-register.html';
+				window.location.href = '/weixin/thirdWebPageLoginHT.action?page_url='+'weixin-bind.html';
 			}
 		}else{
-			alert('请在微信中访问！');
-			window.location.href = './index.html';
+			$('body').append('<h1>请在微信中访问</h1>');
 		}
 	</script>
 	<style>
@@ -154,9 +153,9 @@
 	var accesstoken = getParameterValue(window.location.href, 'accesstoken');
 	$('#openid').val(openid);
 	$('#accesstoken').val(accesstoken);
-/*	$.getJSON('http://www.htyou.com/user/htuser_login.action?openid=' + openid + '&accesstoken=' + accesstoken + '&info_type=120615', function (result) {
-		alert(JSON.stringify(result));
-	});*/
+	/*	$.getJSON('http://www.htyou.com/user/htuser_login.action?openid=' + openid + '&accesstoken=' + accesstoken + '&info_type=120615', function (result) {
+	 alert(JSON.stringify(result));
+	 });*/
 
 	//点击发送按钮的处理
 	(function ($) {
