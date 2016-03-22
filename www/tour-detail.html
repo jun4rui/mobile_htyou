@@ -16,7 +16,7 @@
 	<!--js配置文件-->
 	<script src="./config.js"></script>
 	<script>
-		var lineid = getParameterValue(window.location.href,'lineid');
+		var lineid = getParameterValue(window.location.href, 'lineid');
 		avalon.ready(function () {
 			var tourVM = avalon.define({
 				$id: 'tour',
@@ -38,7 +38,7 @@
 			});
 			avalon.scan();
 			//$.getJSON('http://www.htyou.com/mobile/ipad_queryTourTeam.action?lineid=8155&jsoncallback=?',function(result){
-			console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
+			//console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
 			$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
 				//如果产品已经不存在的处理
 				if (result.status!=1){
@@ -46,7 +46,7 @@
 				}
 				tourVM.detail   = result;
 				tourVM.nation   = result.value.nation.split(',');
-				console.log(result.value.nation.split(','));
+				//console.log(result.value.nation.split(','));
 				if (result.value.tourtype==1)
 					tourVM.tourtype = '散客自组';
 				if (result.value.tourtype==2)
@@ -93,7 +93,7 @@
 			/*线下支付的处理流程*/
 			if ($('#pay_type').val()=='121604'){
 				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
-				console.log('[SUBMIT]:'+getUrl);
+				//console.log('[SUBMIT]:'+getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
 				//提交数据
@@ -446,7 +446,7 @@
 
 
 
-<div id="btn-style-1" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px;">
+<div id="btn-style-1" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px; display:none;">
 	<button type="button" class="am-btn am-btn-success am-btn-block" data-am-modal="{target:'#order-modal'}">
 		开始预定
 	</button>
@@ -732,10 +732,10 @@
 					tourList    = result.value;
 					var tempDateStr	= tourList[0].tourdate.split("-");
 					drawCal(parseInt(tempDateStr[0]),parseInt(tempDateStr[1])-1);
-					console.log(tempDateStr);
+					//console.log(tempDateStr);
 				});
 
-				console.log('===================== Cal end =================');
+				//console.log('===================== Cal end =================');
 			</script>
 
 			<!--/日历选择器-->
@@ -846,7 +846,30 @@ TODO-->
 		if (whereami()!='weixin'){
 			$('#pay_type option[value=121603]').remove();
 		}
+		//20160322 CJ 只能让散客自组产品进行购买
+		$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
+			if (result.value.tourtype==1){		//1是散客自组
+				$('#btn-style-1').show();
+			}
+			//根据接口返回状态判断线路拥有何种支付方式
+			$.getJSON('/tour/tourorder_getProductPaymode.action?cteamcode='+result.value.jzluid, function(result){
+				console.log('mode:'+result.paymode);
+				if (result.paymode==-1) {	//线下支付
+					//console.log(-1);
+					$('#pay_type option[value=121604]').show();
+					$('#pay_type option[value=121603], #pay_type option[value=121601]').hide();
 
+				}
+				if (result.paymode==1) {	//线上、线下支付
+					$('#pay_type option').show();
+				}
+				if (result.paymode==0) {	//线上支付超时
+					$('#pay_type option[value=121604]').show();
+					$('#pay_type option[value=121603], #pay_type option[value=121601]').show().prop('disabled', true);
+					$('label[for=pay_type]').append('<span style="color:red;font-size:.8em">(为了提供您品质服务，在线支付时间是8：00~20：00)</span>');
+				}
+			});
+		});
 	});
 </script>
 </body>
