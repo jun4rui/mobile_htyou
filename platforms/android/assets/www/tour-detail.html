@@ -16,7 +16,7 @@
 	<!--js配置文件-->
 	<script src="./config.js"></script>
 	<script>
-		var lineid = getParameterValue(window.location.href,'lineid');
+		var lineid = getParameterValue(window.location.href, 'lineid');
 		avalon.ready(function () {
 			var tourVM = avalon.define({
 				$id: 'tour',
@@ -38,7 +38,7 @@
 			});
 			avalon.scan();
 			//$.getJSON('http://www.htyou.com/mobile/ipad_queryTourTeam.action?lineid=8155&jsoncallback=?',function(result){
-			console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
+			//console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
 			$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
 				//如果产品已经不存在的处理
 				if (result.status!=1){
@@ -46,7 +46,7 @@
 				}
 				tourVM.detail   = result;
 				tourVM.nation   = result.value.nation.split(',');
-				console.log(result.value.nation.split(','));
+				//console.log(result.value.nation.split(','));
 				if (result.value.tourtype==1)
 					tourVM.tourtype = '散客自组';
 				if (result.value.tourtype==2)
@@ -93,7 +93,7 @@
 			/*线下支付的处理流程*/
 			if ($('#pay_type').val()=='121604'){
 				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
-				console.log('[SUBMIT]:'+getUrl);
+				console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
 				//提交数据
@@ -162,7 +162,42 @@
 					//return true;
 				});
 			}
+			/*支付宝支付的处理流程*/
+			if ($('#pay_type').val()=='121601'){
+				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
+				//关闭提交按钮
+				$('#submit-btn').attr('disabled','disabled');
+				//提交数据
+				$.getJSON(server_addr+getUrl, function(result, status){
+					//console.log('status:'+status);
+					if (result.status==1){
+						//成功的处理
+						//console.log('成功');
+						var oderInfo	= ''
+								+'<strong style="color:#000;">'+result.orderParam.tourproname+'</strong><br/>'
+								+'<strong style="color:#F00;">订单单价：</strong>&yen;'+result.orderParam.personprice+'元<br/>'
+								+'<strong style="color:#F00;">参团人数：</strong>'+result.orderParam.person_num+'人<br/>'
+								+'<strong style="color:#F00;">订单总价：</strong>&yen;'+result.orderParam.order_amount+'元<br/>'
+								+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
 
+						$('#order-message .order-message-title').text('进入支付宝支付流程');
+						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">支付宝支付</a> 付款');
+						$('#order-message').modal('open');
+						$('#submit-btn').text('已下单');
+					}else{
+						//失败的处理
+						$('#order-message .order-message-title').text('订单提交失败！');
+						$('#order-message .order-message-content').text('因为异常原因，您的订单发生错误，请稍后尝试重新提交。\n'/*+result.status+'\n'+'/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'*/);
+						$('#order-message').modal('open');
+						//console.log('失败');
+						$('#submit-btn').removeAttr('disabled');
+					}
+				}).done(function(){
+					//打开提交按钮
+					//$('#submit-btn').removeAttr('disabled');
+					//return true;
+				});
+			}
 		}
 	</script>
 	<style>
@@ -446,7 +481,7 @@
 
 
 
-<div id="btn-style-1" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px;">
+<div id="btn-style-1" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px; display:none;">
 	<button type="button" class="am-btn am-btn-success am-btn-block" data-am-modal="{target:'#order-modal'}">
 		开始预定
 	</button>
@@ -732,10 +767,10 @@
 					tourList    = result.value;
 					var tempDateStr	= tourList[0].tourdate.split("-");
 					drawCal(parseInt(tempDateStr[0]),parseInt(tempDateStr[1])-1);
-					console.log(tempDateStr);
+					//console.log(tempDateStr);
 				});
 
-				console.log('===================== Cal end =================');
+				//console.log('===================== Cal end =================');
 			</script>
 
 			<!--/日历选择器-->
@@ -797,12 +832,12 @@
 								<select name="pay_tpe" id="pay_type">
 									<option value="121604">线下支付</option>
 									<option value="121603">微信</option>
-									<!--<option value="121601">支付宝</option>-->
+									<option value="121601">支付宝</option>
 								</select>
 							</div>
 							<div class="am-form-group" style="margin:0;">
 								<div class="am-u-sm-12 am-u-sm-center am-u-sm-centered" style="padding:0;">
-									<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()">提交</button>
+									<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()" style="display:none;">提交</button>
 								</div>
 							</div>
 							<input type="hidden" id="order_amount" ms-attr-value="{{detail.value.adultprice}}"/>
@@ -845,8 +880,37 @@ TODO-->
 		//不在微信中将删除微信支付的选项
 		if (whereami()!='weixin'){
 			$('#pay_type option[value=121603]').remove();
+		}else{
+			// 在微信下则移除支付宝方式
+			$('#pay_type option[value=121601]').remove();
 		}
 
+		//20160322 CJ 只能让散客自组产品进行购买
+		$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
+			if (result.value.tourtype==1){		//1是散客自组
+				$('#btn-style-1, #submit-btn').show();
+			}else{
+				$('#btn-style-1, #btn-style-2 button').hide();
+			}
+			//根据接口返回状态判断线路拥有何种支付方式
+			$.getJSON('/tour/tourorder_getProductPaymode.action?cteamcode='+result.value.jzluid, function(result){
+				console.log('mode:'+result.paymode);
+				if (result.paymode==-1) {	//线下支付
+					//console.log(-1);
+					$('#pay_type option[value=121604]').show();
+					$('#pay_type option[value=121603], #pay_type option[value=121601]').hide();
+
+				}
+				if (result.paymode==1) {	//线上、线下支付
+					$('#pay_type option').show();
+				}
+				if (result.paymode==0) {	//线上支付超时
+					$('#pay_type option[value=121604]').show();
+					$('#pay_type option[value=121603], #pay_type option[value=121601]').show().prop('disabled', true);
+					$('label[for=pay_type]').append('<span style="color:red;font-size:.8em">(为了提供您品质服务，在线支付时间是8：00~20：00)</span>');
+				}
+			});
+		});
 	});
 </script>
 </body>
