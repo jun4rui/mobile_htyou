@@ -1,23 +1,20 @@
 <!doctype html>
-<html lang="zh_CN">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <!--jQuery框架-->
-    <script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="./config.js"></script>
 </head>
 <body>
-<a href="temp.html">刷新</a>
-<script>
-    $.getJSON('http://www.htyou.com/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount=238&tourOrderVO.preferential_price=238&tourOrderVO.pay_type=121603&tourOrderVO.contact_name=test&tourOrderVO.contact_sex=120201&tourOrderVO.contact_phone=13333333333&tourOrderVO.tourproname=&tourOrderVO.tourproid=22717&tourOrderVO.jzl_cteamcode=HT-HNS-2160116-00041&tourOrderVO.start_date=2016-01-16&tourOrderVO.adult_num=1&tourOrderVO.child_num=0&tourOrderVO.order_source=16&_=1452652804019',function(result){
-        console.log('addTourOrder:',result);
-        $('body').prepend('<a href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">goto url</a></>');
-//        $.getJSON('http://www.htyou.com/mobile/tourorder_payForOrderRedNet.action?sys_show_order_id='+result.order.sys_show_order_id+'&datatype=json&jsoncallback=?',function(result){
-//            console.log('payForOrderRedNet',result);
-//            //$('body').prepend('<h1>'+result.code_url+'</h1>');
-//            $('body').prepend('<a href="'+result.code_url+'">'+result.code_url+'</a>');
-//        })
-    });
-</script>
+
 </body>
 </html>
+<script>
+	//$('body').append(window.location.href+':'+getParameterValue(window.location.href,'openid'));
+	var openid = getParameterValue(window.location.href, 'openid');
+	var accesstoken = getParameterValue(window.location.href, 'accesstoken');
+	$.getJSON('http://ipad.htyou.com/user/htuser_login.action?openid='+openid+'&accesstoken='+accesstoken+'&info_type=120615', function (result) {
+		alert(JSON.stringify(result));
+	});
+</script>

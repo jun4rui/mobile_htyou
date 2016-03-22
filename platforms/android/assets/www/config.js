@@ -1,7 +1,19 @@
 /**
  * Created by jun4r on 2015/9/18.
  */
-var server_addr = 'http://www.htyou.com';
+var server_addr = 'http://ipad.htyou.com';						//JSON接口服务器地址，调用接口时用，方便更换
+var _INFODATA	= window.localStorage.getItem('INFO_DATA');		//_INFODATA变量保存销售人员信息用，保存在localStorage中
+var _INFOID		= '';											//_INFOID表示销售人员的系统内部ID编号
+if (_INFODATA!=null){
+	if (_INFODATA.indexOf(',')>-1){
+		_INFOID 	= _INFODATA.split(',')[3];
+	}
+}
+var _USERDATA	= JSON.parse(window.localStorage.getItem('USER_DATA'));		//_USERDATA变量保存用户信息
+//DEBUG
+if (_USERDATA.guestAccount=="weixin35352291"){
+	alert(JSON.stringify(_USERDATA));
+}
 
 //查询url参数函数
 //有则返回参数列表list
@@ -126,11 +138,33 @@ function doBack(){
 		if ((infoData = window.localStorage.getItem('INFO_DATA'))!=null){
 			//console.log(infoData);
 			//如果保存时间太久超过24小时则摧毁INFO_DATA，否则显示销售员信息
-			if(((new Date).getTime()-infoData.split(',')[3])>86400000){
+			if(((new Date).getTime()-infoData.split(',')[4])>86400000){
 				//console.log((new Date).getTime()-parseInt(infoData.split(',')[3]));
 				window.localStorage.removeItem('INFO_DATA');
 			}else{
 				$(document).ready(function(){
+					//线路详情页面的处理方式
+					if (window.location.href.indexOf('tour-detail.html')>-1){
+						$('#btn-style-2 .face').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+						$('#btn-style-2 a').attr('href','tel:'+infoData.split(',')[1]);
+						$('#btn-style-1').hide();
+						$('#btn-style-2').show();
+						return true;
+					}
+					//首页的处理方式
+					if (window.location.href.indexOf('main.html')>-1){
+						$('#seller-panel').height(parseInt($(window).width()/1000*657));
+						$('#seller-panel .seller-panel-bg').height(parseInt($(window).width()/1000*657));
+						//$('#seller-panel .seller-panel-bg').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+						$('#seller-panel .seller-panel-bg').css({'background':'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat','background-size':'cover'});
+						$('#seller-panel img').attr({'src':''+infoData.split(',')[2]});
+						$('#seller-panel a').attr({'href':'tel:'+infoData.split(',')[1]});
+						$('#seller-panel a span').text(infoData.split(',')[0]);
+						$('#galleryAD').hide();
+						$('#seller-panel').show();
+						return true;
+					}
+					//一般的处理方式
 					$('body').append('<div id="seller-section"></div>');
 					$('#seller-section').load('seller.html',function(){
 						$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
@@ -138,7 +172,6 @@ function doBack(){
 						$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
 						$('#seller').animate({'left':'1rem','bottom:':'1rem'});
 					});
-
 				});
 			}
 		}
@@ -148,14 +181,14 @@ function doBack(){
 	if (infoID != '' || userID != '') {
 		//用infoID的情况
 		if (infoID != '') {
-			$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&infoID=' + infoID, function (result) {
+			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&infoID=' + infoID, function (result) {
 				//是否找到销售人员
 				if (result.length != 0) {
 					//判断是否是销售人员类型
 					if (result[0].info_class == '421') {
 						console.log(result[0]);
 						//保存到localStorage中的INFO_DATA中
-						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+(new Date).getTime());
+						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+result[0].info_id+','+(new Date).getTime());
 					}
 				}
 				//然后在当前页面加入销售人员UI效果
@@ -164,14 +197,14 @@ function doBack(){
 		}
 		//用userID的情况
 		if (userID != '') {
-			$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&url=' + userID, function (result) {
+			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&url=' + userID, function (result) {
 				//是否找到销售人员
 				if (result.length != 0) {
 					//判断是否是销售人员类型
 					if (result[0].info_class == '421') {
 						console.log(result[0]);
 						//保存到localStorage中的INFO_DATA中
-						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+(new Date).getTime());
+						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+result[0].info_id+','+(new Date).getTime());
 					}
 				}
 				//然后在当前页面加入销售人员UI效果
@@ -187,16 +220,35 @@ function doBack(){
 
 
 
-
-//分享至weixin的函数
+//老版分享函数 已停用
+/*//分享至weixin的函数
 function _WXShare(img, width, height, title, desc, url, appid) {
+	// 获得info_id(华天旅游网微新版专用)
+	var infoID		= '';
+	var INFO_DATA	= window.localStorage.getItem('INFO_DATA');
+	var otherUrl	= document.location.href;
+	if (INFO_DATA!=null){
+		if (INFO_DATA.split(',').length==5){
+			infoID	= INFO_DATA.split(',')[3];
+			//url有参数的处理方式
+			if (otherUrl.indexOf('?')>-1){
+				otherUrl 	= otherUrl+'&infoID='+infoID;
+			}else{
+				//url没参数的处理方式
+				otherUrl 	= otherUrl+'?infoID='+infoID;
+			}
+		}
+	}
+	//console.log(infoID,INFO_DATA);
+
 	//初始化参数
 	img = img || 'http://www.htyou.com/images/v4/header_logo1.png';
 	width = width || 100;
 	height = height || 100;
 	title = title || document.title;
 	desc = desc || document.title;
-	url = url || document.location.href;
+	//url = url || document.location.href;
+	url = url || otherUrl;
 	appid = appid || '';
 	//微信内置方法
 	function _ShareFriend() {
@@ -260,16 +312,43 @@ function _WXShare(img, width, height, title, desc, url, appid) {
 			_ShareWB();
 		});
 	}, false);
-}
+}*/
 
-//页面载入后算出分享信息
+/*//页面载入后算出分享信息
 //TODO:20160112 一些页面第一张图片可能是按钮，并且title有些只有“华天旅游网”5个字
 $("document").ready(function(){
 	//设定5s后设定分享数据
 	window.setInterval(function(){
+		//线路详情使用的分享模式
+		if (window.location.href.indexOf('tour-detail.html')>-1){
+			_WXShare($('#galleryAD img').eq(0).attr('src'),'640','480',$('.info-section h3').text(),'','');
+			return true;
+		}
+		//机票查询页面
+		if (window.location.href.indexOf('ticket-index.html')>-1){
+			_WXShare($('#galleryAD img').eq(0).attr('src'),'640','480','机票查询','','');
+			return true;
+		}
+		//机票查询结果页面
+		if (window.location.href.indexOf('ticket-index.html')>-1){
+			_WXShare('http://www.htyou.com/weixin_h5/images/ticket_index_title_bg.jpg','640','480','机票查询: 从'+decodeURI(getParameterValue(window.location.href,'fromCity'))+'到'+decodeURI(getParameterValue(window.location.href,'toCity')),'','');
+			return true;
+		}
+		//线路列表页面
+		if (window.location.href.indexOf('tour-list.html')>-1){
+			_WXShare($('#tourlist-section-list img').eq(0).attr('src'),'640','480','景点列表:'+decodeURI(getParameterValue(window.location.href,'q')),'','');
+			return true;
+		}
+		//区域列表页面
+		if (window.location.href.indexOf('tour-area.html')>-1){
+			_WXShare($('.am-gallery-item img').eq(0).attr('src'),'640','480',$('.am-header-title').text(),'','');
+			return true;
+		}
+		//一般情况下用标准的分享模式
 		_WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
+
 	},5000);
-});
+});*/
 
 
 //判断页面处于何种浏览器框架下
@@ -279,9 +358,245 @@ function whereami(){
 	//微信
 	if (userAgent.match(/micromessenger/i)=='micromessenger')
 		return 'weixin';
-    //Cordova
-    if (userAgent.match(/Crosswalk/i)=='crosswalk')
-        return 'cordova';
-    return 'other'
+	//Cordova
+	if (userAgent.match(/Crosswalk/i)=='crosswalk')
+		return 'cordova';
+	return 'other'
 }
 //alert(navigator.userAgent);
+
+
+// 配置jquery,requirejs语法
+avalon.config({
+	paths: {
+		/*jquery: '../jquery/dist/jquery.min.js',*/
+		/*config: '../../config.js',*/
+		wx: 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js'
+	}
+});
+
+
+// 20160201 新版微信JS-SDK接口调用
+$("document").ready(function() {
+	window.setTimeout(function () {
+		//alert('3');
+		if (whereami() == 'weixin') {
+			/*alert('http://www.htyou.com/weixin/getJsConfig.action?page_url='+window.location.href);*/
+			require(['wx'], function (wx) {
+				//alert('4');
+				$.getJSON('http://www.htyou.com/weixin/getJsConfig.action?jsoncallback=?&page_url=' + window.location.href, function (result) {
+					//alert(result.timestamp+'\n'+result.appId+'\n'+result.noncestr+'\n'+result.url+'\n'+result.signature);
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: result.appId, // 必填，公众号的唯一标识
+						timestamp: result.timestamp, // 必填，生成签名的时间戳
+						nonceStr: result.noncestr, // 必填，生成签名的随机串
+						signature: result.signature,// 必填，签名，见附录1
+						jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo',
+							'onMenuShareQZone',
+							'hideMenuItems',
+							'showMenuItems',
+							'hideAllNonBaseMenuItem',
+							'showAllNonBaseMenuItem',
+							'translateVoice',
+							'startRecord',
+							'stopRecord',
+							'onVoiceRecordEnd',
+							'playVoice',
+							'onVoicePlayEnd',
+							'pauseVoice',
+							'stopVoice',
+							'uploadVoice',
+							'downloadVoice',
+							'chooseImage',
+							'previewImage',
+							'uploadImage',
+							'downloadImage',
+							'getNetworkType',
+							'openLocation',
+							'getLocation',
+							'hideOptionMenu',
+							'showOptionMenu',
+							'closeWindow',
+							'scanQRCode',
+							'chooseWXPay',
+							'openProductSpecificView',
+							'addCard',
+							'chooseCard',
+							'openCard'
+						] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+					wx.ready(function () {
+						var title = $('title').text();
+						var desc = $('title').text();
+						var link = window.location.href;
+						var imgUrl = $('body img').eq(0).attr('src');
+						if (link.indexOf('?')){
+							link = window.location.href+'&infoid='+window.localStorage.getItem('INFO_DATA').split(',')[3];
+						}else{
+							link = window.location.href+'?infoid='+window.localStorage.getItem('INFO_DATA').split(',')[3];
+						}
+
+						//线路详情使用的分享模式
+						if (window.location.href.indexOf('tour-detail.html') > -1) {
+							imgUrl = $('#galleryAD img').eq(0).attr('src');
+							title = $('.info-section h3').text();
+							desc = '';
+						}
+						//机票查询页面
+						if (window.location.href.indexOf('ticket-index.html') > -1) {
+							imgUrl = $('#galleryAD img').eq(0).attr('src');
+							title = '机票查询';
+						}
+						//机票查询结果页面
+						if (window.location.href.indexOf('ticket-index.html') > -1) {
+							imgUrl = 'http://www.htyou.com/weixin_h5/images/ticket_index_title_bg.jpg';
+							title = '机票查询'
+							desc = '从' + decodeURI(getParameterValue(window.location.href, 'fromCity')) + '到' + decodeURI(getParameterValue(window.location.href, 'toCity'));
+						}
+						//线路列表页面
+						if (window.location.href.indexOf('tour-list.html') > -1) {
+							imgUrl = $('#tourlist-section-list img').eq(0).attr('src');
+							title = '景点列表';
+							desc = decodeURI(getParameterValue(window.location.href, 'q'));
+						}
+						//区域列表页面
+						if (window.location.href.indexOf('tour-area.html') > -1) {
+							imgUrl = $('.am-gallery-item img').eq(0).attr('src');
+							title = $('.am-header-title').text();
+							desc = $('.am-header-title').text();
+						}
+						//alert(title + '\n' + desc + '\n' + link + '\n' + imgUrl);
+						//alert(link);
+						//分享到朋友圈
+						wx.onMenuShareTimeline({
+							title: title,
+							link: link,
+							imgUrl: imgUrl,
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享给朋友
+						wx.onMenuShareAppMessage({
+							title: title,	// 分享标题
+							desc: desc,		// 分享描述
+							link: link,		// 分享链接
+							imgUrl: imgUrl,	// 分享图标
+							type: 'link',	// 分享类型,music、video或link，不填默认为link
+							dataUrl: '',	// 如果type是music或video，则要提供数据链接，默认为空
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享到QQ
+						wx.onMenuShareQQ({
+							title: title,	// 分享标题
+							desc: desc,		// 分享描述
+							link: link,		// 分享链接
+							imgUrl: imgUrl,	// 分享图标
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享到腾讯微博
+						wx.onMenuShareWeibo({
+							title: title,	// 分享标题
+							desc: desc,		// 分享描述
+							link: link,		// 分享链接
+							imgUrl: imgUrl,	// 分享图标
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享到QQ空间
+						wx.onMenuShareQZone({
+							title: title,	// 分享标题
+							desc: desc,		// 分享描述
+							link: link,		// 分享链接
+							imgUrl: imgUrl,	// 分享图标
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel: function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+					});
+				});
+			});
+		}
+	}, 3000);
+});
+
+// 判断用户设备类型
+function deviceType(){
+	var info = window.navigator;
+	var platform	= info.platform.toLowerCase();
+	var useragent	= info.userAgent.toLowerCase();
+	//是Windows的判断
+	if (platform.indexOf('win32')>-1){
+		return "Windows";
+	}
+	//是Android的判断
+	if (platform.indexOf('linux')>-1 && useragent.indexOf('android')){
+		return "Android";
+	}
+	//是iPhone的判断
+	if (platform.indexOf('iPhone')>-1){
+		return "iPhone";
+	}
+	//是iPad的判断
+	if (platform.indexOf('iPad')>-1){
+		return "iPad";
+	}
+
+	//其它设备返回Ohter
+	return "Other";
+}
+
+
+//20160311 用户从微信登录的相关功能
+//逻辑：如果用户是微信登录，则在index.html就会跳转到微信授权页面，授权完毕以后会跳转到main.html并传送openid和accesstoken两个参数，需要用这两个参数获取用户信息并保存到localStorage中。
+//功能：如果在main.html页面发现附带有参数：openid和accesstoken，则调用接口获取用户信息并保存到localStorage中
+//20160314 曹熙又变了，现在这个接口要用id来取
+(function(window){
+	if (window.location.href.indexOf('main.html')){
+		var userid      = getParameterValue(window.location.href, 'id');
+		//两个参数都必须有，并且不为空才能调用接口获取用户数据
+		if (userid!=''){
+			$.getJSON(server_addr+'/user/htuser_getGuestsInfoById.action?userid='+userid, function (result) {
+				//从接口获得的用户数据保存到localStorage中
+				window.localStorage.setItem('USER_DATA', JSON.stringify(encodeURIComponent(result.guestVO)));
+			});
+		}
+	}
+})(window);
+
+//DEBUG模式
+(function(){
+
+})();
+$.getJSON('/user/htuser_getGuestsInfoById.action?userid=626685', function (result) {
+	//从接口获得的用户数据保存到localStorage中
+	console.log(result.guse);
+});
+
+

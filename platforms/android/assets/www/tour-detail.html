@@ -1,5 +1,3 @@
-<!--TODO:日期显示还是有问题，2016年1月第一天变成周四其实是周五-->
-<!--TODO:在iOS的微信中，“查看团期”中的日期可以点击，这里不对-->
 <!doctype html>
 <html lang="zh_CN">
 <head>
@@ -42,6 +40,10 @@
 			//$.getJSON('http://www.htyou.com/mobile/ipad_queryTourTeam.action?lineid=8155&jsoncallback=?',function(result){
 			console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
 			$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
+				//如果产品已经不存在的处理
+				if (result.status!=1){
+					alert('该产品已经过期或不存在，请点击左上角返回首页');
+				}
 				tourVM.detail   = result;
 				tourVM.nation   = result.value.nation.split(',');
 				console.log(result.value.nation.split(','));
@@ -80,33 +82,86 @@
 			if ($('phone-number').val()=='' || $('#phone-number').val().length<7){
 				errMsg  += '您输入的联系电话有误。\n';
 			}
+			if ($('#pay_type').val()=='121603' && whereami()!='weixin'){
+				errMsg += '您必须使用我们的微信版才能使用微信支付。\n';
+			}
 			if(errMsg!=''){
 				alert(errMsg);
 				return false;
 			}
-			var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16';
-			//关闭提交按钮
-			$('#submit-btn').attr('disabled','disabled');
-			//提交数据
-			$.getJSON(server_addr+getUrl, function(result, status){
-				console.log('status:'+status);
-				if (result.status==1){
-					//成功的处理
-					console.log('成功');
-					$('#order-message .order-message-title').text('订单提交成功！');
-					$('#order-message .order-message-content').text('您的操作已经被我们收集整理，很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
-					$('#order-message').modal('open');
-				}else{
-					//失败的处理
-					$('#order-message .order-message-title').text('订单提交失败！');
-					$('#order-message .order-message-content').text('因为异常原因，您的订单发生错误，请尝试重新提交。');
-					$('#order-message').modal('open');
-					console.log('失败');
-				}
-			}).done(function(){
-				//打开提交按钮
-				$('#submit-btn').removeAttr('disabled');
-			});
+
+			/*线下支付的处理流程*/
+			if ($('#pay_type').val()=='121604'){
+				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
+				console.log('[SUBMIT]:'+getUrl);
+				//关闭提交按钮
+				$('#submit-btn').attr('disabled','disabled');
+				//提交数据
+				$.getJSON(server_addr+getUrl, function(result, status){
+					//console.log('status:'+status);
+					if (result.status==1){
+						//成功的处理
+						//console.log('成功');
+						var oderInfo	= ''
+							+'<strong style="color:#000;">'+result.orderParam.tourproname+'</strong><br/>'
+							+'<strong style="color:#F00;">订单单价：</strong>&yen;'+result.orderParam.personprice+'元<br/>'
+							+'<strong style="color:#F00;">参团人数：</strong>'+result.orderParam.person_num+'人<br/>'
+							+'<strong style="color:#F00;">订单总价：</strong>&yen;'+result.orderParam.order_amount+'元<br/>'
+							+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
+
+						$('#order-message .order-message-title').text('订单提交成功！');
+						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
+						$('#order-message').modal('open');
+						$('#submit-btn').text('已下单');
+					}else{
+						//失败的处理
+						$('#order-message .order-message-title').text('订单提交失败！');
+						$('#order-message .order-message-content').text('因为异常原因，您的订单发生错误，请稍后尝试重新提交。');
+						$('#order-message').modal('open');
+						//console.log('失败');
+						$('#submit-btn').removeAttr('disabled');
+					}
+				}).done(function(){
+					//重新打开提交按钮
+					//$('#submit-btn').removeAttr('disabled');
+				});
+			}
+			/*微信支付的处理流程*/
+			if ($('#pay_type').val()=='121603'){
+				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
+				//关闭提交按钮
+				$('#submit-btn').attr('disabled','disabled');
+				//提交数据
+				$.getJSON(server_addr+getUrl, function(result, status){
+					//console.log('status:'+status);
+					if (result.status==1){
+						//成功的处理
+						//console.log('成功');
+						var oderInfo	= ''
+							+'<strong style="color:#000;">'+result.orderParam.tourproname+'</strong><br/>'
+							+'<strong style="color:#F00;">订单单价：</strong>&yen;'+result.orderParam.personprice+'元<br/>'
+							+'<strong style="color:#F00;">参团人数：</strong>'+result.orderParam.person_num+'人<br/>'
+							+'<strong style="color:#F00;">订单总价：</strong>&yen;'+result.orderParam.order_amount+'元<br/>'
+							+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
+
+						$('#order-message .order-message-title').text('进入微信支付流程');
+						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">微信支付</a> 付款');
+						$('#order-message').modal('open');
+						$('#submit-btn').text('已下单');
+					}else{
+						//失败的处理
+						$('#order-message .order-message-title').text('订单提交失败！');
+						$('#order-message .order-message-content').text('因为异常原因，您的订单发生错误，请稍后尝试重新提交。\n'/*+result.status+'\n'+'/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'*/);
+						$('#order-message').modal('open');
+						//console.log('失败');
+						$('#submit-btn').removeAttr('disabled');
+					}
+				}).done(function(){
+					//打开提交按钮
+					//$('#submit-btn').removeAttr('disabled');
+					//return true;
+				});
+			}
 
 		}
 	</script>
@@ -391,10 +446,63 @@
 
 
 
-<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px;">
+<div id="btn-style-1" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" style="height:37px;line-height: 37px;">
 	<button type="button" class="am-btn am-btn-success am-btn-block" data-am-modal="{target:'#order-modal'}">
 		开始预定
 	</button>
+</div>
+
+<style>
+	.am-navbar-nav a [class*="am-icon"] {
+		display:inherit;
+	}
+	#btn-style-2 ul li[class*="am-u-"] {
+		padding-left:0;
+		padding-right: 0;
+	}
+	#btn-style-2 .am-u-sm-2 {
+		/*width:4rem;*/
+		height:4rem;
+		text-align: center;
+	}
+	#btn-style-2 .am-icon-btn {
+		width:4rem;
+		height: 4rem;
+		line-height: 4rem;
+
+	}
+	#btn-style-2 {
+		height:4rem;
+		line-height: 4rem;
+		display:none;
+	}
+	#btn-style-2 .am-btn {
+		height:4rem;
+	}
+	#btn-style-2 .face {
+		margin:0 auto;
+		border-radius: 50%;
+		border: 2px solid #FFF;
+		width:4rem;
+		height:4rem;
+	}
+</style>
+<div id="btn-style-2" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default">
+	<ul class="am-g">
+		<li class="am-u-sm-2" style="background-color: #F37B1D;">
+			<div class="face"></div>
+		</li>
+		<li class="am-u-sm-2" style="background-color: #5EB95E;">
+			<a href="" class="">
+				<i class="am-icon-btn am-icon-phone am-btn-md"></i>
+			</a>
+		</li>
+		<li class="am-u-sm-8">
+			<button type="button" class="am-btn am-btn-secondary am-btn-block" data-am-modal="{target:'#order-modal'}">
+				开始预定
+			</button>
+		</li>
+	</ul>
 </div>
 
 <!--购买窗口-->
@@ -403,6 +511,7 @@
 		color:#0c80ba;
 		text-align: center;
 		font-size:14px;
+		width:14.2%;
 	}
 	#calendar_table tr,
 	#calendar_table td {
@@ -411,13 +520,19 @@
 	}
 	#calendar_table td.flag_day {
 		color: #0084c7;
-		background: #F4D842;
-		border-radius: 50%;
+		background: rgba(255, 239, 177, 0.64);
+		/*border-radius: 50%;*/
+		line-height:100%;
+	}
+	#calendar_table td.flag_day span {
+		font-size:0.6em;
+		color:#F00;
 	}
 	.calendar_title>i.fa {
 		padding:.3em 1em;
 	}
-	.am-popup-bd {
+	#order-modal .am-popup-bd {
+		padding:0;
 		background-color:#DFDFDF;
 	}
 </style>
@@ -519,28 +634,27 @@
 					//console.log('开始绘制日历内容',inYear,inMonth);
 					var inCalDate	= new Date(inYear,inMonth);	// 获得日期的date对象
 					//var maxDate		= new Date(inCalDate.getFullYear(), inCalDate.getMonth()+1, 0).getDate();	//获得该月有多少天
-					var tempDate	= new Date(inYear,inMonth+1,1);
-					//console.log('tempdate:'+tempDate);
-					tempDate.setHours(tempDate.getHours()-3);//算法解释：取上个月第一天0点后减3个小时获得本月最后一天日期
+					var tempDate	= new Date(inYear,inMonth+1,0);
+					//console.log('inCalDate:',inCalDate,'\n','tempdate:'+tempDate);
+					//tempDate.setHours(tempDate.getHours()-3);//算法解释：取上个月第一天0点后减3个小时获得本月最后一天日期
 					var maxDate		= tempDate.getDate();
-					//var startDay	= new Date(inCalDate.getFullYear()+"-"+(inCalDate.getMonth()+1)).getDay();	//获得该月第一天是星期几
-					var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth(), 0).getDay();	//获得该月第一天是星期几
+					var startDay	= new Date(inCalDate.getFullYear(), inCalDate.getMonth(), 1).getDay();	//获得该月第一天是星期几
 
-					//console.log(inCalDate.getFullYear()+' - '+(inCalDate.getMonth()+1));
+					//console.log('startDay:',startDay);
 					// Clear calendar
 					$("#calendar_table tr td").text(" ");
 					$("#calendar_table tr td.flag_day").removeClass("flag_day");
 					// 画日历
-					console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
+					//console.log('画日历数据,maxDate: '+maxDate+', startDay:'+startDay);
 					for (var i=0; i<maxDate; i++){
 						//console.log('在'+"#calendar_table tr td:eq("+(startDay+i+7)+")"+"中绘制数字"+(i+1));
-						$("#calendar_table tr td:eq("+(startDay+i)+")").text(i+1);
+						$("#calendar_table tr td:eq("+(startDay+i)+")").html('<div class="day">'+(i+1)+'</div>');
 						// 取得这一天的日期
 						var currentDrawDay = inYear+"-"+(inMonth+1)+"-"+(i+1);
 						// 如果这一天在行程表中则加亮显示
 						//console.log('====',currentDrawDay);
 						if (checkDate(currentDrawDay)){
-							$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
+							$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day").append("<span>&yen;"+checkDate(currentDrawDay).adultprice+"</span>").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
 						}
 					}
 					// 绘制时间显示
@@ -590,17 +704,24 @@
 				// 设置日历点击行为
 				//$("td.flag_day").bind("click",function(){
 				$("#calendar_table").delegate("td.flag_day","click",function(){
-					console.log("Bind flag_day");
-					var inDate  = currentYear+"-"+(currentMonth+1)+"-"+$(this).text();
+					//console.log("Bind flag_day");
+					var inDate  = currentYear+"-"+('00'+(currentMonth+1)).substr(-2,2)+"-"+('00'+$(this).find('.day').text()).substr(-2,2);
 					if ($(this).attr('pop_num')=='已满'){	// 人满
 						alert('人数已满，请选择其它日期。');
 					}else{	// 人未满
+						/*20160219 REMOVE 因为在微信中设置selected无效，故换种方式实现
+						//清除选项
+						$("#tour-date option[selected=selected]").removeAttr('selected');
 						//遍历当前的下拉框
-						$("#tour-date option").each(function(index,value){
-							if(inDate==$(value).val().replace(/-0/g,'-')){
-								$("#tour-date option").eq(index).attr('selected','selected');
+						$("#tour-date option").each(function(){
+							if(inDate==$(this).text()){
+								$(this).attr('selected',true);
+								$("#tour-price").val($(this).attr('rt-price'));
+								//alert($("#tour-date option[selected=selected]").attr('selected'));
 							}
-						});
+						});*/
+						$("#tour-price").val($(this).attr('rt_price'));
+						$("#tour-date").val(inDate);
 					}
 				});
 
@@ -629,10 +750,17 @@
 					<form action="" class="am-form">
 						<fieldset>
 							<div class="am-form group">
-								<label for="tour-date">选择出行时间：</label>
-								<select name="" id="tour-date">
-									<option ms-attr-value="{{unit.tourdate}}" ms-repeat-unit="tourdate">{{unit.tourdate}}</option>
-								</select>
+								<label for="tour-price">当前单价：</label>
+								<input type="text" id="tour-price" value="" disabled/>
+							</div>
+							<div class="am-form group">
+								<!--<label for="tour-date">选择出行时间：</label>-->
+								<!--<select name="" id="tour-date" onchange="$('#tour-price').val($(this).children('option:selected').attr('rt-price'))">-->
+									<!--<option value="" >请选择出行日期</option>-->
+									<!--<option ms-attr-value="{{unit.tourdate}}" ms-attr-rt-price="{{unit.adultprice}}" ms-repeat-unit="tourdate">{{unit.tourdate}}</option>-->
+								<!--</select>-->
+								<label for="tour-date">出行时间：</label>
+								<input type="text" id="tour-date" value="" disabled/>
 							</div>
 							<div class="am-form-group">
 								<label for="username">联系人姓名：</label>
@@ -661,7 +789,7 @@
 									<option value="7">7人</option>
 									<option value="8">8人</option>
 									<option value="9">9人</option>
-									<option value="10">10人或以上</option>
+									<option value="10">10人</option>
 								</select>
 							</div>
 							<div class="am-form-group">
@@ -712,5 +840,14 @@ TODO-->
 	</div>
 </div>
 <!--/提示窗口-->
+<script>
+	$(document).ready(function(){
+		//不在微信中将删除微信支付的选项
+		if (whereami()!='weixin'){
+			$('#pay_type option[value=121603]').remove();
+		}
+
+	});
+</script>
 </body>
 </html>
