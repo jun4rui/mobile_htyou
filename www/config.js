@@ -10,10 +10,7 @@ if (_INFODATA!=null){
 	}
 }
 var _USERDATA	= JSON.parse(window.localStorage.getItem('USER_DATA'));		//_USERDATA变量保存用户信息
-//DEBUG
-if (_USERDATA.guestAccount=="weixin35352291"){
-	alert(JSON.stringify(_USERDATA));
-}
+
 
 //查询url参数函数
 //有则返回参数列表list
@@ -126,7 +123,6 @@ function doBack(){
 //http://www.htyou.com/common/websinfo_queryWebsInfos.action?url=oiZKXjjxNP3iA6iUfgkVo6H7sdmU&submit=ajax
 //获取，返回值为json格式，销售人员返回值中必须是"info_class": 421
 //INFO_DATA格式：姓名,电话,头像url,存储时间
-//TODO: 20160112 首页还是改成原来的大头像方式；二级页面照旧；产品详情页面改成底部分成两栏模式，左边是头像和电话，右边是预定
 (function(){
 	var infoID  = getParameterValue(window.location.href,'infoid');
 	var userID  = getParameterValue(window.location.href,'url');
@@ -220,135 +216,6 @@ function doBack(){
 
 
 
-//老版分享函数 已停用
-/*//分享至weixin的函数
-function _WXShare(img, width, height, title, desc, url, appid) {
-	// 获得info_id(华天旅游网微新版专用)
-	var infoID		= '';
-	var INFO_DATA	= window.localStorage.getItem('INFO_DATA');
-	var otherUrl	= document.location.href;
-	if (INFO_DATA!=null){
-		if (INFO_DATA.split(',').length==5){
-			infoID	= INFO_DATA.split(',')[3];
-			//url有参数的处理方式
-			if (otherUrl.indexOf('?')>-1){
-				otherUrl 	= otherUrl+'&infoID='+infoID;
-			}else{
-				//url没参数的处理方式
-				otherUrl 	= otherUrl+'?infoID='+infoID;
-			}
-		}
-	}
-	//console.log(infoID,INFO_DATA);
-
-	//初始化参数
-	img = img || 'http://www.htyou.com/images/v4/header_logo1.png';
-	width = width || 100;
-	height = height || 100;
-	title = title || document.title;
-	desc = desc || document.title;
-	//url = url || document.location.href;
-	url = url || otherUrl;
-	appid = appid || '';
-	//微信内置方法
-	function _ShareFriend() {
-		WeixinJSBridge.invoke('sendAppMessage', {
-				'appid': appid,
-				'img_url': img,
-				'img_width': width,
-				'img_height': height,
-				'link': url,
-				'desc': desc,
-				'title': title
-			},
-			function (res) {
-				_report('send_msg', res.err_msg);
-			}
-		)
-	}
-
-	function _ShareTL() {
-		WeixinJSBridge.invoke('shareTimeline', {
-				'img_url': img,
-				'img_width': width,
-				'img_height': height,
-				'link': url,
-				'desc': desc,
-				'title': title
-			}
-			,
-			function (res) {
-				_report('timeline', res.err_msg);
-			}
-		);
-	}
-
-	function _ShareWB() {
-		WeixinJSBridge.invoke('shareWeibo', {
-				'content': desc,
-				'url': url,
-			}
-			,
-			function (res) {
-				_report('weibo', res.err_msg);
-			}
-		);
-	}
-
-	// 当微信内置浏览器初始化后会触发WeixinJSBridgeReady事件。
-	document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-		// 发送给好友
-		WeixinJSBridge.on('menu:share:appmessage', function (argv) {
-			_ShareFriend();
-		});
-
-		// 分享到朋友圈
-		WeixinJSBridge.on('menu:share:timeline', function (argv) {
-			_ShareTL();
-		});
-
-		// 分享到微博
-		WeixinJSBridge.on('menu:share:weibo', function (argv) {
-			_ShareWB();
-		});
-	}, false);
-}*/
-
-/*//页面载入后算出分享信息
-//TODO:20160112 一些页面第一张图片可能是按钮，并且title有些只有“华天旅游网”5个字
-$("document").ready(function(){
-	//设定5s后设定分享数据
-	window.setInterval(function(){
-		//线路详情使用的分享模式
-		if (window.location.href.indexOf('tour-detail.html')>-1){
-			_WXShare($('#galleryAD img').eq(0).attr('src'),'640','480',$('.info-section h3').text(),'','');
-			return true;
-		}
-		//机票查询页面
-		if (window.location.href.indexOf('ticket-index.html')>-1){
-			_WXShare($('#galleryAD img').eq(0).attr('src'),'640','480','机票查询','','');
-			return true;
-		}
-		//机票查询结果页面
-		if (window.location.href.indexOf('ticket-index.html')>-1){
-			_WXShare('http://www.htyou.com/weixin_h5/images/ticket_index_title_bg.jpg','640','480','机票查询: 从'+decodeURI(getParameterValue(window.location.href,'fromCity'))+'到'+decodeURI(getParameterValue(window.location.href,'toCity')),'','');
-			return true;
-		}
-		//线路列表页面
-		if (window.location.href.indexOf('tour-list.html')>-1){
-			_WXShare($('#tourlist-section-list img').eq(0).attr('src'),'640','480','景点列表:'+decodeURI(getParameterValue(window.location.href,'q')),'','');
-			return true;
-		}
-		//区域列表页面
-		if (window.location.href.indexOf('tour-area.html')>-1){
-			_WXShare($('.am-gallery-item img').eq(0).attr('src'),'640','480',$('.am-header-title').text(),'','');
-			return true;
-		}
-		//一般情况下用标准的分享模式
-		_WXShare($('body img').eq(0).attr('src'),'640','480',$('title').text(),$('title').text(),'','');
-
-	},5000);
-});*/
 
 
 //判断页面处于何种浏览器框架下

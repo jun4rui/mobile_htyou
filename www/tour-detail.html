@@ -889,6 +889,8 @@ TODO-->
 		$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
 			if (result.value.tourtype==1){		//1是散客自组
 				$('#btn-style-1, #submit-btn').show();
+			}else{
+				$('#btn-style-1, #btn-style-2 button').hide();
 			}
 			//根据接口返回状态判断线路拥有何种支付方式
 			$.getJSON('/tour/tourorder_getProductPaymode.action?cteamcode='+result.value.jzluid, function(result){
