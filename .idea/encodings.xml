@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="REMOTE_DEPLOYMENT_FS://&lt;99b99603-47c9-4a91-bba6-c9d99e0a55a5&gt;/WEB-INF/common/bottom.html" charset="GBK" />
+    <file url="REMOTE_DEPLOYMENT_FS://&lt;99b99603-47c9-4a91-bba6-c9d99e0a55a5&gt;/WEB-INF/common/common_footer.html" charset="GBK" />
     <file url="REMOTE_DEPLOYMENT_FS://&lt;99b99603-47c9-4a91-bba6-c9d99e0a55a5&gt;/WEB-INF/common/common_footer.html" charset="GBK" />
     <file url="REMOTE_DEPLOYMENT_FS://&lt;99b99603-47c9-4a91-bba6-c9d99e0a55a5&gt;/WEB-INF/rednet/payfororder.html" charset="GBK" />
     <file url="file://$PROJECT_DIR$/README.MD" charset="UTF-8" />
