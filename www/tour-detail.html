@@ -193,8 +193,13 @@
 								+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
 
 						$('#order-message .order-message-title').text('进入支付宝支付流程');
-						//TODO: 如果在IOS设备则需要用这个方式:cordova.InAppBrowser.open('http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id=C160322314241', '_blank', 'location=yes');
-						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">支付宝支付</a> 付款');
+						//如果在IOS设备则需要用这个方式:cordova.InAppBrowser.open('http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id=C160322314241', '_blank', 'location=yes');
+						if (deviceType().toLowerCase()=='iphone' || deviceType().toLowerCase()=='ipad'){
+						//if (deviceType().toLowerCase()=='windows'){
+							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a class="am-btn am-btn-success" onclick="cordova.InAppBrowser.open(\'http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'\', \'_blank\', \'location=yes\')" href="javascript:void();">支付宝支付</a> 付款');
+						}else{
+							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">支付宝支付</a> 付款');
+						}
 						$('#order-message').modal('open');
 						$('#submit-btn').text('已下单');
 					}else{
@@ -875,13 +880,6 @@
 </div>
 <!--/购买窗口-->
 
-
-<!--TODO
-1. 有些行程某些天数没有图片的处理
-2. 价格之类信息没有加入
-3. 行程中，每天有多个图片的展示
-4. 内容快速跳转
-TODO-->
 <!--提示窗口-->
 <div class="am-modal am-modal-alert" tabindex="-1" id="order-message">
 	<div class="am-modal-dialog">
