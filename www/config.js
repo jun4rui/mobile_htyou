@@ -418,6 +418,7 @@ function deviceType(){
 	//var info = window.navigator;
 	var platform	= navigator.platform.toLowerCase();
 	var useragent	= navigator.userAgent.toLowerCase();
+
 	//是Windows的判断
 	if (platform.indexOf('win32')>-1){
 		return "Windows";
@@ -427,11 +428,11 @@ function deviceType(){
 		return "Android";
 	}
 	//是iPhone的判断
-	if (platform.indexOf('iphone')>-1){
+	if (useragent.indexOf('iphone')>-1){
 		return "iPhone";
 	}
 	//是iPad的判断
-	if (platform.indexOf('ipad')>-1){
+	if (useragent.indexOf('ipad')>-1){
 		return "iPad";
 	}
 
