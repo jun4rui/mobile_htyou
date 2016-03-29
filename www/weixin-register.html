@@ -17,10 +17,10 @@
 	<script src="./config.js"></script>
 	<script>
 		//先判断是不是在微信环境下
-//		if (whereami().toLowerCase()!='weixin'){
-//			alert('请在微信中访问！');
-//			window.location.href = './index.html';
-//		}
+		if (whereami().toLowerCase()!='weixin'){
+			alert('请在微信中访问！');
+			window.location.href = './index.html';
+		}
 	</script>
 	<style>
 		.ms-controller, .ms-important, [ms-controller], [ms-important] {
@@ -95,7 +95,7 @@
 				<input type="text" id="phone" class="am-form-field"
 					   pattern="^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$"
 					   placeholder="请输入您的手机号码" required>
-				<span class="am-input-group-label" id="sendSms">发送验证码</span>
+				<span class="am-input-group-label" id="sendSms"><a href="javascript:void(0);">发送验证码</a></span>
 			</div>
 			<!--验证码*-->
 			<div class="am-input-group">
