@@ -158,7 +158,7 @@
 			regPort += '&password=' + $('#password').val();
 			regPort += '&openid=' + $('#openid').val();
 			regPort += '&accesstoken=' + $('#accesstoken').val();
-			alert(regPort);
+			//alert(regPort);
 			$.getJSON(regPort, function(result){
 				if (result.status=='-1'){
 					alert('账号密码错误或账号不存在或');
