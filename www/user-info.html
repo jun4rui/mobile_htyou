@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>华天旅游网</title>
+	<!--<script type="text/javascript" src="cordova.js"></script>-->
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+	<style>
+		body {
+			background: url(data:image/png;base64,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) left top #f5f5f5;
+		}
+
+		.hide {
+			display: none;
+		}
+
+		.am-form-group {
+			margin-bottom: 2px;
+		}
+	</style>
+	<!--TODO:身份证、手机号码，如果没有的就可以修改，如果有了则不能修改-->
+	<script>
+
+		//Avalon模型
+		avalon.ready(function () {
+			//用户信息VM
+			var userVM = avalon.define({
+				$id:  'user',
+				info: {},
+				vipClass:'',
+				guestSex:''
+			});
+
+			avalon.scan();
+
+			//从localStorage载入用户资料
+			userVM.info             = JSON.parse(window.localStorage.getItem('USER_DATA'));
+			userVM.info.vip_class_c = '读取中';
+			userVM.info.guestSex_c  = '读取中';
+			//如果用户资料为空则提醒用户，并跳转到登录页面
+			if (userVM.info == null) {
+				alert('您尚未登录，或者登录已超时，系统将自动跳转到登录页面！');
+				window.location.href = './weixin-bind.html';
+				return false;
+			}
+			//用户等级ID2中文
+			$.getJSON('http://www.htyou.com/common/common_getSysKeyValue.action?skvcolumn=BizDes&skvvalue='+userVM.info.vip_class,function(result){
+				userVM.vipClass = result.desc;
+			});
+			//用户性别ID2中文
+			$.getJSON('http://www.htyou.com/common/common_getSysKeyValue.action?skvcolumn=BizDes&skvvalue='+userVM.info.guestSex,function(result){
+				userVM.guestSex = result.desc;
+			});
+			//TODO:登录页面需要一个链接跳转到注册页面
+		});
+//		/user/htuser_updateGuestInfoAll.action  入参 guestVO   对象属性 以下
+//		guest_type=?, status=?, guest_name=?, identify_id=?, mobile_phone=?, email=?, contact_way=?, guest_sex=?, score=?, reg_time=?,area=?  where account= ？ 这些属性有则必填
+//		手机存在 或者 手机不规范 -1
+//		身份证存在 或者  身份证不规范 -2
+	</script>
+</head>
+<body ms-controller="user">
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+
+	#info-panel {
+		margin: .5em;
+	}
+
+	.am-panel {
+		border-radius: 5px;
+	}
+	.am-table tr:first-child td {
+		border-top:none;
+	}
+	.am-table tr td:first-child {
+		color: #000;
+		font-weight: bold;
+	}
+	.am-table input[type=text] {
+		border:0;
+		text-align:right;
+	}
+	#face {
+		width:26px;
+		height:26px;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu" onclick="doBack()"></i>
+		<!--/下拉菜单-->
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			我的账户 {{info.guestAccount}}
+		</a>
+	</h1>
+
+</header>
+<!--/头部-->
+
+<!--系统变量-->
+<!--/common/common_getSysKeyValue.action-->
+<!--参数  skvcolumn = BizDes   skvvalue = 120101                    返回 desc = BizDes     例子入参 120101 返回 虚拟卡会员-->
+<!--参数  skvcolumn = BizCode  skvvalue = CUS_GUEST_LEVEL_GENERAL   返回 desc = BizCode   例子入参 CUS_GUEST_LEVEL_GENERAL 返回 120101-->
+<!--参数  skvcolumn = TypeMeta skvvalue = CUS_GUEST_LEVEL           返回 TypeMeta   Map  例子入参   CUS_GUEST_LEVEL  返回 所有该类型下的 变量-->
+
+
+<!--用户信息区-->
+<!--address:地址（只有微信有）-->
+<!--brithday:生日-->
+
+<!--头像:profession-->
+<!--昵称:guestName-->
+<!--会员等级:vip_class(用这个值去调用接口返回会员等级中文名称:http://www.htyou.com/common/common_getSysKeyValue.action?skvcolumn=BizDes&skvvalue=120101)-->
+
+<!--姓名:guestName-->
+<!--性别:guestSex(120201男/120202女/120203不确定)-->
+<!--手机号码:mobilePhone(需要用*代替屏蔽4567位)-->
+<!--身份证号:identifyId-->
+<!--邮箱:email-->
+
+<!--会员卡:ic_num-->
+<!--TODO:密码修改:暂时没有-->
+<div id="info-panel">
+	<div class="am-panel am-panel-default">
+		<div class="am-panel-bd">
+			<table class="am-table am-g">
+				<tr>
+					<td>头像</td>
+					<td class="am-text-right">
+						<img src="./images/nonface.jpg" alt="" id="face">
+					</td>
+				</tr>
+				<!--<tr>-->
+					<!--<td>昵称</td>-->
+					<!--<td class="am-text-right">{{info.guestName}}</td>-->
+				<!--</tr>-->
+				<tr>
+					<td>会员等级</td>
+					<td class="am-text-right">{{vipClass}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="am-panel am-panel-default">
+		<div class="am-panel-bd">
+			<table class="am-table am-g">
+				<tr>
+					<td>姓名</td>
+					<td class="am-text-right">
+						<input type="text" ms-attr-value="{{info.guestName}}" placeholder="请填写您的姓名">
+					</td>
+				</tr>
+				<tr>
+					<td>性别</td>
+					<td class="am-text-right">{{guestSex}}</td>
+				</tr>
+				<tr>
+					<td>手机号码</td>
+					<td class="am-text-right">
+						<input type="text" ms-attr-value="{{info.mobilePhone}}" placeholder="请填写您的手机号码">
+					</td>
+				</tr>
+				<tr>
+					<td>身份证号</td>
+					<td class="am-text-right">
+						<input type="text" ms-attr-value="{{info.identifyId}}" placeholder="请填写您的身份证号">
+					</td>
+				</tr>
+				<tr>
+					<td>邮箱</td>
+					<td class="am-text-right">
+						<input type="text" ms-attr-value="{{info.email}}" placeholder="请填写您的邮箱">
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="am-panel am-panel-default">
+		<div class="am-panel-bd">
+			<table class="am-table am-g">
+				<tr>
+					<td>会员卡</td>
+					<td class="am-text-right">{{info.ic_num}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<!--/用户信息区-->
+</body>
+</html>
