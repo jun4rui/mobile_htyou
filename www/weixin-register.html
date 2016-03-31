@@ -187,8 +187,14 @@
 	//点击注册按钮执行的操作
 	(function ($) {
 		$(document).delegate('#register-button', 'click', function () {
+			//先检查手机号码是否填写
+			if ($('#phone').val().length<11){
+				alert('您的手机号码填写错误，请重新填写');
+				return false;
+			}
 			//先验证用户验证码是否正确
 			//alert('/user/htuser_getSmsConfirm.action?phone=' + $('#phone').val() + '&vaildcode=' + $('#checkcode').val());
+			//http://www.htyou.com/user/htuser_getSmsConfirm.action?phone=&vaildcode=
 			$.getJSON('/user/htuser_getSmsConfirm.action?phone=' + $('#phone').val() + '&vaildcode=' + $('#checkcode').val(), function (result) {
 				if (result.status == 1) {
 					//验证用户两次密码是否一致
