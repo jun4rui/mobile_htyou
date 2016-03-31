@@ -163,19 +163,19 @@
 				return false;
 			}
 			var intervalid = null;
-			if ($('#sendSms').text() != '发送验证码') {
+			if ($('#sendSms a').text() != '发送验证码') {
 				return false;
 			}
-			$('#sendSms').text('60');//设置60秒间隔
+			$('#sendSms a').text('60');//设置60秒间隔
 			intervalid = setInterval(function () {
-				if (parseInt($('#sendSms').text()) > 0) {
-					$('#sendSms').text(parseInt($('#sendSms').text()) - 1);
+				if (parseInt($('#sendSms a').text()) > 0) {
+					$('#sendSms a').text(parseInt($('#sendSms').text()) - 1);
 				} else {
-					$('#sendSms').text('发送验证码');
+					$('#sendSms a').text('发送验证码');
 					clearInterval(intervalid);
 				}
 			}, 1000);
-			$.getJSON('http://www.htyou.com/user/htuser_sendSmsConfirm.action?phone=13762338415',function(result){
+			$.getJSON('http://www.htyou.com/user/htuser_sendSmsConfirm.action?phone='+$('#phone').val(),function(result){
 				if (result.status=='false'){
 					alert('验证码发送失败，请稍后尝试');
 				}
