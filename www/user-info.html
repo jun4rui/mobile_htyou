@@ -59,7 +59,7 @@
 					cmdStr += '&guestVO.guestId=' + userInfo.guestId;
 					cmdStr += '&phone=' + userInfo.mobilePhone;
 					cmdStr += '&identifyId=' + userInfo.identifyId;
-					//alert('==========================\n' + cmdStr + '\n============================');
+					console.log('==========================\n' + cmdStr + '\n============================');
 					$.getJSON(cmdStr, function(result) {
 						/*
 						返回信息(result.status):
@@ -170,9 +170,9 @@
 </style>
 <header data-am-widget="header" class="am-header am-header-default am-header-fixed">
 	<div class="am-header-left am-header-nav">
-		<!--下拉菜单-->
-		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu" onclick="doBack()"></i>
-		<!--/下拉菜单-->
+		<a href="./index.html" target="_self">
+			<i class="am-header-icon am-icon-home"></i>
+		</a>
 	</div>
 
 	<h1 class="am-header-title">
