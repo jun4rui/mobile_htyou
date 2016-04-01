@@ -415,9 +415,10 @@ $("document").ready(function() {
 
 // 判断用户设备类型
 function deviceType(){
-	var info = window.navigator;
-	var platform	= info.platform.toLowerCase();
-	var useragent	= info.userAgent.toLowerCase();
+	//var info = window.navigator;
+	var platform	= navigator.platform.toLowerCase();
+	var useragent	= navigator.userAgent.toLowerCase();
+
 	//是Windows的判断
 	if (platform.indexOf('win32')>-1){
 		return "Windows";
@@ -427,11 +428,11 @@ function deviceType(){
 		return "Android";
 	}
 	//是iPhone的判断
-	if (platform.indexOf('iPhone')>-1){
+	if (useragent.indexOf('iphone')>-1){
 		return "iPhone";
 	}
 	//是iPad的判断
-	if (platform.indexOf('iPad')>-1){
+	if (useragent.indexOf('ipad')>-1){
 		return "iPad";
 	}
 
@@ -445,13 +446,13 @@ function deviceType(){
 //功能：如果在main.html页面发现附带有参数：openid和accesstoken，则调用接口获取用户信息并保存到localStorage中
 //20160314 曹熙又变了，现在这个接口要用id来取
 (function(window){
-	if (window.location.href.indexOf('main.html')){
+	if (window.location.href.indexOf('main.html')>-1 || window.location.href.indexOf('user-info.html')>-1){
 		var userid      = getParameterValue(window.location.href, 'id');
-		//两个参数都必须有，并且不为空才能调用接口获取用户数据
+		//userid必须有，并且不为空才能调用接口获取用户数据
 		if (userid!=''){
 			$.getJSON(server_addr+'/user/htuser_getGuestsInfoById.action?userid='+userid, function (result) {
 				//从接口获得的用户数据保存到localStorage中
-				window.localStorage.setItem('USER_DATA', JSON.stringify(encodeURIComponent(result.guestVO)));
+				window.localStorage.setItem('USER_DATA', JSON.stringify(result.guestVO));
 			});
 		}
 	}
