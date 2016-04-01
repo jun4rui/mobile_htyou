@@ -196,7 +196,12 @@
 						//如果在IOS设备则需要用这个方式:cordova.InAppBrowser.open('http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id=C160322314241', '_blank', 'location=yes');
 						if (deviceType().toLowerCase()=='iphone' || deviceType().toLowerCase()=='ipad'){
 						//if (deviceType().toLowerCase()=='windows'){
-							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a class="am-btn am-btn-success" onclick="cordova.InAppBrowser.open(\'http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'\', \'_system\', \'location=yes\')" href="javascript:void(0);">支付宝支付</a> 付款');
+							//alert(deviceType().toLowerCase());
+							function iosAlipay(inCode){
+								//alert(inCode);
+								cordova.InAppBrowser.open('http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+inCode, '_system', 'location=yes');
+							}
+							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <button class="am-btn am-btn-success" onClick="iosAlipay('+result.orderParam.sys_show_order_id+');">支付宝支付</button> 付款');
 						}else{
 							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">支付宝支付</a> 付款');
 						}

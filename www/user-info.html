@@ -284,5 +284,13 @@
 	<button type="button" class="am-btn am-btn-primary am-btn-block" id="update-info" ms-click="updateInfo()">更新个人信息</button>
 </div>
 <!--/用户信息区-->
+<script>
+	$(document).ready(function(){
+		//20160401修复某个iOS版本下ipad mini会出现顶部留空错误，header把用户头像遮住的BUG的Patch
+		if ($('#info-panel').offset().top<$('header').height()){
+			$('body').css({'padding-top':$('header').height()+10});
+		}
+	});
+</script>
 </body>
 </html>
