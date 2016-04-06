@@ -917,7 +917,7 @@
 			}
 			//根据接口返回状态判断线路拥有何种支付方式
 			$.getJSON(server_addr+'/tour/tourorder_getProductPaymode.action?cteamcode='+result.value.jzluid, function(result){
-				alert('mode:'+result.paymode);
+				console.log('mode:'+result.paymode);
 				if (result.paymode==-1) {	//线下支付
 					//console.log(-1);
 					$('#pay_type option[value=121604]').show();

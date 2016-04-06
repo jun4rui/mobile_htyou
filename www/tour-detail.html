@@ -33,6 +33,9 @@
 					$('.ms-controller').removeClass('ms-controller');
 				},
 				detailRendered: function(type){
+					$.getJSON(server_addr+'/common/common_getHtConstant.action?skvcolumn=TOURPRO_TYPE', function(result){
+						$('#tourtype').text(result[''+$('#tourtype').attr('typeid')]);
+					});
 
 				}
 			});
@@ -47,16 +50,17 @@
 				tourVM.detail   = result;
 				tourVM.nation   = result.value.nation.split(',');
 				//console.log(result.value.nation.split(','));
-				if (result.value.tourtype==1)
-					tourVM.tourtype = '散客自组';
-				if (result.value.tourtype==2)
-					tourVM.tourtype = '外拼散客';
-				if (result.value.tourtype==3)
-					tourVM.tourtype = '自由行';
-				if (result.value.tourtype==4)
-					tourVM.tourtype = '团体包团';
-				if (result.value.tourtype==5)
-					tourVM.tourtype = '单项服务';
+//				不需要了，因为以后会频繁修改，值必须从接口获取
+//				if (result.value.tourtype==1)
+//					tourVM.tourtype = '散客自组';
+//				if (result.value.tourtype==2)
+//					tourVM.tourtype = '外拼散客';
+//				if (result.value.tourtype==3)
+//					tourVM.tourtype = '自由行';
+//				if (result.value.tourtype==4)
+//					tourVM.tourtype = '团体包团';
+//				if (result.value.tourtype==5)
+//					tourVM.tourtype = '单项服务';
 			});
 			$.getJSON(server_addr+'/mobile/ipad_queryTourTeam.action?jsoncallback=?&lineid='+lineid, function(result){
 				tourVM.tourdate = result.value;
@@ -135,7 +139,7 @@
 			}
 			/*微信支付的处理流程*/
 			if ($('#pay_type').val()=='121603'){
-				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
+				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=12'+'&infoid='+_INFOID;
 				console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
@@ -321,7 +325,7 @@
 <div class="info-section ms-controller ms-controller">
 	<h3>{{detail.value.tourproname}}</h3>
 	<span class="price-section">价格：<span class="price-num">&yen;{{detail.value.adultprice}}</span>起</span>
-	<span class="am-badge am-badge-success am-radius">{{tourtype}}</span>
+	<span class="am-badge am-badge-success am-radius" id="tourtype" ms-attr-typeid="{{detail.value.tourtype}}"></span>
 	<a ms-attr-href="tour-list.html?a={{detail.value.area}}" class="am-badge am-badge-warning am-radius">{{detail.value.area}}</a>
 </div>
 <!--/顶部轮播广告-->
@@ -910,13 +914,13 @@
 
 		//20160322 CJ 只能让散客自组产品进行购买
 		$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
-			if (result.value.tourtype==1){		//1是散客自组
+			if (result.value.tourtype.substr(0,1)==1){		//1是散客自组
 				$('#btn-style-1, #submit-btn').show();
 			}else{
 				$('#btn-style-1, #btn-style-2 button').hide();
 			}
 			//根据接口返回状态判断线路拥有何种支付方式
-			$.getJSON(server_addr+'/tour/tourorder_getProductPaymode.action?cteamcode='+result.value.jzluid, function(result){
+			$.getJSON(server_addr+'/tour/tourorder_getProductPaymode.action?jsoncallback=?&cteamcode='+result.value.jzluid, function(result){
 				console.log('mode:'+result.paymode);
 				if (result.paymode==-1) {	//线下支付
 					//console.log(-1);
