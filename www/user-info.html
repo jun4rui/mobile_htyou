@@ -163,7 +163,7 @@
 		text-align: right;
 	}
 
-	#face {
+	.face {
 		width: 26px;
 		height: 26px;
 	}
@@ -214,8 +214,8 @@
 				<tr>
 					<td>头像</td>
 					<td class="am-text-right">
-						<img src="./images/nonface.jpg" ms-if="info.profession==''" alt="" id="face">
-						<img ms-attr-src="{{info.profession}}" ms-if="info.profession!=''" alt="" id="face">
+						<img src="./images/nonface.jpg" ms-if="info.profession==''" alt="" class="face">
+						<img ms-attr-src="{{info.profession}}" ms-if="info.profession!=''" alt="" class="face">
 					</td>
 				</tr>
 				<!--20160329 设计中有昵称，但是cx说昵称和姓名相同所以去掉昵称-->
@@ -277,6 +277,26 @@
 				<tr>
 					<td>会员卡号</td>
 					<td class="am-text-right">{{info.ic_num}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="am-panel am-panel-default">
+		<div class="am-panel-bd">
+			<table class="am-table am-g">
+				<tr>
+					<td>您的专职客服经理</td>
+					<td class="am-text-right">
+						<img ms-attr-src="http://www.htyou.com/{{info.cimage}}" alt="" class="face"> - {{info.cuser}}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<a class="am-btn am-btn-success am-btn-block" ms-attr-href="tel:{{info.cphone}}">
+							<i class="am-icon-mobile-phone"></i>
+							呼叫
+						</a>
+					</td>
 				</tr>
 			</table>
 		</div>
