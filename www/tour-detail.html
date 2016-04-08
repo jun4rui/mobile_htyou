@@ -33,7 +33,7 @@
 					$('.ms-controller').removeClass('ms-controller');
 				},
 				detailRendered: function(type){
-					$.getJSON(server_addr+'/common/common_getHtConstant.action?skvcolumn=TOURPRO_TYPE', function(result){
+					$.getJSON(server_addr+'/common/common_getHtConstant.action?skvcolumn=TOURPRO_TYPE&jsoncallback=?', function(result){
 						$('#tourtype').text(result[''+$('#tourtype').attr('typeid')]);
 					});
 
@@ -73,6 +73,7 @@
 			}
 		});
 
+
 		//提交表单的处理
 		function doSubmit(){
 			//检查用户输入
@@ -98,10 +99,16 @@
 				return false;
 			}
 
+			//20160408 如果是非自组产品则要加入警告信息
+			var alertMsg = '';
+			if ($('#tourtype').attr('typeid').substr(0,1)!=1){
+				alertMsg = '<font style="color:#F00;">本团因出行不确定性，</font>';
+			}
+
 			/*线下支付的处理流程*/
 			if ($('#pay_type').val()=='121604'){
 				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
-				console.log(getUrl);
+				//console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
 				//提交数据
@@ -118,7 +125,7 @@
 							+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
 
 						$('#order-message .order-message-title').text('订单提交成功！');
-						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
+						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，'+alertMsg+'很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
 						$('#order-message').modal('open');
 						$('#submit-btn').text('已下单');
 					}else{
@@ -914,11 +921,14 @@
 
 		//20160322 CJ 只能让散客自组产品进行购买
 		$.getJSON(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid,function(result){
+			/*20160408开放非自组产品的购买
 			if (result.value.tourtype.substr(0,1)==1){		//1是散客自组
 				$('#btn-style-1, #submit-btn').show();
 			}else{
 				$('#btn-style-1, #btn-style-2 button').hide();
 			}
+			*/
+			$('#btn-style-1, #submit-btn').show();
 			//根据接口返回状态判断线路拥有何种支付方式
 			$.getJSON(server_addr+'/tour/tourorder_getProductPaymode.action?jsoncallback=?&cteamcode='+result.value.jzluid, function(result){
 				console.log('mode:'+result.paymode);
