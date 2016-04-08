@@ -18,8 +18,8 @@
 	<script>
 		//先判断是不是在微信环境下
 		if (whereami().toLowerCase()!='weixin'){
-			alert('请在微信中访问！');
-			window.location.href = './index.html';
+/*			alert('请在微信中访问！');
+			window.location.href = './index.html';*/
 		}
 	</script>
 	<style>
@@ -77,17 +77,13 @@
 			<!--账号*-->
 			<div class="am-input-group">
 				<span class="am-input-group-label"><i class="am-icon-user am-icon-fw am-icon-sm"></i></span>
-				<input type="text" id="username" class="am-form-field" placeholder="请输入您的账号" required>
+				<input type="text" id="username" class="am-form-field" placeholder="请输入您的姓名" required>
 			</div>
-			<!--密码*-->
+			<!--身份证号码*-->
 			<div class="am-input-group">
-				<span class="am-input-group-label"><i class="am-icon-lock am-icon-fw am-icon-sm"></i></span>
-				<input type="password" id="password" class="am-form-field" placeholder="请输入对应的密码" required>
-			</div>
-			<!--密码验证-->
-			<div class="am-input-group">
-				<span class="am-input-group-label"><i class="am-icon-lock am-icon-fw am-icon-sm"></i></span>
-				<input type="password" id="repassword" class="am-form-field" placeholder="再次输入密码" required>
+				<span class="am-input-group-label"><i class="am-icon-credit-card am-icon-fw am-icon-sm"></i></span>
+				<input type="text" id="idcard" class="am-form-field" pattern="^([0-9]){7,18}(x|X)?$"
+					   placeholder="请输入您的身份证号码" required>
 			</div>
 			<!--手机号码*-->
 			<div class="am-input-group">
@@ -102,11 +98,15 @@
 				<span class="am-input-group-label"><i class="am-icon-check-circle am-icon-fw am-icon-sm"></i></span>
 				<input type="text" id="checkcode" class="am-form-field" placeholder="请输入验证码" required>
 			</div>
-			<!--身份证号码*-->
+			<!--密码*-->
 			<div class="am-input-group">
-				<span class="am-input-group-label"><i class="am-icon-credit-card am-icon-fw am-icon-sm"></i></span>
-				<input type="text" id="idcard" class="am-form-field" pattern="^([0-9]){7,18}(x|X)?$"
-					   placeholder="请输入您的身份证号码" required>
+				<span class="am-input-group-label"><i class="am-icon-lock am-icon-fw am-icon-sm"></i></span>
+				<input type="password" id="password" class="am-form-field" placeholder="请输入对应的密码" required>
+			</div>
+			<!--密码验证-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-lock am-icon-fw am-icon-sm"></i></span>
+				<input type="password" id="repassword" class="am-form-field" placeholder="再次输入密码" required>
 			</div>
 			<input type="hidden" id="openid" name="openid" value="">
 			<input type="hidden" id="accesstoken" name="accesstoken" value="">
@@ -219,7 +219,8 @@
 					var regPort = '/user/htuser_register.action?info_type=120615';
 					regPort += '&identifyId=' + $('#idcard').val();
 					regPort += '&phone=' + $('#phone').val();
-					regPort += '&account=' + $('#username').val();
+					regPort += '&account=' + $('#phone').val();
+					regPort += '&username=' + $('#username').val();
 					regPort += '&password=' + $('#password').val();
 					regPort += '&openid=' + $('#openid').val();
 					regPort += '&accesstoken=' + $('#accesstoken').val();
