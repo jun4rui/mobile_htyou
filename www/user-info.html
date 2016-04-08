@@ -102,8 +102,8 @@
 			userVM.info = JSON.parse(window.localStorage.getItem('USER_DATA'));
 			//如果用户资料为空则提醒用户，并跳转到登录页面
 			if (userVM.info == null) {
-				alert('您尚未登录，或者登录已超时，系统将自动跳转到登录页面！');
-				//window.location.href = './weixin-bind.html';
+				alert('您尚未登录，或者登录已超时，系统将自动跳转到首页！');
+				window.location.href = './index.html';
 				return false;
 			}
 			//根据用户ID重新获取用户信息
