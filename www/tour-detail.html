@@ -98,6 +98,13 @@
 				alert(errMsg);
 				return false;
 			}
+			//20160408 加入不同访问方式用不同的类型参数的处理
+			//weixin,cordova,other
+			var deviceType = '15';
+			if (whereami() == 'weixin')
+				deviceType = '12';
+			if (whereami() == 'cordova')
+				deviceType = '16';
 
 			//20160408 如果是非自组产品则要加入警告信息
 			var alertMsg = '';
@@ -107,7 +114,7 @@
 
 			/*线下支付的处理流程*/
 			if ($('#pay_type').val()=='121604'){
-				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
+				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID;
 				//console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
@@ -146,7 +153,7 @@
 			}
 			/*微信支付的处理流程*/
 			if ($('#pay_type').val()=='121603'){
-				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=12'+'&infoid='+_INFOID;
+				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID;
 				console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
@@ -173,7 +180,7 @@
 							resErr = '人数已满';
 						//失败的处理
 						$('#order-message .order-message-title').text('订单提交失败！');
-						$('#order-message .order-message-content').text('因为'+resErr+'，您的订单发生错误，请稍后尝试重新提交。\n'/*+result.status+'\n'+'/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'*/);
+						$('#order-message .order-message-content').text('因为'+resErr+'，您的订单发生错误，请稍后尝试重新提交。\n');
 						$('#order-message').modal('open');
 						//console.log('失败');
 						$('#submit-btn').removeAttr('disabled');
@@ -186,7 +193,7 @@
 			}
 			/*支付宝支付的处理流程*/
 			if ($('#pay_type').val()=='121601'){
-				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'+'&infoid='+_INFOID;
+				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID;
 				console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
@@ -224,7 +231,7 @@
 							resErr = '人数已满';
 						//失败的处理
 						$('#order-message .order-message-title').text('订单提交失败！');
-						$('#order-message .order-message-content').text('因为'+resErr+'，您的订单发生错误，请稍后尝试重新提交。\n'/*+result.status+'\n'+'/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source=16'*/);
+						$('#order-message .order-message-content').text('因为'+resErr+'，您的订单发生错误，请稍后尝试重新提交。\n');
 						$('#order-message').modal('open');
 						//console.log('失败');
 						$('#submit-btn').removeAttr('disabled');
