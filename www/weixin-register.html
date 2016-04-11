@@ -239,6 +239,7 @@
 							return false;
 						}
 						if (result.status==1){
+							//TODO: 注册成功以后再根据传回来的ID调用接口重新读取用户信息，再保存到localStorage中
 							alert('注册成功！系统将自动跳转到首页！');
 							window.localStorage.setItem('USER_DATA', JSON.stringify(result.guestVO));
 							window.location.href = 'index.html';
