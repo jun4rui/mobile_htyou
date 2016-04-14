@@ -1,5 +1,13 @@
 /**
  * Created by jun4r on 2015/9/18.
+ *
+ * 20160414 Change log:
+ * 郑波
+ * 第一种场景：
+ * 销售1->销售2->普通客户   普通客户只能联系销售2
+ * 第二种场景：
+ * 销售1->普通客户1->普通客户2   普通客户2只能联系销售1
+ * 曹熙：普通用户再下次进去首页立刻清空销售人员信息
  */
 var server_addr = 'http://ipad.htyou.com';						//JSON接口服务器地址，调用接口时用，方便更换
 var _INFODATA	= window.localStorage.getItem('INFO_DATA');		//_INFODATA变量保存销售人员信息用，保存在localStorage中
