@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>找回密码</title>
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+	<style>
+		.ms-controller, .ms-important, [ms-controller], [ms-important] {
+			visibility: hidden;
+		}
+
+		body {
+			/*background-color: #DFDFDF;*/
+		}
+
+		.am-input-group {
+			margin-top: .5em;
+		}
+	</style>
+	<script>
+		function doSubmit(){
+			if (/^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\d{8}$/.test( $('#phonenumber').val())) {
+				$('#reset-btn').prop('disabled', true);
+				$.getJSON('http://www.htyou.com/common/common_sendPW.action?jsoncallback=?&phone='+$('#phonenumber').val()+'&email=',function(result){
+					//console.log(result);
+					if (result.status==1){
+						alert('您的账号、密码已发送到手机，请注意查收。');
+					}else{
+						$('#reset-btn').prop('disabled', false);
+						alert('发生错误：'+result.message+'，请检查后重新提交。');
+					}
+				});
+			}else{
+				alert('您输入的电话号码有问题，请检查后更改再重新提交。');
+			}
+		}
+
+	</script>
+</head>
+<body>
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			找回密码
+		</a>
+	</h1>
+</header>
+<!--/头部-->
+
+<!--表单-->
+<div class="am-g">
+	<div class="am-u-md-10 am-u-sm-centered">
+		<img src="./images/htyou_logo.png" class="am-img-responsive" alt="" style="margin:1em auto;">
+		<form class="am-form" class="message-panel">
+			<!--账号-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+				<input type="text" id="phonenumber" class="am-form-field" placeholder="请输入您的手机号码" required>
+			</div>
+
+			<!--按钮-->
+			<div class="am-input-group am-block">
+				<button class="am-btn am-btn-warning am-btn-block" id="reset-btn" onclick="doSubmit()">重置密码</button>
+			</div>
+		</form>
+	</div>
+</div>
+<!--/表单-->
+
+
+<script>
+
+</script>
+
+</body>
+</html>
