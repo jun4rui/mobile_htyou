@@ -470,9 +470,9 @@ function deviceType(){
 (function(){
 
 })();
-$.getJSON('/user/htuser_getGuestsInfoById.action?userid=626685', function (result) {
-	//从接口获得的用户数据保存到localStorage中
-	console.log(result.guse);
-});
+// $.getJSON('/user/htuser_getGuestsInfoById.action?userid=626685', function (result) {
+// 	//从接口获得的用户数据保存到localStorage中
+// 	console.log(result.guse);
+// });
 
 
