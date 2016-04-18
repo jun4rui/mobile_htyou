@@ -80,7 +80,25 @@
 				<input type="text" id="phone" class="am-form-field"
 					   pattern="^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$"
 					   placeholder="请输入您的手机号码即帐号" required>
-				<span class="am-input-group-label" id="sendSms"><a href="javascript:void(0);">发送验证码</a></span>
+			</div>
+			<!--验证码*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-check-circle am-icon-fw am-icon-sm"></i></span>
+				<input type="text" id="checkcode" class="am-form-field" placeholder="请输入验证码" required>
+				<span class="am-input-group-label" id="sendSms"><a href="javascript:void(0);">获取</a></span>
+			</div>
+			<input type="hidden" id="openid" name="openid" value="">
+			<input type="hidden" id="accesstoken" name="accesstoken" value="">
+			<!--昵称*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-user am-icon-fw am-icon-sm"></i></span>
+				<input type="text" id="username" class="am-form-field" placeholder="请输入您的昵称" required>
+			</div>
+			<!--身份证号码*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-credit-card am-icon-fw am-icon-sm"></i></span>
+				<input type="text" id="idcard" class="am-form-field" pattern="^([0-9]){7,18}(x|X)?$"
+					   placeholder="请输入您的身份证号码" required>
 			</div>
 			<!--密码*-->
 			<div class="am-input-group">
@@ -92,24 +110,6 @@
 				<span class="am-input-group-label"><i class="am-icon-lock am-icon-fw am-icon-sm"></i></span>
 				<input type="password" id="repassword" class="am-form-field" placeholder="再次输入密码" required>
 			</div>
-			<!--身份证号码*-->
-			<div class="am-input-group">
-				<span class="am-input-group-label"><i class="am-icon-credit-card am-icon-fw am-icon-sm"></i></span>
-				<input type="text" id="idcard" class="am-form-field" pattern="^([0-9]){7,18}(x|X)?$"
-					   placeholder="请输入您的身份证号码" required>
-			</div>
-			<!--昵称*-->
-			<div class="am-input-group">
-				<span class="am-input-group-label"><i class="am-icon-user am-icon-fw am-icon-sm"></i></span>
-				<input type="text" id="username" class="am-form-field" placeholder="请输入您的昵称" required>
-			</div>
-			<!--验证码*-->
-			<div class="am-input-group">
-				<span class="am-input-group-label"><i class="am-icon-check-circle am-icon-fw am-icon-sm"></i></span>
-				<input type="text" id="checkcode" class="am-form-field" placeholder="请输入验证码" required>
-			</div>
-			<input type="hidden" id="openid" name="openid" value="">
-			<input type="hidden" id="accesstoken" name="accesstoken" value="">
 			<!--注册按钮-->
 			<div class="am-input-group am-block">
 				<button class="am-btn am-btn-warning am-btn-block" id="register-button">注册</button>
@@ -163,7 +163,7 @@
 				return false;
 			}
 			var intervalid = null;
-			if ($('#sendSms a').text() != '发送验证码') {
+			if ($('#sendSms a').text() != '获取') {
 				return false;
 			}
 			$('#sendSms a').text('60');//设置60秒间隔
@@ -171,7 +171,7 @@
 				if (parseInt($('#sendSms a').text()) > 0) {
 					$('#sendSms a').text(parseInt($('#sendSms').text()) - 1);
 				} else {
-					$('#sendSms a').text('发送验证码');
+					$('#sendSms a').text('获取');
 					clearInterval(intervalid);
 				}
 			}, 1000);
