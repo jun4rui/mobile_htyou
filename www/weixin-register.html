@@ -89,10 +89,10 @@
 			</div>
 			<input type="hidden" id="openid" name="openid" value="">
 			<input type="hidden" id="accesstoken" name="accesstoken" value="">
-			<!--昵称*-->
+			<!--姓名*-->
 			<div class="am-input-group">
 				<span class="am-input-group-label"><i class="am-icon-user am-icon-fw am-icon-sm"></i></span>
-				<input type="text" id="username" class="am-form-field" placeholder="请输入您的昵称" required>
+				<input type="text" id="username" class="am-form-field" placeholder="请输入您的姓名" required>
 			</div>
 			<!--身份证号码*-->
 			<div class="am-input-group">
@@ -206,7 +206,7 @@
 					}
 					//验证用户输入的account：5～32个字符长度，不能是中文
 					if ($('#username').val().match(/^[a-zA-Z]{1}[a-zA-Z0-9]{4,31}$/)==null){
-						alert('您的帐户名称必须用英文字母开头，并且只使用英文字符和数字，长度应该在5～32个字符之间');
+						alert('您的姓名必须用英文字母开头，并且只使用英文字符和数字，长度应该在5～32个字符之间');
 						return false;
 					}
 					//如果没有openid和accesstoken也无法注册
