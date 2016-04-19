@@ -166,7 +166,7 @@
 			if ($('#sendSms a').text() != '获取') {
 				return false;
 			}
-			$('#sendSms a').text('60');//设置60秒间隔
+			$('#sendSms a').text('120');//设置60秒间隔
 			intervalid = setInterval(function () {
 				if (parseInt($('#sendSms a').text()) > 0) {
 					$('#sendSms a').text(parseInt($('#sendSms').text()) - 1);
