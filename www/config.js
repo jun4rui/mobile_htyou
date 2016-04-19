@@ -10,6 +10,9 @@
  * 曹熙：普通用户再下次进去首页立刻清空销售人员信息
  */
 var server_addr = 'http://ipad.htyou.com';						//JSON接口服务器地址，调用接口时用，方便更换
+
+
+//20160419 旧的销售人员逻辑用数据，即将取消
 var _INFODATA	= window.localStorage.getItem('INFO_DATA');		//_INFODATA变量保存销售人员信息用，保存在localStorage中
 var _INFOID		= '';											//_INFOID表示销售人员的系统内部ID编号
 if (_INFODATA!=null){
@@ -19,6 +22,13 @@ if (_INFODATA!=null){
 }
 var _USERDATA	= JSON.parse(window.localStorage.getItem('USER_DATA'));		//_USERDATA变量保存用户信息
 
+
+
+
+//20160419 新的销售人员逻辑用数据
+var _EMPLOYEE_DATA = window.localStorage.getItem('EMPLOYEE_DATA');	//员工数据
+var _SELLER_DATA   = window.localStorage.getItem('SELLER_DATA');	//销售数据
+var _SHOW_DATA     = '' //显示数据，该数据用来显示销售员面板和分享者ID，默认为空，待根据算法赋予其值
 
 //查询url参数函数
 //有则返回参数列表list
@@ -131,96 +141,137 @@ function doBack(){
 //http://www.htyou.com/common/websinfo_queryWebsInfos.action?url=oiZKXjjxNP3iA6iUfgkVo6H7sdmU&submit=ajax
 //获取，返回值为json格式，销售人员返回值中必须是"info_class": 421
 //INFO_DATA格式：姓名,电话,头像url,存储时间
-(function(){
-	var infoID  = getParameterValue(window.location.href,'infoid');
-	var userID  = getParameterValue(window.location.href,'url');
+(function () {
+	var sellerID   = getParameterValue(window.location.href, 'infoid');	//从微信分享链接进来的销售人员ID【数字】
+	var employeeID = getParameterValue(window.location.href, 'url');	//从微信进来的员工ID【不规则长字符串】
 
-	//展现销售人员UI的函数
-	function showSellerUI(){
-		var infoData= '';
-		//读取localStorage中的INFO_DATA数据
-		if ((infoData = window.localStorage.getItem('INFO_DATA'))!=null){
-			//console.log(infoData);
-			//如果保存时间太久超过24小时则摧毁INFO_DATA，否则显示销售员信息
-			if(((new Date).getTime()-infoData.split(',')[4])>86400000){
-				//console.log((new Date).getTime()-parseInt(infoData.split(',')[3]));
-				window.localStorage.removeItem('INFO_DATA');
-			}else{
-				$(document).ready(function(){
-					//线路详情页面的处理方式
-					if (window.location.href.indexOf('tour-detail.html')>-1){
-						$('#btn-style-2 .face').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
-						$('#btn-style-2 a').attr('href','tel:'+infoData.split(',')[1]);
-						$('#btn-style-1').hide();
-						$('#btn-style-2').show();
-						return true;
-					}
-					//首页的处理方式
-					if (window.location.href.indexOf('main.html')>-1){
-						$('#seller-panel').height(parseInt($(window).width()/1000*657));
-						$('#seller-panel .seller-panel-bg').height(parseInt($(window).width()/1000*657));
-						//$('#seller-panel .seller-panel-bg').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
-						$('#seller-panel .seller-panel-bg').css({'background':'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat','background-size':'cover'});
-						$('#seller-panel img').attr({'src':''+infoData.split(',')[2]});
-						$('#seller-panel a').attr({'href':'tel:'+infoData.split(',')[1]});
-						$('#seller-panel a span').text(infoData.split(',')[0]);
-						$('#galleryAD').hide();
-						$('#seller-panel').show();
-						return true;
-					}
-					//一般的处理方式
-					$('body').append('<div id="seller-section"></div>');
-					$('#seller-section').load('seller.html',function(){
-						$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
-						$('#seller .content strong').text(infoData.split(',')[0]);
-						$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
-						$('#seller').animate({'left':'1rem','bottom:':'1rem'});
-					});
-				});
+	//是否url带有销售人员的sellerID进来
+	//TEST: ?url=oiZKXjjPYlSmiN3yndvDLZ7-E-jA
+	//用userID的情况
+	if (employeeID != '') {
+		$.getJSON(server_addr + '/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&url=' + employeeID, function (result) {
+			//是否找到销售人员
+			if (result.length != 0) {
+				//判断是否是销售人员类型
+				if (result[0].info_class == '421') {
+					console.log(result[0]);
+					//保存到localStorage中的INFO_DATA中
+					window.localStorage.setItem('EMPLOYEE_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic + ',' + result[0].info_id);
+					//将数据存储到_EMPLOYEE_DATA变量中
+					_EMPLOYEE_DATA = window.localStorage.getItem('EMPLOYEE_DATA');
+				}
 			}
-		}
+		});
 	}
-
-	//有infoID或者userID的处理流程，因为是ajax异步处理数据，所以两种情况作单独处理
-	if (infoID != '' || userID != '') {
-		//用infoID的情况
-		if (infoID != '') {
-			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&infoID=' + infoID, function (result) {
-				//是否找到销售人员
-				if (result.length != 0) {
-					//判断是否是销售人员类型
-					if (result[0].info_class == '421') {
-						console.log(result[0]);
-						//保存到localStorage中的INFO_DATA中
-						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+result[0].info_id+','+(new Date).getTime());
-					}
+	//TEST: ?lineid=11362&infoid=431
+	if (sellerID != '') {
+		//根据sellerID读取销售人员信息
+		$.getJSON(server_addr + '/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&infoID=' + sellerID, function (result) {
+			//是否找到销售人员
+			if (result.length != 0) {
+				//判断是否是销售人员类型
+				if (result[0].info_class == '421') {
+					console.log(result[0]);
+					//保存到localStorage中的SELLER_DATA中
+					window.localStorage.setItem('SELLER_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic + ',' + result[0].info_id);
+					//将数据存储到_SELLER_DATA变量中
+					_SELLER_DATA = window.localStorage.getItem('SELLER_DATA');
 				}
-				//然后在当前页面加入销售人员UI效果
-				showSellerUI();
-			});
-		}
-		//用userID的情况
-		if (userID != '') {
-			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&url=' + userID, function (result) {
-				//是否找到销售人员
-				if (result.length != 0) {
-					//判断是否是销售人员类型
-					if (result[0].info_class == '421') {
-						console.log(result[0]);
-						//保存到localStorage中的INFO_DATA中
-						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+result[0].info_id+','+(new Date).getTime());
-					}
-				}
-				//然后在当前页面加入销售人员UI效果
-				showSellerUI();
-			});
-		}
-
-	}else{
-		//没有则直接展示销售UI(localStorage中有数据才会展示)
-		showSellerUI();
+			}
+		});
 	}
 })(window);
+/*20160419 大幅度修改销售模式，注释老代码*/
+// (function(){
+// 	var infoID  = getParameterValue(window.location.href,'infoid');
+// 	var userID  = getParameterValue(window.location.href,'url');
+//
+// 	//展现销售人员UI的函数
+// 	function showSellerUI(){
+// 		var infoData= '';
+// 		//读取localStorage中的INFO_DATA数据
+// 		if ((infoData = window.localStorage.getItem('INFO_DATA'))!=null){
+// 			//console.log(infoData);
+// 			//如果保存时间太久超过24小时则摧毁INFO_DATA，否则显示销售员信息
+// 			if(((new Date).getTime()-infoData.split(',')[4])>86400000){
+// 				//console.log((new Date).getTime()-parseInt(infoData.split(',')[3]));
+// 				window.localStorage.removeItem('INFO_DATA');
+// 			}else{
+// 				$(document).ready(function(){
+// 					//线路详情页面的处理方式
+// 					if (window.location.href.indexOf('tour-detail.html')>-1){
+// 						$('#btn-style-2 .face').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+// 						$('#btn-style-2 a').attr('href','tel:'+infoData.split(',')[1]);
+// 						$('#btn-style-1').hide();
+// 						$('#btn-style-2').show();
+// 						return true;
+// 					}
+// 					//首页的处理方式
+// 					if (window.location.href.indexOf('main.html')>-1){
+// 						$('#seller-panel').height(parseInt($(window).width()/1000*657));
+// 						$('#seller-panel .seller-panel-bg').height(parseInt($(window).width()/1000*657));
+// 						//$('#seller-panel .seller-panel-bg').css({'background':'url('+infoData.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+// 						$('#seller-panel .seller-panel-bg').css({'background':'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat','background-size':'cover'});
+// 						$('#seller-panel img').attr({'src':''+infoData.split(',')[2]});
+// 						$('#seller-panel a').attr({'href':'tel:'+infoData.split(',')[1]});
+// 						$('#seller-panel a span').text(infoData.split(',')[0]);
+// 						$('#galleryAD').hide();
+// 						$('#seller-panel').show();
+// 						return true;
+// 					}
+// 					//一般的处理方式
+// 					$('body').append('<div id="seller-section"></div>');
+// 					$('#seller-section').load('seller.html',function(){
+// 						$('#seller .face').css({'background':'url('+infoData.split(',')[2]+') 50% 0% no-repeat'});
+// 						$('#seller .content strong').text(infoData.split(',')[0]);
+// 						$('#seller .content a').attr('href','tel:'+infoData.split(',')[1]);
+// 						$('#seller').animate({'left':'1rem','bottom:':'1rem'});
+// 					});
+// 				});
+// 			}
+// 		}
+// 	}
+//
+// 	//有infoID或者userID的处理流程，因为是ajax异步处理数据，所以两种情况作单独处理
+// 	if (infoID != '' || userID != '') {
+// 		//用infoID的情况
+// 		if (infoID != '') {
+// 			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&infoID=' + infoID, function (result) {
+// 				//是否找到销售人员
+// 				if (result.length != 0) {
+// 					//判断是否是销售人员类型
+// 					if (result[0].info_class == '421') {
+// 						console.log(result[0]);
+// 						//保存到localStorage中的INFO_DATA中
+// 						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+result[0].info_id+','+(new Date).getTime());
+// 					}
+// 				}
+// 				//然后在当前页面加入销售人员UI效果
+// 				showSellerUI();
+// 			});
+// 		}
+// 		//用userID的情况
+// 		if (userID != '') {
+// 			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&url=' + userID, function (result) {
+// 				//是否找到销售人员
+// 				if (result.length != 0) {
+// 					//判断是否是销售人员类型
+// 					if (result[0].info_class == '421') {
+// 						console.log(result[0]);
+// 						//保存到localStorage中的INFO_DATA中
+// 						window.localStorage.setItem('INFO_DATA', '' + result[0].info_name + ',' + result[0].description + ',' + 'http://www.htyou.com/' + result[0].info_thumbpic+','+result[0].info_id+','+(new Date).getTime());
+// 					}
+// 				}
+// 				//然后在当前页面加入销售人员UI效果
+// 				showSellerUI();
+// 			});
+// 		}
+//
+// 	}else{
+// 		//没有则直接展示销售UI(localStorage中有数据才会展示)
+// 		showSellerUI();
+// 	}
+// })(window);
 
 
 
@@ -251,12 +302,118 @@ avalon.config({
 });
 
 
-// 20160201 新版微信JS-SDK接口调用
-$("document").ready(function() {
-	window.setTimeout(function () {
-		//alert('3');
+// 判断用户设备类型
+function deviceType(){
+	//var info = window.navigator;
+	var platform	= navigator.platform.toLowerCase();
+	var useragent	= navigator.userAgent.toLowerCase();
+
+	//是Windows的判断
+	if (platform.indexOf('win32')>-1){
+		return "Windows";
+	}
+	//是Android的判断
+	if (platform.indexOf('linux')>-1 && useragent.indexOf('android')){
+		return "Android";
+	}
+	//是iPhone的判断
+	if (useragent.indexOf('iphone')>-1){
+		return "iPhone";
+	}
+	//是iPad的判断
+	if (useragent.indexOf('ipad')>-1){
+		return "iPad";
+	}
+
+	//其它设备返回Ohter
+	return "Other";
+}
+
+
+//20160311 用户从微信登录的相关功能
+//逻辑：如果用户是微信登录，则在index.html就会跳转到微信授权页面，授权完毕以后会跳转到main.html并传送openid和accesstoken两个参数，需要用这两个参数获取用户信息并保存到localStorage中。
+//功能：如果在main.html页面发现附带有参数：openid和accesstoken，则调用接口获取用户信息并保存到localStorage中
+//20160314 曹熙又变了，现在这个接口要用id来取
+(function(window){
+	if (window.location.href.indexOf('main.html')>-1 || window.location.href.indexOf('user-info.html')>-1){
+		var userid      = getParameterValue(window.location.href, 'id');
+		//userid必须有，并且不为空才能调用接口获取用户数据
+		if (userid!=''){
+			$.getJSON(server_addr+'/user/htuser_getGuestsInfoById.action?userid='+userid, function (result) {
+				//从接口获得的用户数据保存到localStorage中
+				window.localStorage.setItem('USER_DATA', JSON.stringify(result.guestVO));
+			});
+		}
+	}
+})(window);
+
+
+//展示销售面板的函数，参数是_SHOW_DATA
+//展现销售人员UI的函数
+function showSellerUI(inDATA) {
+	//线路详情页面的处理方式
+	if (window.location.href.indexOf('tour-detail.html') > -1) {
+		$('#btn-style-2 .face').css({
+			'background':      'url(' + inDATA.split(',')[2] + ') 50% 50% no-repeat',
+			'background-size': 'cover'
+		});
+		$('#btn-style-2 a').attr('href', 'tel:' + inDATA.split(',')[1]);
+		$('#btn-style-1').hide();
+		$('#btn-style-2').show();
+		return true;
+	}
+	//首页的处理方式
+	if (window.location.href.indexOf('main.html') > -1) {
+		$('#seller-panel').height(parseInt($(window).width() / 1000 * 657));
+		$('#seller-panel .seller-panel-bg').height(parseInt($(window).width() / 1000 * 657));
+		//$('#seller-panel .seller-panel-bg').css({'background':'url('+inDATA.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+		$('#seller-panel .seller-panel-bg').css({
+			'background':      'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat',
+			'background-size': 'cover'
+		});
+		$('#seller-panel img').attr({'src': '' + inDATA.split(',')[2]});
+		$('#seller-panel a').attr({'href': 'tel:' + inDATA.split(',')[1]});
+		$('#seller-panel a span').text(inDATA.split(',')[0]);
+		$('#galleryAD').hide();
+		$('#seller-panel').show();
+		return true;
+	}
+	//一般的处理方式
+	$('body').append('<div id="seller-section"></div>');
+	$('#seller-section').load('seller.html', function () {
+		$('#seller .face').css({'background': 'url(' + inDATA.split(',')[2] + ') 50% 0% no-repeat'});
+		$('#seller .content strong').text(inDATA.split(',')[0]);
+		$('#seller .content a').attr('href', 'tel:' + inDATA.split(',')[1]);
+		$('#seller').animate({'left': '1rem', 'bottom:': '1rem'});
+	});
+}
+$(document).ready(function(){
+	//页面载入后延迟3000ms再读取销售、员工数据，保证异步载入数据已处理完毕
+	setTimeout(function(){
+		_EMPLOYEE_DATA = window.localStorage.getItem('EMPLOYEE_DATA');	//员工数据
+		_SELLER_DATA   = window.localStorage.getItem('SELLER_DATA');	//销售数据
+		console.log('_EMPLOYEE_DATA:'+_EMPLOYEE_DATA);
+		console.log('_SELLER_DATA:'+_SELLER_DATA);
+		//先将销售员DATA复制给展示DATA，再把员工DATA赋值给展示DATA，保证员工DATA有最高的优先级
+		if (_SELLER_DATA!=null){
+			_SHOW_DATA = _SELLER_DATA;
+		}
+		if (_EMPLOYEE_DATA!=null){
+			_SHOW_DATA = _EMPLOYEE_DATA;
+		}
+		//如果最后展示DATA还是null，则表示不用展示，下面将做处理
+		console.log('_SHOW_DATA:'+_SHOW_DATA);
+		if (_SHOW_DATA!=null && _SHOW_DATA!=''){
+			showSellerUI(_SHOW_DATA);
+		}
+		// 20160201 新版微信JS-SDK接口调用
 		if (whereami() == 'weixin') {
 			/*alert('http://www.htyou.com/weixin/getJsConfig.action?page_url='+window.location.href);*/
+			//设置分享ID
+			var shareID = '';
+			if (_SHOW_DATA != null && _SHOW_DATA != '') {
+				shareID = _SHOW_DATA.split(',')[3];
+			}
 			require(['wx'], function (wx) {
 				//alert('4');
 				$.getJSON('http://www.htyou.com/weixin/getJsConfig.action?jsoncallback=?&page_url=' + window.location.href, function (result) {
@@ -312,9 +469,9 @@ $("document").ready(function() {
 						var link = window.location.href;
 						var imgUrl = $('body img').eq(0).attr('src');
 						if (link.indexOf('?')){
-							link = window.location.href+'&infoid='+window.localStorage.getItem('INFO_DATA').split(',')[3];
+							link = window.location.href+'&infoid='+shareID;
 						}else{
-							link = window.location.href+'?infoid='+window.localStorage.getItem('INFO_DATA').split(',')[3];
+							link = window.location.href+'?infoid='+shareID;
 						}
 
 						//线路详情使用的分享模式
@@ -418,58 +575,8 @@ $("document").ready(function() {
 				});
 			});
 		}
-	}, 3000);
+	},3000);
 });
-
-// 判断用户设备类型
-function deviceType(){
-	//var info = window.navigator;
-	var platform	= navigator.platform.toLowerCase();
-	var useragent	= navigator.userAgent.toLowerCase();
-
-	//是Windows的判断
-	if (platform.indexOf('win32')>-1){
-		return "Windows";
-	}
-	//是Android的判断
-	if (platform.indexOf('linux')>-1 && useragent.indexOf('android')){
-		return "Android";
-	}
-	//是iPhone的判断
-	if (useragent.indexOf('iphone')>-1){
-		return "iPhone";
-	}
-	//是iPad的判断
-	if (useragent.indexOf('ipad')>-1){
-		return "iPad";
-	}
-
-	//其它设备返回Ohter
-	return "Other";
-}
-
-
-//20160311 用户从微信登录的相关功能
-//逻辑：如果用户是微信登录，则在index.html就会跳转到微信授权页面，授权完毕以后会跳转到main.html并传送openid和accesstoken两个参数，需要用这两个参数获取用户信息并保存到localStorage中。
-//功能：如果在main.html页面发现附带有参数：openid和accesstoken，则调用接口获取用户信息并保存到localStorage中
-//20160314 曹熙又变了，现在这个接口要用id来取
-(function(window){
-	if (window.location.href.indexOf('main.html')>-1 || window.location.href.indexOf('user-info.html')>-1){
-		var userid      = getParameterValue(window.location.href, 'id');
-		//userid必须有，并且不为空才能调用接口获取用户数据
-		if (userid!=''){
-			$.getJSON(server_addr+'/user/htuser_getGuestsInfoById.action?userid='+userid, function (result) {
-				//从接口获得的用户数据保存到localStorage中
-				window.localStorage.setItem('USER_DATA', JSON.stringify(result.guestVO));
-			});
-		}
-	}
-})(window);
-
-//DEBUG模式
-(function(){
-
-})();
 // $.getJSON('/user/htuser_getGuestsInfoById.action?userid=626685', function (result) {
 // 	//从接口获得的用户数据保存到localStorage中
 // 	console.log(result.guse);
