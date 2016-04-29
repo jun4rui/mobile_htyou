@@ -21,10 +21,10 @@ ajax载入数据用jquery，一来是amazeui依赖并且自带了，二来是ava
 登录实际上是没办法坐在APP里面的，因为APP跳出去以后，没办法调回来，因为网页无法调回到APP的本地页面上来。
 所以，APP是不能登录的。理论上微信可以用QQ或者微信登录，支付宝、微博等可以用在网页登录上。
 
-名称|接口地址
-----|----
-支付宝接口|/user/zhifubao_Login.action
-支付宝登陆|/user/zhifubao_Login.action
+| 名称    | 接口地址                        |
+| ----- | --------------------------- |
+| 支付宝接口 | /user/zhifubao_Login.action |
+| 支付宝登陆 | /user/zhifubao_Login.action |
 
 
 
@@ -38,7 +38,16 @@ http://www.htyou.com/common/websinfo_queryHTClass.action?datatype=json&classId=7
 http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoID=431
 销售人员的类型必须是"info_class": 421
 
+### 获取用户账单的接口
+
+参数 userid
+
+/user/htuser_getTourOrderDetail 
+
+
+
 ### 从UID获取销售人员信息的sample
+
 http://www.htyou.com/common/websinfo_queryWebsInfos.action?url=oiZKXjjPYlSmiN3yndvDLZ7-E-jA&submit=ajax
 
 
@@ -75,9 +84,9 @@ addTourOrder
 		   http://www.htyou.com/mobile/ticket_queryTicketListApp.action?fromDate=2015-10-27&fromCity=北京&toCity=长沙
 		   
 		   返回ticketvo 对象 具体对象构造参考 /WEB-INF/weixin/ticket_show.html
-		   
-		   
-		   
+
+
+​		   
 		   国内机票 仓位查询方法
 		     /mobile/ticket_getMoreTickeBrethInFoApp.action
 		     
@@ -85,10 +94,10 @@ addTourOrder
 		    sample:
 		    http://www.htyou.com/mobile/ticket_getMoreTickeBrethInFoApp.action?sendinfo=<HBS><HEAD>27OCT(TUE) BJSCSX DIRECT ONLY<\/HEAD><HZWZ>a<\/HZWZ><HB><XH>8+<\/XH><HBH>CA1349<\/HBH><DS>DS#<\/DS><CW>FA AA YA BA MA HA KA LA QA GQ SA N3 VQ US TQ EQ M1A V1Q<\/CW><HC>PEKCSX<\/HC><CFSJ>1925<\/CFSJ><DDSJ>2200<\/DDSJ><JX>32A<\/JX><TLCY>0^L<\/TLCY><E>E<\/E><FH>&gt;<\/FH><GXHBH/><CW2/><SUBCW>M1A V1Q<\/SUBCW><OTHER>T3 T2  2:35<\/OTHER><ZDGBYJCW>QA<\/ZDGBYJCW><\/HB><\/HBS>
 		    http://www.htyou.com/mobile/ticket_getMoreTickeBrethInFoApp.action?sendinfo=%3CHBS%3E%3CHEAD%3E27OCT(TUE)%20BJSCSX%20DIRECT%20ONLY%3C%2FHEAD%3E%3CHZWZ%3Ea%3C%2FHZWZ%3E%3CHB%3E%3CXH%3E8%2B%3C%2FXH%3E%3CHBH%3ECA1349%3C%2FHBH%3E%3CDS%3EDS%23%3C%2FDS%3E%3CCW%3EFA%20AA%20YA%20BA%20MA%20HA%20KA%20LA%20QA%20GQ%20SA%20N3%20VQ%20US%20TQ%20EQ%20M1A%20V1Q%3C%2FCW%3E%3CHC%3EPEKCSX%3C%2FHC%3E%3CCFSJ%3E1925%3C%2FCFSJ%3E%3CDDSJ%3E2200%3C%2FDDSJ%3E%3CJX%3E32A%3C%2FJX%3E%3CTLCY%3E0%5EL%3C%2FTLCY%3E%3CE%3EE%3C%2FE%3E%3CFH%3E%26gt%3B%3C%2FFH%3E%3CGXHBH%2F%3E%3CCW2%2F%3E%3CSUBCW%3EM1A%20V1Q%3C%2FSUBCW%3E%3COTHER%3ET3%20T2%20%202%3A35%3C%2FOTHER%3E%3CZDGBYJCW%3EQA%3C%2FZDGBYJCW%3E%3C%2FHB%3E%3C%2FHBS%3E
-		    
-		    
+
+
 		    返回 seatlist json 文本
-		    
+
 		    国际机票仓位 自带查询返回 不需要额外查询
 
 			Test URL:http://localhost:63342/mobile_htyou/www/ticket_list.html?fromCity=%E9%95%BF%E6%B2%99&toCity=%E5%8C%97%E4%BA%AC&fromDate=2015-10-31
@@ -129,3 +138,8 @@ http://www.htyou.com/mobile/tourorder_addTourOrder.action?jsoncallback=jQuery214
 keytool -genkey -v -keystore htyou-release-key.keystore -alias htyou -keyalg RSA -validity 365
 
 **Cordova 5.x开始不用ant.properties了，改在项目root目录下新建build.json代替
+
+
+
+
+

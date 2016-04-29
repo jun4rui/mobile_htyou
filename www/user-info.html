@@ -41,7 +41,7 @@
 					$('#update-info').prop('disabled',true);
 
 					//从localStorage中读取用户信息对象
-					var userInfo = JSON.parse(window.localStorage.getItem('USER_DATA'));
+					var userInfo = JSON.parse(window.localStorage.getItem('SELLER_DATA'));
 
 					//根据用户信息对象生成数据调用更新资料接口
 					var cmdStr = '/user/htuser_updateGuestInfoAll.action';
@@ -69,7 +69,7 @@
 						 1 成功
 						*/
 						if (result.status == 1) {
-							window.localStorage.setItem('USER_DATA', JSON.stringify(result.guestVO));
+							window.localStorage.setItem('SELLER_DATA', JSON.stringify(result.guestVO));
 							userVM.info = result.guestVO;
 							console.log('================================\n');
 							console.log(result.guestVO);
@@ -85,7 +85,7 @@
 								alert('身份证不规范或者已存在');
 							}
 							//重新获取用户信息
-							userVM.info = JSON.parse(window.localStorage.getItem('USER_DATA'));
+							userVM.info = JSON.parse(window.localStorage.getItem('SELLER_DATA'));
 						}
 						$('#update-info').prop('disabled',false);
 					});
@@ -99,7 +99,7 @@
 
 			//TODO:如果从get提供了guestId，则用guestId获取用户信息
 			//从localStorage载入用户资料
-			userVM.info = JSON.parse(window.localStorage.getItem('USER_DATA'));
+			userVM.info = JSON.parse(window.localStorage.getItem('SELLER_DATA'));
 			//如果用户资料为空则提醒用户，并跳转到登录页面
 			if (userVM.info == null) {
 				alert('您尚未登录，或者登录已超时，系统将自动跳转到首页！');
@@ -110,8 +110,8 @@
 			//alert('/user/htuser_getGuestsInfoById.action?userid=' + userVM.info.guestId);
 			$.getJSON('/user/htuser_getGuestsInfoById.action?userid=' + userVM.info.guestId, function (result) {
 				//alert(JSON.stringify(result.guestVO));
-				window.localStorage.setItem('USER_DATA', JSON.stringify(result.guestVO));
-				userVM.info             = JSON.parse(window.localStorage.getItem('USER_DATA'));
+				window.localStorage.setItem('SELLER_DATA', JSON.stringify(result.guestVO));
+				userVM.info             = JSON.parse(window.localStorage.getItem('SELLER_DATA'));
 				userVM.info.vip_class_c = '读取中';
 				userVM.info.guestSex_c  = '读取中';
 

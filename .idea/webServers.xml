@@ -7,6 +7,7 @@
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
+          <option name="port" value="2222" />
         </fileTransfer>
       </webServer>
       <webServer id="5c77e9ca-5d9a-4b53-9874-e00931cd2760" name="Nas" url="http://jun4rui.myqnapcloud.com:88/">
@@ -14,6 +15,15 @@
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="9a720c80-f015-47b2-8be7-25bfe70c47bc" name="VPS" url="http://107.170.216.106/ztauto/">
+        <fileTransfer host="107.170.216.106" port="22" accessType="SFTP" username="jun4rui">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
         </fileTransfer>
       </webServer>
     </option>
