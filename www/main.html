@@ -146,22 +146,27 @@
 	}
 </style>
 <header data-am-widget="header" class="am-header am-header-default">
-	<div class="am-header-left am-header-nav">
-		<!--下拉菜单
+
+	<div class="am-header-left am-header-nav" id="weixin-user" style="display:none;">
 		<div data-am-dropdown>
 			<a href="#left-link">
 				<i class="am-header-icon am-icon-bars am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
 			</a>
 			<ul class="am-dropdown-content">
-				<li class="am-dropdown-header">导航菜单</li>
+				<li class="am-dropdown-header">用户功能</li>
 				<li class="am-divider"></li>
-				<li><a href="tour-area.html?classParent=423">出境游</a></li>
-				<li><a href="tour-area.html?classParent=424">国内游</a></li>
-				<li><a href="#">周边游</a></li>
+				<li><a href="weixin-register.html">用户注册</a></li>
+				<li><a href="weixin-bind.html">用户绑定</a></li>
+				<li><a href="user-info.html">查看用户资料</a></li>
 			</ul>
 		</div>
-		<!--/下拉菜单-->
 	</div>
+	<script>
+		//判断如果是weixin中，则显示微信用户菜单
+		if (whereami() == 'weixin') {
+			$('#weixin-user').show();
+		}
+	</script>
 
 	<h1 class="am-header-title">
 		<a href="#title-link" class="">
