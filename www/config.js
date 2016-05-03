@@ -336,6 +336,10 @@ function deviceType(){
 //20160314 曹熙又变了，现在这个接口要用id来取
 (function(window){
 	if (window.location.href.indexOf('main.html')>-1 || window.location.href.indexOf('user-info.html')>-1){
+		//如果参数中有from=表示是从微信中分享过来的，这样的情况不重新保存用户信息到USER_DATA;
+		if (getParameterValue(window.location.href, 'from')!=''){
+			return false;
+		}
 		var userid      = getParameterValue(window.location.href, 'id');
 		//userid必须有，并且不为空才能调用接口获取用户数据
 		if (userid!=''){
@@ -469,11 +473,10 @@ $(document).ready(function(){
 						var link = window.location.href;
 						var imgUrl = $('body img').eq(0).attr('src');
 						if (link.indexOf('?')){
-							link = window.location.href+'&infoid='+shareID;
+							link = link+'&infoid='+shareID;
 						}else{
-							link = window.location.href+'?infoid='+shareID;
+							link = link+'?infoid='+shareID;
 						}
-
 						//线路详情使用的分享模式
 						if (window.location.href.indexOf('tour-detail.html') > -1) {
 							imgUrl = $('#galleryAD img').eq(0).attr('src');
