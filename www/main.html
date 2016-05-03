@@ -146,18 +146,19 @@
 	}
 </style>
 <header data-am-widget="header" class="am-header am-header-default">
-
+	<!--微信专有菜单-->
 	<div class="am-header-left am-header-nav" id="weixin-user" style="display:none;">
 		<div data-am-dropdown>
 			<a href="#left-link">
 				<i class="am-header-icon am-icon-bars am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
 			</a>
 			<ul class="am-dropdown-content">
-				<li class="am-dropdown-header">用户功能</li>
-				<li class="am-divider"></li>
-				<li><a href="weixin-register.html">用户注册</a></li>
-				<li><a href="weixin-bind.html">用户绑定</a></li>
-				<li><a href="user-info.html">查看用户资料</a></li>
+				<!--<li class="am-dropdown-header">用户功能</li>-->
+				<!--<li class="am-divider"></li>-->
+				<li><a href="http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=weixin-register.html">注册会员</a></li>
+				<li><a href="http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=weixin-bind.html">会员登录</a></li>
+				<li><a href="./user-info.html">会员资料</a></li>
+				<li><a href="./user-findpw.html">找回密码</a></li>
 			</ul>
 		</div>
 	</div>
@@ -167,7 +168,7 @@
 			$('#weixin-user').show();
 		}
 	</script>
-
+	<!--/微信专有菜单-->
 	<h1 class="am-header-title">
 		<a href="#title-link" class="">
 			华天旅游 游为精彩
