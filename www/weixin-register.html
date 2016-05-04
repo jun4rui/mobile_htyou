@@ -216,7 +216,8 @@
 					}
 					//提交用户注册信息到注册接口
 					//20160316 曹熙要求把username参数改成account提交
-					var regPort = '/user/htuser_register.action?info_type=120615';
+					//20160504 曹熙要求把info_type参数从120615改成120620
+					var regPort = '/user/htuser_register.action?info_type=120620';
 					regPort += '&identifyId=' + $('#idcard').val();
 					regPort += '&phone=' + $('#phone').val();
 					regPort += '&account=' + $('#phone').val();
