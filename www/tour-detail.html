@@ -115,7 +115,7 @@
 
 			/*线下支付的处理流程*/
 			if ($('#pay_type').val()=='121604'){
-				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID;
+				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID+'&tourOrderVO.cuser='+$('#seller-name').val()+'&tourOrderVO.cuser='+$('#seller-phone').val();
 				//console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
@@ -154,7 +154,7 @@
 			}
 			/*微信支付的处理流程*/
 			if ($('#pay_type').val()=='121603'){
-				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID;
+				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID+'&tourOrderVO.cuser='+$('#seller-name').val()+'&tourOrderVO.cuser='+$('#seller-phone').val();
 				console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
@@ -194,7 +194,7 @@
 			}
 			/*支付宝支付的处理流程*/
 			if ($('#pay_type').val()=='121601'){
-				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID;
+				var getUrl	= '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID+'&tourOrderVO.cuser='+$('#seller-name').val()+'&tourOrderVO.cuser='+$('#seller-phone').val();
 				console.log(getUrl);
 				//关闭提交按钮
 				$('#submit-btn').attr('disabled','disabled');
@@ -884,6 +884,16 @@
 									<option value="121601">支付宝</option>
 								</select>
 							</div>
+							<!--20160520加入销售员信息-->
+							<div class="am-form-group">
+								<label for="seller-name">销售员名称：</label>
+								<input type="text" id="seller-name" placeholder="请输入销售员名称"/>
+							</div>
+							<div class="am-form-group">
+								<label for="seller-phone">销售员电话号码：</label>
+								<input type="text" id="seller-phone" placeholder="请输入销售员电话号码"/>
+							</div>
+							<!--/20160520加入销售员信息-->
 							<div class="am-form-group" style="margin:0;">
 								<div class="am-u-sm-12 am-u-sm-center am-u-sm-centered" style="padding:0;">
 									<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()" style="display:none;">提交</button>
