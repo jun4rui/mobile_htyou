@@ -160,6 +160,8 @@ function doBack(){
 					//将数据存储到_EMPLOYEE_DATA变量中
 					_EMPLOYEE_DATA = window.localStorage.getItem('EMPLOYEE_DATA');
 				}
+			}else{	//20160526 郑波自己修改了数据库数据让自己身份变更，这样结果就取不到数据，但还是出现他以前销售员信息的显示，针对此问题，如果碰到数据为空，将清除掉localstorage中的销售员信息
+				window.localStorage.removeItem('EMPLOYEE_DATA');
 			}
 		});
 	}
