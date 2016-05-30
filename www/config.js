@@ -331,6 +331,35 @@ function deviceType(){
 	return "Other";
 }
 
+//20160530 因为在微信上突然出现找不到函数deviceType的BUG，考虑尝试将该函数添加到window中调用。故做如下代码
+(function(window){
+	function deviceType4Window(){
+		//var info = window.navigator;
+		var platform	= navigator.platform.toLowerCase();
+		var useragent	= navigator.userAgent.toLowerCase();
+
+		//是Windows的判断
+		if (platform.indexOf('win32')>-1){
+			return "Windows";
+		}
+		//是Android的判断
+		if (platform.indexOf('linux')>-1 && useragent.indexOf('android')){
+			return "Android";
+		}
+		//是iPhone的判断
+		if (useragent.indexOf('iphone')>-1){
+			return "iPhone";
+		}
+		//是iPad的判断
+		if (useragent.indexOf('ipad')>-1){
+			return "iPad";
+		}
+
+		//其它设备返回Ohter
+		return "Other";
+	}
+	window.dType = deviceType4Window;
+})(window);
 
 //20160311 用户从微信登录的相关功能
 //逻辑：如果用户是微信登录，则在index.html就会跳转到微信授权页面，授权完毕以后会跳转到main.html并传送openid和accesstoken两个参数，需要用这两个参数获取用户信息并保存到localStorage中。

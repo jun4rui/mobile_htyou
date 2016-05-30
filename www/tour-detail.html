@@ -113,6 +113,10 @@
 				alertMsg = '<font style="color:#F00;">本团因出行不确定性，</font>';
 			}
 
+			//20160530 进入具体产品处理流程前先关闭用户信息表单Modal窗口，以免两层Modal导致显示混乱
+			$('#order-modal').modal('close');
+
+
 			/*线下支付的处理流程*/
 			if ($('#pay_type').val()=='121604'){
 				var getUrl  = '/mobile/tourorder_addTourOrder.action?jsoncallback=?&tourOrderVO.order_amount='+$('#order_amount').val()+'&tourOrderVO.preferential_price='+$('#order_amount').val()+'&tourOrderVO.pay_type='+$('#pay_type').val()+'&tourOrderVO.contact_name='+$('#username').val()+'&tourOrderVO.contact_idcard='+$('#idcard').val()+'&tourOrderVO.contact_sex='+$('#user-sex').val()+'&tourOrderVO.contact_phone='+$('#phone-number').val()+'&tourOrderVO.tourproname='+$('#title-link').val()+'&tourOrderVO.tourproid='+$('#tourproid').val()+'&tourOrderVO.jzl_cteamcode='+$('#jzl_cteamcode').val()+'&tourOrderVO.start_date='+$('#tour-date').val()+'&tourOrderVO.adult_num='+$('#persons').val()+'&tourOrderVO.child_num=0&tourOrderVO.order_source='+deviceType+'&infoid='+_INFOID+'&tourOrderVO.cuser='+$('#seller-name').val()+'&tourOrderVO.cphone='+$('#seller-phone').val();
@@ -133,7 +137,8 @@
 							+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
 
 						$('#order-message .order-message-title').text('订单提交成功！');
-						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，'+alertMsg+'很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
+						//$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，'+alertMsg+'很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
+						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，'+alertMsg+'很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！'+'<div class="am-btn-group am-btn-group-justify"><a href="#" class="am-btn am-btn-success" role="button" onclick="$(\'#order-message\').modal(\'close\');">确定</a>');
 						$('#order-message').modal('open');
 						$('#submit-btn').text('已下单');
 					}else{
@@ -172,7 +177,8 @@
 							+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
 
 						$('#order-message .order-message-title').text('进入微信支付流程');
-						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">微信支付</a> 付款');
+						//$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">微信支付</a> 付款');
+						$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'<div class="am-btn-group am-btn-group-justify"><a href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'" class="am-btn am-btn-success" role="button" target="_blank">付款</a> <a onclick="$(\'#order-message\').modal(\'close\');" class="am-btn am-btn-danger" role="button">取消</a> </div>');
 						$('#order-message').modal('open');
 						$('#submit-btn').text('已下单');
 					}else{
@@ -211,18 +217,20 @@
 								+'<strong style="color:#F00;">订单总价：</strong>&yen;'+result.orderParam.order_amount+'元<br/>'
 								+'<strong style="color:#F00;">订单单号：</strong>'+result.orderParam.sys_show_order_id+'<br/>';
 
-						$('#order-message .order-message-title').text('进入支付宝支付流程');
+						$('#order-message .order-message-title').text('订单确认');
 						//如果在IOS设备则需要用这个方式:cordova.InAppBrowser.open('http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id=C160322314241', '_blank', 'location=yes');
-						if (deviceType().toLowerCase()=='iphone' || deviceType().toLowerCase()=='ipad'){
+						if (dType().toLowerCase()=='iphone' || dType().toLowerCase()=='ipad'){
 						//if (deviceType().toLowerCase()=='windows'){
 							//alert(deviceType().toLowerCase());
 							function iosAlipay(inCode){
 								//alert(inCode);
 								cordova.InAppBrowser.open('http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+inCode, '_system', 'location=yes');
 							}
-							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <button class="am-btn am-btn-success" onClick="iosAlipay('+result.orderParam.sys_show_order_id+');">支付宝支付</button> 付款');
+							//$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <button class="am-btn am-btn-success" onClick="iosAlipay('+result.orderParam.sys_show_order_id+');">支付宝支付</button> 付款');
+							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'<div class="am-btn-group am-btn-group-justify"><a href="#" class="am-btn am-btn-success" role="button" onClick="iosAlipay('+result.orderParam.sys_show_order_id+');">付款</a> <a onclick="$(\'#order-message\').modal(\'close\');" class="am-btn am-btn-danger" role="button">取消</a> </div>');
 						}else{
-							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">支付宝支付</a> 付款');
+							//$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">支付宝支付</a> 付款');
+							$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'<div class="am-btn-group am-btn-group-justify"><a href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'" class="am-btn am-btn-success" role="button" target="_blank">付款</a> <a onclick="$(\'#order-message\').modal(\'close\');" class="am-btn am-btn-danger" role="button">取消</a> </div>');
 						}
 						$('#order-message').modal('open');
 						$('#submit-btn').text('已下单');
@@ -921,9 +929,10 @@
 		<div class="am-modal-bd order-message-content">
 
 		</div>
-		<div class="am-modal-footer">
-			<span class="am-modal-btn">确定</span>
-		</div>
+		<!--20160530 因为需要动态生成modal按钮，故取消-->
+		<!--<div class="am-modal-footer">-->
+			<!--<span class="am-modal-btn">确定</span>-->
+		<!--</div>-->
 	</div>
 </div>
 <!--/提示窗口-->
