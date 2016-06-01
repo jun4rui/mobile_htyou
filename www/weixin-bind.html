@@ -141,10 +141,12 @@
 	(function ($) {
 		$(document).delegate('#bind-button', 'click', function () {
 			//验证密码是否输入
+			/*20160601 郑波要求不限制密码故取消
 			if ($('#password').val().length<3 || $('#password').val().length>32) {
 				alert('请检查您的密码是否规范');
 				return false;
 			}
+			*/
 			//验证用户输入的account：5～32个字符长度，不能是中文
 			if ($('#username').val().match(/^[a-zA-Z0-9_]{5,32}$/)==null){
 				alert('您的帐户名称必须用英文字母开头，并且只使用英文字符和数字，长度应该在5～32个字符之间');
