@@ -204,11 +204,12 @@
 						alert('您两次输入的密码不一致，请重新填写再提交');
 						return false;
 					}
+					//20160606 舒涛提出，曹熙确认用户名无限制，且不必填写
 					//验证用户输入的account：5～32个字符长度，不能是中文
-					if ($('#username').val().match(/^[a-zA-Z]{1}[a-zA-Z0-9]{4,31}$/)==null){
+					/*if ($('#username').val().match(/^[a-zA-Z]{1}[a-zA-Z0-9]{4,31}$/)==null){
 						alert('您的姓名必须用英文字母开头，并且只使用英文字符和数字，长度应该在5～32个字符之间');
 						return false;
-					}
+					}*/
 					//如果没有openid和accesstoken也无法注册
 					if ($('#openid').val()=='' || $('#accesstoken').val()==''){
 						alert('您没有通过微信接口验证，请重新进入该页面')
