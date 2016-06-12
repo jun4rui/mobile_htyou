@@ -28,7 +28,9 @@ var _USERDATA	= JSON.parse(window.localStorage.getItem('USER_DATA'));		//_USERDA
 //20160419 新的销售人员逻辑用数据
 var _EMPLOYEE_DATA = window.localStorage.getItem('EMPLOYEE_DATA');	//员工数据
 var _SELLER_DATA   = window.localStorage.getItem('SELLER_DATA');	//销售数据
-var _SHOW_DATA     = '' //显示数据，该数据用来显示销售员面板和分享者ID，默认为空，待根据算法赋予其值
+
+//20160612 根据郑波要求的“如果没有销售人员也需要显示华天国旅的默认销售面板信息”，所以将默认值修改为华天旅游网的默认信息
+var _SHOW_DATA     = '华天国旅,073155555555,http://www.htyou.com/static/2016/default_face.jpg,0' //显示数据，该数据用来显示销售员面板和分享者ID，默认为空，待根据算法赋予其值
 
 //查询url参数函数
 //有则返回参数列表list
@@ -399,27 +401,34 @@ function showSellerUI(inDATA) {
 	}
 	//首页的处理方式
 	if (window.location.href.indexOf('main.html') > -1) {
-		$('#seller-panel').height(parseInt($(window).width() / 1000 * 657));
-		$('#seller-panel .seller-panel-bg').height(parseInt($(window).width() / 1000 * 657));
-		//$('#seller-panel .seller-panel-bg').css({'background':'url('+inDATA.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
-		$('#seller-panel .seller-panel-bg').css({
-			'background':      'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat',
-			'background-size': 'cover'
-		});
-		$('#seller-panel img').attr({'src': '' + inDATA.split(',')[2]});
-		$('#seller-panel a').attr({'href': 'tel:' + inDATA.split(',')[1]});
-		$('#seller-panel a span').text(inDATA.split(',')[0]);
-		$('#galleryAD').hide();
-		$('#seller-panel').show();
-		return true;
+		//20160606 郑波要求无销售信息则默认显示华天国旅的漂浮信息，所以首页判断如果_SHOW_DATA的开始不是'华天国旅'则才显示顶部信息并推出，是则继续走到下一步显示漂浮信息
+		if(inDATA.indexOf('华天国旅')!=0){
+			$('#seller-panel').height(parseInt($(window).width() / 1000 * 657));
+			$('#seller-panel .seller-panel-bg').height(parseInt($(window).width() / 1000 * 657));
+			//$('#seller-panel .seller-panel-bg').css({'background':'url('+inDATA.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+			$('#seller-panel .seller-panel-bg').css({
+				'background':      'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat',
+				'background-size': 'cover'
+			});
+			$('#seller-panel img').attr({'src': '' + inDATA.split(',')[2]});
+			$('#seller-panel a').attr({'href': 'tel:' + inDATA.split(',')[1]});
+			$('#seller-panel a span').text(inDATA.split(',')[0]);
+			$('#galleryAD').hide();
+			$('#seller-panel').show();
+			return true;
+		}
 	}
 	//一般的处理方式
 	$('body').append('<div id="seller-section"></div>');
 	$('#seller-section').load('seller.html', function () {
-		$('#seller .face').css({'background': 'url(' + inDATA.split(',')[2] + ') 50% 0% no-repeat'});
+		//20160612 根据郑波的要求在华天国旅默认下才显示在线客服
+		if(inDATA.indexOf('华天国旅')!=0){
+			$('#seller .content a').eq(1).remove();
+		}
+		$('#seller .face').css({'background': 'url(' + inDATA.split(',')[2] + ') 50% 0% no-repeat','background-size':'cover'});
 		$('#seller .content strong').text(inDATA.split(',')[0]);
-		$('#seller .content a').attr('href', 'tel:' + inDATA.split(',')[1]);
-		$('#seller').animate({'left': '1rem', 'bottom:': '1rem'});
+		$('#seller .content a').eq(0).attr('href', 'tel:' + inDATA.split(',')[1]);
+		$('#seller').animate({'left': '1rem', 'bottom:': '2rem'});
 	});
 }
 $(document).ready(function(){

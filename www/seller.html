@@ -4,7 +4,7 @@
         transition: top linear 0s, left linear 0s, border-radius ease-in-out .5s, width 1s;
         position:fixed;
         left:-6rem;
-        bottom:1rem;
+        bottom:2rem;
         width: 5rem;
         height: 5rem;
         border-radius: 50%;
@@ -35,20 +35,27 @@
         color:#555;
     }
 </style>
-<div id="seller">
+<div id="seller" class="expand">
     <div class="face"></div>
     <div class="content">
-        您的专属客服经理 <strong>郑波</strong> 为您服务
+		<span class="text">您专属客服经理<strong>郑波</strong>为您服务<br/></span>
         <a class="am-btn am-btn-success am-btn-sm" href="#">
             <i class="am-icon-phone-square"></i>
-            呼叫
+            电话
         </a>
+		<a class="am-btn am-btn-success am-btn-sm" href="http://tb.53kf.com/webCompany.php?arg=10102842&style=1">
+			<i class="am-icon-user"></i>
+			客服
+		</a>
     </div>
 </div>
 <script>
+
+    /* 20160612 郑波要求只展开不收拢，故删除函数，并默认加上expand
     $('#seller .face').click(function(){
         $('#seller').toggleClass('expand');
     });
+    */
 
     (function(){
         var mouseFlag = false;
