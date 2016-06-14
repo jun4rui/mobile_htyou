@@ -30,7 +30,7 @@ var _EMPLOYEE_DATA = window.localStorage.getItem('EMPLOYEE_DATA');	//员工数�
 var _SELLER_DATA   = window.localStorage.getItem('SELLER_DATA');	//销售数据
 
 //20160612 根据郑波要求的“如果没有销售人员也需要显示华天国旅的默认销售面板信息”，所以将默认值修改为华天旅游网的默认信息
-var _SHOW_DATA     = '华天国旅,073155555555,http://www.htyou.com/static/2016/default_face.jpg,0' //显示数据，该数据用来显示销售员面板和分享者ID，默认为空，待根据算法赋予其值
+var _SHOW_DATA     = '华天国旅,073155555555,http://www.htyou.com/weixin_h5/images/default_face.png,0' //显示数据，该数据用来显示销售员面板和分享者ID，默认为空，待根据算法赋予其值
 
 //查询url参数函数
 //有则返回参数列表list
