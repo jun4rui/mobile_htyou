@@ -3,82 +3,131 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
-	<title>华天旅游网 移动版</title>
-	<script type="text/javascript" src="cordova.js"></script>
+	<title>华天旅游网</title>
+	<!--<script type="text/javascript" src="cordova.js"></script>-->
 	<!--jQuery框架-->
 	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
 	<!--amaze框架 需要jQuery支持-->
-	<link  href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
 	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
 	<!--avalon框架-->
 	<script src="./bower_components/avalon/avalon.js"></script>
 	<!--fontawesome图标库-->
 	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
 	<!--js配置文件-->
-	<script src="./config.js"></script>
+	<script src="./config.js?20160612"></script>
 	<style>
 		body {
-			background-color:#f3f3f3;
+			background-color: #f3f3f3;
 		}
+
 		.hide {
-			display:none;
+			display: none;
+		}
+
+		/*TEST CSS3*/
+		@keyframes fadein {
+			from {
+				opacity: 0;
+				transform: scale(1.5)
+			}
+			to {
+				opacity: 1;
+				transform: scale(1.0)
+			}
+		}
+
+		#hot-section .am-gallery-item {
+			animation: fadein 2s;
+
+			transition: transform .5s;
+		}
+
+		#hot-section .am-gallery-item:hover {
+			transform: scale(1.05);
+			z-index: 999;
 		}
 	</style>
 	<script>
+		$('#galleryAD').ready(function () {
+			$('#galleryAD').height(parseInt($(window).width() / 110 * 44));
+		});
+		$('#hot-section').ready(function () {
+			$('#hot-section .am-gallery-item img').css({'height': parseInt($(window).innerWidth() / 2 / 450 * 260)});
+		});
 		//Avalon模型
-		avalon.ready(function(){
+		avalon.ready(function () {
 			//全局VM
 			//顶部广告轮播VM
 			var galleryVM = avalon.define({
 				$id: 'gallery',
 				list: [],
-				galleryRendered: function(type){
-					$('#galleryAD').show();
+				galleryRendered: function (type) {
+					//$('#galleryAD').show();
 					//激活滑动gallery
-					$('.am-slider-manual').flexslider({"directionNav":false});
+					$('.am-slider-manual').flexslider({"directionNav": false});
 					//解决图片高度不一致的问题，最终高度和宽度的例如110:44的比例来显示
-					$('#galleryAD a img').height(parseInt($('#galleryAD').width()/110*44));
+					$('#galleryAD a img').height(parseInt($('#galleryAD').width() / 110 * 44));
 				}
 			});
 			//推荐产品VM
 			var recommendTourVM = avalon.define({
 				$id: 'recommendTour',
-				list:[]
+				list: []
 			});
 			//热门目的地VM
-			var hotTourVM   = avalon.define({
-				$id:'hotTour',
-				list:[],
-				hotSectionRendered: function(){
-					$('#hot-section .am-gallery-item img').css({'height':parseInt($(window).innerWidth()/2/450*260)});
+			var hotTourVM = avalon.define({
+				$id: 'hotTour',
+				list: [],
+				//渲染后调整图片尺寸来适应屏幕尺寸
+				hotSectionRendered: function () {
+					$('#hot-section .am-gallery-item img').css({'height': parseInt($(window).innerWidth() / 2 / 450 * 260)});
 				}
 			});
 			avalon.scan();
 
 			//Ajax载入顶部广告轮播数据
-			$.getJSON(server_addr+'/common/adpic_queryAdPic.action?adPicType=220089&datatype=json&jsoncallback=?', function (result, status) {
-				for (var i=0; i<result.length; i++){
+			$.getJSON(server_addr + '/common/adpic_queryAdPic.action?adPicType=220074&datatype=json&jsoncallback=?', function (result, status) {
+				for (var i = 0; i < result.length; i++) {
 					//转换搜索区域的链接地址
 					//转换搜索关键字的链接地址
-					if (result[i].alink.indexOf('tour/type/month/keyword')==0){
-						result[i].alink = 'tour-list.html?q='+result[i].alink.substring(result[i].alink.lastIndexOf('/keyword')+8,result[i].alink.lastIndexOf('.'));
+					if (result[i].alink.indexOf('tour/type/month/keyword') == 0) {
+						result[i].alink = 'tour-list.html?q=' + result[i].alink.substring(result[i].alink.lastIndexOf('/keyword') + 8, result[i].alink.lastIndexOf('.'));
 					}
 					//转换直达链接的链接地址
-					if (result[i].alink.indexOf('tour/tourbrowse/')==0){
-						result[i].alink = 'tour-detail.html?lineid='+result[i].alink.substring(result[i].alink.lastIndexOf('/')+1,result[i].alink.lastIndexOf('.'));
+					if (result[i].alink.indexOf('tour/tourbrowse/') == 0) {
+						result[i].alink = 'tour-detail.html?lineid=' + result[i].alink.substring(result[i].alink.lastIndexOf('/') + 1, result[i].alink.lastIndexOf('.'));
 					}
 					//console.log('link'+i+':'+result[i].alink);
 				}
 				galleryVM.list = result;
 			});
 			//Ajax载入推荐产品数据
-			$.getJSON(server_addr+'/mobile/ipad_queryTourLine.action?commendtype=14&pagesize=8&jsoncallback=?', function(result, status){
+			$.getJSON(server_addr + '/mobile/ipad_queryTourLine.action?commendtype=14&pagesize=8&jsoncallback=?', function (result, status) {
 				//console.log(status, result);
 				recommendTourVM.list = result.value;
 			});
 			//Ajax载入热门目的地数据
-			$.getJSON(server_addr+'/common/websinfo_queryWebsInfos.action?submit=ajax&infoClass=414&jsoncallback=?', function(result, status){
-				console.log(status, result);
+			$.getJSON(server_addr + '/common/websinfo_queryWebsInfos.action?submit=ajax&infoClass=414&jsoncallback=?', function (result, status) {
+				//console.log(status, result);
+				var status = false;	//记录链接是否被处理过的状态位
+				for (var i = 0; i < result.length; i++) {
+					status = false;	//重制状态位
+					//直达产品的处理
+					if (result[i].url.indexOf('/mobileTour/tourbrowse/') == 0) {
+						result[i].url = 'tour-detail.html?lineid=' + result[i].url.substring(result[i].url.lastIndexOf('/') + 1, result[i].url.lastIndexOf('.'));
+						status = true;
+					}
+					//搜索关键字的处理
+					if (result[i].url.indexOf('/mobileTour/isnative/area/keyword') == 0) {
+						result[i].url = 'tour-list.html?q=' + result[i].url.substring(result[i].url.lastIndexOf('/keyword') + 8, result[i].url.lastIndexOf('.'));
+						status = true;
+					}
+					//其它的处理
+					if (!status) {
+						result[i].url = 'otherframe.html?inurl=' + encodeURIComponent(result[i].url);
+					}
+				}
 				hotTourVM.list = result;
 			});
 
@@ -89,30 +138,38 @@
 <!--头部-->
 <style>
 	header.am-header .am-header-title {
-		margin:0 3em;
+		margin: 0 3em;
 	}
+
 	.htyou-header-menu {
-		color:#FFF;
+		color: #FFF;
 	}
 </style>
 <header data-am-widget="header" class="am-header am-header-default">
-	<div class="am-header-left am-header-nav">
-		<!--下拉菜单
+	<!--微信专有菜单-->
+	<div class="am-header-left am-header-nav" id="weixin-user" style="display:none;">
 		<div data-am-dropdown>
 			<a href="#left-link">
 				<i class="am-header-icon am-icon-bars am-dropdown-toggle htyou-header-menu" data-am-dropdown-toggle></i>
 			</a>
 			<ul class="am-dropdown-content">
-				<li class="am-dropdown-header">导航菜单</li>
-				<li class="am-divider"></li>
-				<li><a href="tour-area.html?classParent=423">出境游</a></li>
-				<li><a href="tour-area.html?classParent=424">国内游</a></li>
-				<li><a href="#">周边游</a></li>
+				<!--<li class="am-dropdown-header">用户功能</li>-->
+				<!--<li class="am-divider"></li>-->
+				<li><a href="http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=weixin-register.html">注册会员</a></li>
+				<li><a href="http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=weixin-bind.html">会员登录</a></li>
+				<li><a href="./user-info.html">会员资料</a></li>
+				<li><a href="./user-findpw.html">找回密码</a></li>
 			</ul>
 		</div>
-		<!--/下拉菜单-->
 	</div>
-
+	<script>
+		//判断如果是weixin中，则显示微信用户菜单
+		//TODO 还有推荐码之类的功能，先下线
+		if (whereami() == 'weixin') {
+			//$('#weixin-user').show();
+		}
+	</script>
+	<!--/微信专有菜单-->
 	<h1 class="am-header-title">
 		<a href="#title-link" class="">
 			华天旅游 游为精彩
@@ -129,7 +186,6 @@
 <!--/头部-->
 
 <!--顶部轮播广告-->
-
 <div data-am-widget="slider" id="galleryAD" class="am-slider-manual am-slider am-slider-a1">
 	<ul class="am-slides" ms-controller="gallery">
 		<!--渲染完毕后执行galleryRendered-->
@@ -142,15 +198,90 @@
 	</ul>
 </div>
 <!--/顶部轮播广告-->
+<!--顶部销售人员栏-->
+<style>
+	#seller-panel {
+		position: relative;
+		overflow: hidden;
+		display: none;
+	}
 
+	#seller-panel,
+	#seller-panel .seller-panel-bg {
+		width: 100%;
+		height: 230px;
+	}
+
+	#seller-panel .seller-panel-bg {
+		z-index: -1;
+		/*-webkit-filter: blur(3px);*/
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+
+	#seller-panel .face-border {
+		width: 8rem;
+		height: 8rem;
+		margin: 0 auto;
+		border: 3px solid #FFF;
+		border-radius: 50%;
+		box-shadow: 1px 1px 5px #000;
+		overflow: hidden;
+	}
+
+	#seller-panel img {
+		width: 8rem;
+		height: 8rem;
+		/*border: 3px solid #FFF;*/
+		/*border-radius: 50%;*/
+		/*display: block;*/
+		margin: 0 auto;
+		/*box-shadow: 1px 1px 5px #000;*/
+	}
+
+	#seller-panel .seller-panel-info {
+		height: 10rem;
+		text-align: center;
+		margin: auto;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	#seller-panel .seller-panel-info a span {
+		color: red;
+	}
+
+	#seller-panel .seller-panel-info a {
+		text-shadow: 1px 1px 1px #000;
+		color: #FFF;
+	}
+</style>
+<div id="seller-panel" ms-controller="gallery">
+	<div class="seller-panel-bg"></div>
+	<div class="seller-panel-info">
+		<a href="">
+			<div class="face-border">
+				<img src="" alt="">
+			</div>
+			您的专属旅游经理 <span></span> 为您服务
+		</a>
+	</div>
+</div>
+<!--/顶部销售人员栏-->
 <!--六大功能模块-->
 <style>
 	#func-panel li {
-		padding:2px;
+		padding: 2px;
 	}
+
 	#func-panel i.fa {
 		vertical-align: middle;
 	}
+
 	#func-panel .func-unit a {
 		text-align: left;
 		text-indent: .5em;
@@ -192,10 +323,10 @@
 <!--搜索栏-->
 <style>
 	#search-form {
-		margin:2px;
+		margin: 2px;
 	}
 </style>
-<form action="tour-list.html" class="am-form am-form-inline" id="search-form">
+<form action="tour-list.html" class="am-form" id="search-form">
 	<div class="am-form-group am-form-icon">
 		<i class="am-icon-search"></i>
 		<input type="text" name="q" class="am-form-field" placeholder="请输出您要搜索关键字"/>
@@ -205,28 +336,56 @@
 <!--热门目的地-->
 <style>
 	.am-titlebar {
-		margin:0 2px;
+		margin: 0 2px;
 	}
+
 	#hot-section.am-gallery {
-		padding:0;
+		padding: 0;
 	}
+
 	#hot-section.am-gallery-overlay > li {
-		padding:2px;
+		padding: 2px;
 	}
 </style>
 <!--热门线路标题-->
-<div id="hot-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+<div id="hot-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default">
 	<h2 class="am-titlebar-title">热门线路</h2>
 	<nav class="am-titlebar-nav">
 		<a href="tour-list.html" class="">更多 &raquo;</a>
 	</nav>
 </div>
 <!--/热门线路标题-->
-<ul id="hot-section" ms-controller="hotTour" data-am-widget="gallery" class="ms-controller am-gallery am-avg-sm-2 am-gallery-overlay" data-am-gallery="{ pureview: false }">
+<ul id="hot-section" ms-controller="hotTour" data-am-widget="gallery"
+	class="ms-controller am-gallery am-avg-sm-2 am-gallery-overlay" data-am-gallery="{ pureview: false }">
+	<!--20160702加入固定推荐的两个产品-->
+	<!--/static/20160629_cruises/-->
+	<!--热门线路unit-->
+	<li>
+		<div class="am-gallery-item">
+			<a href="/page/single/cruises2016_mobile.htm">
+				<img src="/static/20160629_cruises/mobile_youlun.jpg" alt=""/>
+				<h3 class="am-gallery-title">邮轮</h3>
+				<div class="am-gallery-desc"></div>
+			</a>
+		</div>
+	</li>
+	<!--/热门线路unit-->
+	<!--热门线路unit-->
+	<li>
+		<div class="am-gallery-item">
+			<a href="/page/single/familytour2016_mobile.htm">
+				<img src="/static/20160629_cruises/mobile_qinzi.jpg" alt=""/>
+				<h3 class="am-gallery-title">亲子</h3>
+				<div class="am-gallery-desc"></div>
+			</a>
+		</div>
+	</li>
+	<!--/热门线路unit-->
+
 	<!--热门线路unit-->
 	<li ms-repeat-unit="list" data-repeat-rendered="hotSectionRendered">
 		<div class="am-gallery-item">
-			<a ms-attr-href="tour-list.html?q={{unit.info_name}}">
+			<a ms-attr-href="{{unit.url}}">
 				<img ms-attr-src="http://www.htyou.com/{{unit.info_thumbpic}}" alt=""/>
 				<h3 class="am-gallery-title">{{unit.info_name}}</h3>
 				<div class="am-gallery-desc"></div>
@@ -239,7 +398,7 @@
 
 <!--产品推荐-->
 <!--产品推荐标题-->
-<div id="tourlist-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+<div id="tourlist-section-title" data-am-widget="titlebar" class="am-titlebar am-titlebar-default">
 	<h2 class="am-titlebar-title">产品推荐</h2>
 	<nav class="am-titlebar-nav">
 		<a href="tour-list.html" class="">更多 &raquo;</a>
@@ -250,26 +409,31 @@
 <!--产品推荐list-->
 <style>
 	#tourlist-section-list {
-		margin:0;
+		margin: 0;
 	}
+
 	.tourlist-unit {
-		margin:0 2px !important;
-		overflow:hidden;
-		border-top:0 !important;
-		padding:0 !important;
+		margin: 0 2px !important;
+		overflow: hidden;
+		border-top: 0 !important;
+		padding: 0 !important;
 		width: auto !important;
 	}
+
 	.tourlist-unit .am-list-main {
 		padding-left: 5px !important;
 	}
+
 	#tourlist-section-title {
 		margin-top: 1em;
 	}
+
 	#tourlist-section-list .am-list-thumb {
-		width:25%;
-		padding-bottom:25%;
-		height:80%;
+		width: 25%;
+		padding-bottom: 25%;
+		height: 80%;
 	}
+
 	.tourlist-unit-price {
 		color: #FF6C00;
 		font-size: 18px;
@@ -279,25 +443,31 @@
 		background-color: #FFF;
 		padding-left: 1em;
 	}
+
 	#tourlist-section-list .am-list {
-		margin-bottom:0;
+		margin-bottom: 0;
 	}
+
 	#tourlist-section-list .am-list-item-hd {
-		color:#555;
+		color: #555;
 		height: 3em;
 		overflow: hidden;
 	}
+
 	#tourlist-section-list .am-badge {
-		background-color:#398421;
+		background-color: #398421;
 	}
 </style>
-<div id="tourlist-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default" ms-controller="recommendTour">
+<div id="tourlist-section-list" data-am-widget="list_news" class="am-list-news am-list-news-default"
+	 ms-controller="recommendTour">
 	<div class="am-list-news-bd">
 		<ul class="am-list">
 			<!--list单元-->
-			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left" ms-repeat-unit="list">
+			<li class="tourlist-unit am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left"
+				ms-repeat-unit="list">
 				<a ms-attr-href="tour-detail.html?lineid={{unit.lineid}}" class="">
-					<div class="am-u-sm-4 am-list-thumb" ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
+					<div class="am-u-sm-4 am-list-thumb"
+						 ms-css-background="url(http://www.htyou.com/{{unit.spotviewpic}}) center/cover">
 					</div>
 					<div class="am-u-sm-8 am-list-main">
 						<h3 class="am-list-item-hd">
@@ -320,7 +490,7 @@
 <!--/更多按钮-->
 
 
-<!--底部工具栏-->
+<!--底部工具栏
 <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" id="" style="display:none !important;">
 	<ul class="am-navbar-nav am-cf am-avg-sm-4">
 		<li >
@@ -350,5 +520,6 @@
 	</ul>
 </div>
 <!--/底部工具栏-->
+
 </body>
 </html>
