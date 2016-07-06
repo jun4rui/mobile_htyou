@@ -628,7 +628,7 @@ $(document).ready(function () {
 // });
 
 
-<!--百度统计工具 20160706-->
+// 百度统计工具 20160706
 var _hmt = _hmt || [];
 (function () {
 	var hm = document.createElement("script");
@@ -636,4 +636,9 @@ var _hmt = _hmt || [];
 	var s  = document.getElementsByTagName("script")[0];
 	s.parentNode.insertBefore(hm, s);
 })();
-<!--/百度统计工具-->
+
+
+// 20160706 根据李莎要求，看不到销售面板的就修改顶部header的文字为“华天旅游 0731-5555 5555”
+if ( !$('#seller').is(':visible') ) {
+	$('header .am-header-title>a').text('华天旅游 0731-5555 5555');
+}
