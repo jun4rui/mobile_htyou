@@ -642,3 +642,15 @@ var _hmt = _hmt || [];
 if ( !$('#seller').is(':visible') ) {
 	$('header .am-header-title>a').text('华天旅游 0731-5555 5555');
 }
+
+// 20160708 加入CSS样式函数
+function addGlobalStyle(css) {
+	var head, style;
+	head = document.getElementsByTagName('head')[0];
+	if (!head) { return; }
+	style = document.createElement('style');
+	style.type = 'text/css';
+	style.innerHTML = css;
+	head.appendChild(style);
+}
+addGlobalStyle('#newBridge {display:none !important;}');
