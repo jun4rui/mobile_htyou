@@ -6,8 +6,8 @@
 	<title>华天国旅 最美旅游人 大评比投票活动</title>
 	<script src="/static/jslib/jquery/jquery-1.12.3.min.js" charset="utf-8"></script>
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-	<!--<link rel="stylesheet" href="/static/jslib/amazeui2.70/css/amazeui.min.css">-->
-	<!--<script src="/static/jslib/amazeui2.70/js/amazeui.min.js" charset="utf-8"></script>-->
+	<link rel="stylesheet" href="/static/jslib/amazeui2.70/css/amazeui.min.css">
+	<script src="/static/jslib/amazeui2.70/js/amazeui.min.js" charset="utf-8"></script>
 	<style>
 		body {
 			padding: 0;
@@ -205,8 +205,13 @@
 			}
 			//构造投票功能
 			$('#btn-panel').delegate('#submit-btn', 'click', function(){
+				//弹出投票中的modal
+				$('#loading').modal();
 				console.log('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&infoid='+_infoid+'&openid='+_openid);
 				$.getJSON('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&infoid='+_infoid+'&openid='+_openid, function(result){
+					//关闭loading的modal
+					$('#loading').modal('close');
+					//根据状态跳转到不同处理分支
 					if (result.status==1){
 						alert('投票成功，感谢您的支持！');
 						window.location.href = './fm_vote_final.html';
@@ -217,7 +222,7 @@
 						if (result.status==102){
 							alert('请不要重复投票。');
 						}
-						window.location.href = './fm_vote_final.html';
+						//window.location.href = './fm_vote_final.html';
 					}
 				});
 			});
@@ -233,6 +238,15 @@
 <div id="btn-panel">
 	<div id="submit-btn">
 		我要投票
+	</div>
+</div>
+
+<div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="loading">
+	<div class="am-modal-dialog">
+		<div class="am-modal-hd">投票中...</div>
+		<div class="am-modal-bd">
+			<span class="am-icon-spinner am-icon-spin"></span>
+		</div>
 	</div>
 </div>
 </body>
