@@ -28,19 +28,24 @@
 
 			avalon.scan();
 
-			$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoClass=405', function (result) {
+			$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?jsoncallback=?&submit=ajax&infoClass=405', function (result) {
 				BodyVM.list1 = result;
 			});
-			$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoClass=404', function (result) {
+			$.getJSON('http://www.htyou.com/common/websinfo_queryWebsInfos.action?jsoncallback=?&submit=ajax&infoClass=404', function (result) {
 				BodyVM.list2 = result;
 			});
 
+		});
+		$(document).ready(function(){
+			setTimeout(function(){
+				$('#seller').animate({'bottom':'100px'},1000);
+			},3000);
 		});
 	</script>
 
 	<style>
 		#seller {
-			bottom:100px !important;
+			/*bottom:100px !important;*/
 			width:300px !important;
 			height:90px !important;
 		}
