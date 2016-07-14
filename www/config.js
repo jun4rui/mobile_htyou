@@ -514,7 +514,7 @@ $(document).ready(function () {
 						var desc   = $('title').text();
 						var link   = window.location.href;
 						var imgUrl = $('body img').eq(0).attr('src');
-						if (link.indexOf('?')) {
+						if (link.indexOf('?')!=-1) {
 							link = link + '&infoid=' + shareID;
 						} else {
 							link = link + '?infoid=' + shareID;
