@@ -419,7 +419,7 @@ function showSellerUI(inDATA) {
 	}
 	//一般的处理方式
 	$('body').append('<div id="seller-section"></div>');
-	$('#seller-section').load('seller.html', function () {
+	$('#seller-section').load('seller.html?20160714', function () {
 		//20160612 根据郑波的要求在华天国旅默认下才显示在线客服
 		if (inDATA.indexOf('华天国旅') != 0) {
 			$('#seller .content a').eq(1).remove();

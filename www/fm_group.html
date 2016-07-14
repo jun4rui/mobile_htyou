@@ -36,6 +36,17 @@
 			});
 
 		});
+
+		$(document).ready(function(){
+			$('.count').each(function(){
+				console.log($(this).attr('lineid'));
+				var lineid = $(this).attr('lineid');
+				$.getJSON('http://www.htyou.com/mobile/tourorder_queryTourOrderCount.action?jsoncallback=?&lineid='+lineid, function(result){
+					console.log(lineid,result.count);
+					$('.count[lineid='+lineid+']').text(result.count);
+				});
+			});
+		});
 	</script>
 
 	<style>
@@ -77,21 +88,60 @@
 		left:0;
 		/*background-color: rgba(255, 130, 0, 0.71);*/
 	}
+	.count {
+		position: absolute;
+		right: 34px;
+		top: 16px;
+		color: #FFF;
+		font-size: 21px;
+		line-height: 29px;
+		height: 29px;
+		/*font-family: Arial;*/
+	}
 </style>
 <div id="main-panel">
 	<img src="./images/fm_group_main.jpg" alt="">
 	<!--产品1-->
-	<a href="tour-detail.html?lineid=12825"><div class="product" style="top: 610px;"></div></a>
+	<a href="tour-detail.html?lineid=12825">
+		<div class="product" style="top: 576px;">
+			<div class="count" lineid="12825"></div>
+		</div>
+	</a>
 	<!--产品2-->
-	<a href="tour-detail.html?lineid=12875"><div class="product" style="top: 816px;"></div></a>
+
+	<a href="tour-detail.html?lineid=12880">
+		<div class="product" style="top: 781px;">
+			<div class="count" lineid="12880"></div>
+		</div>
+	</a>
 	<!--产品3-->
-	<a href="tour-detail.html?lineid=12874"><div class="product" style="top: 1020px;"></div></a>
+
+	<a href="tour-detail.html?lineid=12874">
+		<div class="product" style="top: 985px;">
+			<div class="count" lineid="12874"></div>
+		</div
+		></a>
 	<!--产品4-->
-	<a href="tour-detail.html?lineid=12879"><div class="product" style="top: 1223px;"></div></a>
+
+	<a href="tour-detail.html?lineid=12879">
+		<div class="product" style="top: 1188px;">
+			<div class="count" lineid="12879"></div>
+		</div
+		></a>
 	<!--产品5-->
-	<a href="tour-detail.html?lineid=12876"><div class="product" style="top: 1427px;"></div></a>
+
+	<a href="tour-detail.html?lineid=12876">
+		<div class="product" style="top: 1392px;">
+			<div class="count" lineid="12876"></div>
+		</div
+		></a>
 	<!--产品6-->
-	<a href="tour-detail.html?lineid=12877"><div class="product" style="top: 1630px;"></div></a>
+
+	<a href="tour-detail.html?lineid=12881">
+		<div class="product" style="top: 1595px;">
+			<div class="count" lineid="12881"></div>
+		</div
+		></a>
 </div>
 
 <!--模态窗口：显示营业网点-->
