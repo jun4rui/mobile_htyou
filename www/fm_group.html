@@ -16,7 +16,7 @@
 	<!--avalon框架-->
 	<script src="./bower_components/avalon/avalon.js"></script>
 	<!--js配置文件-->
-	<script src="./config.js?20160714"></script>
+	<script src="./config.js?20160714a"></script>
 
 	<script>
 		avalon.ready(function () {
@@ -43,7 +43,7 @@
 				var lineid = $(this).attr('lineid');
 				$.getJSON('http://www.htyou.com/mobile/tourorder_queryTourOrderCount.action?jsoncallback=?&lineid='+lineid, function(result){
 					console.log(lineid,result.count);
-					$('.count[lineid='+lineid+']').text(result.count);
+					$('.count[lineid='+lineid+']').text('已预订：'+result.count+'人');
 				});
 			});
 		});
@@ -90,54 +90,58 @@
 	}
 	.count {
 		position: absolute;
-		right: 34px;
+		width: 120px;
+		height: 34px;
+		background: url(./images/fm_group_flag.png)no-repeat center top;
+		right: 9px;
 		top: 16px;
 		color: #FFF;
-		font-size: 21px;
+		font-size: 17px;
 		line-height: 29px;
-		height: 29px;
-		/*font-family: Arial;*/
+		text-align: center;
+		/* height: 29px; */
+		/* font-family: Arial; */
 	}
 </style>
 <div id="main-panel">
 	<img src="./images/fm_group_main.jpg" alt="">
 	<!--产品1-->
-	<a href="tour-detail.html?lineid=12825">
+	<a href="#" link="tour-detail.html?lineid=12882">
 		<div class="product" style="top: 576px;">
-			<div class="count" lineid="12825"></div>
+			<div class="count" lineid="12882"></div>
 		</div>
 	</a>
 	<!--产品2-->
 
-	<a href="tour-detail.html?lineid=12880">
+	<a href="#" link="tour-detail.html?lineid=12880">
 		<div class="product" style="top: 781px;">
 			<div class="count" lineid="12880"></div>
 		</div>
 	</a>
 	<!--产品3-->
 
-	<a href="tour-detail.html?lineid=12874">
+	<a href="#" link="tour-detail.html?lineid=12874">
 		<div class="product" style="top: 985px;">
 			<div class="count" lineid="12874"></div>
 		</div
 		></a>
 	<!--产品4-->
 
-	<a href="tour-detail.html?lineid=12879">
+	<a href="#" link="tour-detail.html?lineid=12879">
 		<div class="product" style="top: 1188px;">
 			<div class="count" lineid="12879"></div>
 		</div
 		></a>
 	<!--产品5-->
 
-	<a href="tour-detail.html?lineid=12876">
+	<a href="#" link="tour-detail.html?lineid=12884">
 		<div class="product" style="top: 1392px;">
-			<div class="count" lineid="12876"></div>
+			<div class="count" lineid="12884"></div>
 		</div
 		></a>
 	<!--产品6-->
 
-	<a href="tour-detail.html?lineid=12881">
+	<a href="#" link="tour-detail.html?lineid=12881">
 		<div class="product" style="top: 1595px;">
 			<div class="count" lineid="12881"></div>
 		</div
