@@ -138,8 +138,3 @@ http://www.htyou.com/mobile/tourorder_addTourOrder.action?jsoncallback=jQuery214
 keytool -genkey -v -keystore htyou-release-key.keystore -alias htyou -keyalg RSA -validity 365
 
 **Cordova 5.x开始不用ant.properties了，改在项目root目录下新建build.json代替
-
-
-
-
-
