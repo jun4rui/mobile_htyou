@@ -531,11 +531,11 @@
 </div>
 <!--/注意事项-->
 
-<!--预定指南-->
+<!--线路特色-->
 <div class="widget-unit ms-controller">
 	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi" >
 		<h2 class="am-titlebar-title ">
-			预定指南
+			线路特色
 		</h2>
 		<nav class="am-titlebar-nav">
 			<a href="#more" class="" data-am-modal="{target: '#booknotes-modal'}">详情 &raquo;</a>
@@ -548,14 +548,14 @@
 <div class="am-popup" id="booknotes-modal">
 	<div class="am-popup-inner">
 		<div class="am-popup-hd">
-			<h4 class="am-popup-title">预定指南</h4><span data-am-modal-close class="am-close">&times;</span>
+			<h4 class="am-popup-title">线路特色</h4><span data-am-modal-close class="am-close">&times;</span>
 		</div>
 		<div class="am-popup-bd">
 			{{detail.value.booknotes|nl2br|html}}
 		</div>
 	</div>
 </div>
-<!--/预定指南-->
+<!--/线路特色-->
 
 
 
@@ -636,6 +636,16 @@
 		background: rgba(255, 239, 177, 0.64);
 		/*border-radius: 50%;*/
 		line-height:100%;
+	}
+	#calendar_table td.flag_day_full {
+		color: #9E9E9E;
+		background: #FFF;
+		/*border-radius: 50%;*/
+		line-height:100%;
+	}
+	#calendar_table td.flag_day_full span {
+		font-size:0.6em;
+		color: #9D9D9D;
 	}
 	#calendar_table td.flag_day span {
 		font-size:0.6em;
@@ -767,7 +777,11 @@
 						// 如果这一天在行程表中则加亮显示
 						//console.log('====',currentDrawDay);
 						if (checkDate(currentDrawDay)){
-							$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day").append("<span>&yen;"+checkDate(currentDrawDay).adultprice+"</span>").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
+							if (checkDate(currentDrawDay).status=='正常'){
+								$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day").append("<span>&yen;"+checkDate(currentDrawDay).adultprice+"</span>").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
+							}else{
+								$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day_full").append("<span>&yen;"+checkDate(currentDrawDay).adultprice+"</span>").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
+							}
 						}
 					}
 					// 绘制时间显示
@@ -808,7 +822,7 @@
 						//console.log(i+"=="+tourList[i].tourdate);
 						// 如果日期匹配
 						if (tourList[i].tourdate.replace(/-0/g,'-')==inDateStr){
-							//console.log("PRICE: "+tourList[i].tourproname);
+							//console.log("PRICE: "+tourList[i].status);
 							return tourList[i];
 						}
 					}
