@@ -778,9 +778,9 @@
 						//console.log('====',currentDrawDay);
 						if (checkDate(currentDrawDay)){
 							if (checkDate(currentDrawDay).status=='正常'){
-								$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day").append("<span>&yen;"+checkDate(currentDrawDay).adultprice+"</span>").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
+								$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day").append("<span>&yen;"+checkDate(currentDrawDay).adultprice+"</span>").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty}).attr({"jzluid":checkDate(currentDrawDay).jzluid});
 							}else{
-								$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day_full").append("<span>&yen;"+checkDate(currentDrawDay).adultprice+"</span>").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty});
+								$("#calendar_table tr td:eq("+(startDay+i)+")").addClass("flag_day_full").append("<span>&yen;"+checkDate(currentDrawDay).adultprice+"</span>").attr({"price":checkDate(currentDrawDay)[0]}).attr({"rt_price":checkDate(currentDrawDay).adultprice}).attr({"pop_num":checkDate(currentDrawDay).haveqty}).attr({"jzluid":checkDate(currentDrawDay).jzluid});
 							}
 						}
 					}
@@ -849,6 +849,9 @@
 						});*/
 						$("#tour-price").val($(this).attr('rt_price'));
 						$("#tour-date").val(inDate);
+
+						//20160715 设置jzluid
+						$("#jzl_cteamcode").val($(this).attr('jzluid'));
 					}
 				});
 
