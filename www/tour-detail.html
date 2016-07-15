@@ -459,6 +459,15 @@
 <!--/线路行程-->
 
 <!--费用包含、不含-->
+<style scoped>
+	#feedtails-modal .am-titlebar {
+		margin:0 0 !important;
+		background-color: #e2e2e2 !important;
+	}
+	#feedtails-modal .am-popup-bd {
+		padding:0 !important;
+	}
+</style>
 <div class="widget-unit ms-controller">
 	<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi" >
 		<h2 class="am-titlebar-title ">
@@ -478,7 +487,17 @@
 			<h4 class="am-popup-title">费用包含、不含</h4><span data-am-modal-close class="am-close">&times;</span>
 		</div>
 		<div class="am-popup-bd">
+			<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+				<h2 class="am-titlebar-title ">
+					费用包含
+				</h2>
+			</div>
 			<p>{{detail.value.productdescribe|nl2br|html}}</p>
+			<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+				<h2 class="am-titlebar-title ">
+					费用不含
+				</h2>
+			</div>
 			<p>{{detail.value.noImportant|nl2br|html}}</p>
 		</div>
 	</div>
