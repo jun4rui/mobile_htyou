@@ -15,6 +15,12 @@
 	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
 	<!--js配置文件-->
 	<script src="./config.js"></script>
+	<style>
+		.ht-text-red {
+			color:#FF0000;
+		}
+	</style>
+
 	<script>
 		var lineid = getParameterValue(window.location.href, 'lineid');
 		avalon.ready(function () {
@@ -838,7 +844,7 @@
 					<form action="" class="am-form">
 						<fieldset>
 							<div class="am-form group">
-								<label for="tour-price">当前单价：</label>
+								<label for="tour-price"><span class="ht-text-red">*</span>当前单价：</label>
 								<input type="text" id="tour-price" value="" disabled/>
 							</div>
 							<div class="am-form group">
@@ -847,30 +853,30 @@
 									<!--<option value="" >请选择出行日期</option>-->
 									<!--<option ms-attr-value="{{unit.tourdate}}" ms-attr-rt-price="{{unit.adultprice}}" ms-repeat-unit="tourdate">{{unit.tourdate}}</option>-->
 								<!--</select>-->
-								<label for="tour-date">出行时间：</label>
+								<label for="tour-date"><span class="ht-text-red">*</span>出行时间：</label>
 								<input type="text" id="tour-date" value="" disabled/>
 							</div>
 							<div class="am-form-group">
-								<label for="username">联系人姓名：</label>
+								<label for="username"><span class="ht-text-red">*</span>联系人姓名：</label>
 								<input type="text" id="username" placeholder="请输入联系人称呼"/>
 							</div>
 							<div class="am-form-group">
-								<label for="idcard">联系人身份证：</label>
+								<label for="idcard"><span class="ht-text-red">*</span>联系人身份证：</label>
 								<input type="text" id="idcard" placeholder="请填写身份证号码"/>
 							</div>
 							<div class="am-form group">
-								<label for="user-sex">选择出行时间：</label>
+								<label for="user-sex"><span class="ht-text-red">*</span>性别：</label>
 								<select name="" id="user-sex">
 									<option value="120201">男</option>
 									<option value="120202">女</option>
 								</select>
 							</div>
 							<div class="am-form-group">
-								<label for="phone-number">联系人手机号码：</label>
+								<label for="phone-number"><span class="ht-text-red">*</span>联系人手机号码：</label>
 								<input type="text" id="phone-number" placeholder="请输入联系人的联系电话"/>
 							</div>
 							<div class="am-form-group">
-								<label for="persons">出行人数：</label>
+								<label for="persons"><span class="ht-text-red">*</span>出行人数：</label>
 								<select name="" id="persons">
 									<option value="1">1人</option>
 									<option value="2">2人</option>
@@ -885,7 +891,7 @@
 								</select>
 							</div>
 							<div class="am-form-group">
-								<label for="pay_type">支付方式：</label>
+								<label for="pay_type"><span class="ht-text-red">*</span>支付方式：</label>
 								<select name="pay_tpe" id="pay_type">
 									<option value="121604">线下支付</option>
 									<option value="121603">微信</option>
@@ -965,13 +971,17 @@
 					$('#pay_type option[value=121603], #pay_type option[value=121601]').remove();
 
 				}
-				if (result.paymode==1) {	//线上、线下支付
-					$('#pay_type option').show();
+				if (result.paymode==1) {	//20160715 曹熙要求改成仅线上支付//以前为线上、线下支付
+					/*$('#pay_type option').show();*/
+					$('#pay_type option[value=121604]').remove();
 				}
 				if (result.paymode==0) {	//线上支付超时
 					$('#pay_type option[value=121604]').show();
 					$('#pay_type option[value=121603], #pay_type option[value=121601]').show().prop('disabled', true);
 					$('label[for=pay_type]').append('<span style="color:red;font-size:.8em">(为了提供您品质服务，在线支付时间是8：00~20：00)</span>');
+				}
+				if (result.paymode==101) {	//暂停销售
+					$('#submit-btn').remove();	//移除提交订单按钮
 				}
 			});
 		});
