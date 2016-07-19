@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=600, user-scalable=no">
+	<title>华天国旅 最美旅游人 大评比投票活动</title>
+	<script src="/static/jslib/jquery/jquery-1.12.3.min.js" charset="utf-8"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<link rel="stylesheet" href="/static/jslib/amazeui2.70/css/amazeui.min.css">
+	<script src="/static/jslib/amazeui2.70/js/amazeui.min.js" charset="utf-8"></script>
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+			/*padding-bottom:4.5em;*/
+		}
+
+		#main-panel {
+			width: 600px;
+			height: 2283px;
+			margin: 0 auto;
+			background: url(./images/fm_vote_main.jpg) no-repeat center top;
+
+			position:relative;
+		}
+
+		#info-panel {
+			position: absolute;
+			top:1px;
+			left:1px;
+		}
+
+		#btn-panel {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+
+			width: 100%;
+
+			display: none;
+		}
+
+		.submit-btn {
+			width: 200px;
+			height: 3em;
+			margin: 0 auto;
+			font: 1.5em/3em '黑体';
+			text-align: center;
+			color: #FFF;
+			background-color: coral;
+			box-shadow: 0 -2px 5px #333;
+			float:left;
+		}
+
+		#info_panel {
+			font-size: 2.3em;
+			font-weight: bold;
+			line-height: 180%;
+			color: #FFF;
+			text-align: center;
+			width: 300px;
+			left: 150px;
+			top: 250px;
+			position: absolute;
+		}
+		#info_panel>img {
+			width: 120px;
+			height: 120px;
+			border: 3px solid #bdbdbd;
+			border-radius: 50%;
+			box-shadow: 2px 2px 12px #333;
+			display: block;
+			margin: 0 auto;
+		}
+	</style>
+
+	<script>
+		//查询url参数函数
+		//有则返回参数列表list
+		//没有则返回空串
+		function getParameters(inUrl/*完整的URL字符串*/) {
+			//url中有?号才继续
+			if (inUrl.indexOf('\?') >= 0) {
+				return inUrl.substring(inUrl.indexOf('?') + 1).split('&');    //有则返回所有参数的list
+			} else {
+				return '';  //没有则返回''
+			}
+		}
+
+		//获得url中某个参数的值
+		//有则返回参数的值
+		//没有则返回空串
+		function getParameterValue(inUrl/*输入Url*/, inName/*参数名*/) {
+			var paraList = getParameters(inUrl);
+			for (var i = 0; i < paraList.length; i++) {
+				//如果没有'='则跳过
+				if (paraList[i].indexOf('=') < 0) {
+					continue;
+				}
+				//如果参数名=inName则返回参数值
+				var tempVal = paraList[i].split('=');
+				if (tempVal[0] == inName) {
+					return tempVal[1];
+				}
+			}
+			return '';
+		}
+
+		//SAMPLE: http://ipad.htyou.com/weixin_h5/fm_vote.html?infoid=0&openid=oiZKXjjPYlSmiN3yndvDLZ7-E-jA
+
+		//首先检查url是否符合要求，没有则跳出
+		var _openid = getParameterValue(window.location.href, 'openid');
+		var _infoid = getParameterValue(window.location.href, 'infoid');	//infoid>0表示该用户是销售人员
+
+		//DEBUG
+		/*
+		 var _openid = 'oiZKXjneSSOJG82vDjjeFp5h_LLU';
+		 var _infoid = 431;
+		 */
+
+		/*alert(_openid + '\n' + _infoid);*/
+
+		if (_infoid!='105') {
+			//infoid大于0才是销售模式，才能转发
+			//调用接口获得销售人员信息
+			$.getJSON('http://ipad.htyou.com/common/websinfo_queryWebsInfos.action?jsoncallback=?&submit=ajax&infoID=' + _infoid, function (result) {
+
+				console.log(result[0].info_thumbpic,result[0].info_name);
+				//设置销售员信息
+				$('#main-panel').append('<div id="info_panel"><img src="http://www.htyou.com/'+result[0].info_thumbpic+'" alt="">'+result[0].info_name+'</div>');
+				/**
+				 * 构造WEIXIN分享功能
+				 * 必须：载入微信JSSDK库（http://res.wx.qq.com/open/js/jweixin-1.0.0.js）
+				 * 作者：曹珺
+				 * 时间：20160711
+				 * 版本：1.0
+				 */
+				//获取接口参数
+				console.log('http://www.htyou.com/weixin/getJsConfig.action?jsoncallback=?&page_url=' + window.location.href.replace(/&/g,'!'));
+				$.getJSON('http://www.htyou.com/weixin/getJsConfig.action?jsoncallback=?&page_url=' + window.location.href.replace(/&/g,'!'), function (result) {
+					//alert(result.appId+'\n'+result.timestamp+'\n'+result.noncestr+'\n'+result.signature);
+					//配置接口权限
+					wx.config({
+						debug:false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId:result.appId, // 必填，公众号的唯一标识
+						timestamp:result.timestamp, // 必填，生成签名的时间戳
+						nonceStr:result.noncestr, // 必填，生成签名的随机串
+						signature:result.signature,// 必填，签名，见附录1
+						jsApiList: [
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage'
+						]
+					});
+					//配置好权限以后会触发wx.ready
+					wx.ready(function () {
+						//设置分享参数
+						var title  = '“华天国旅 最美旅游人”';
+						//var link   = 'http://weixin.htyou.com/weixin/thirdWebPageLogin.action?page_url=mainpage.html_infoid='+_infoid;
+						var link   = 'http://ipad.htyou.com/weixin/thirdWebPageVoteHT.action?page_url=fm_vote.html!3Finfoid!3D'+_infoid;
+						var imgUrl = 'http://ipad.htyou.com/static/20160711_vote/images/20160711_vote_icon.jpg';
+						var desc   = '最美旅游人大评比投票活动欢迎您的参与！';
+
+						//分享到朋友圈
+						wx.onMenuShareTimeline({
+							title:   title,
+							link:    link,
+							imgUrl:  imgUrl,
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel:  function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//分享给朋友
+						wx.onMenuShareAppMessage({
+							title:   title,	// 分享标题
+							desc:    desc,		// 分享描述
+							link:    link,		// 分享链接
+							imgUrl:  imgUrl,	// 分享图标
+							type:    'link',	// 分享类型,music、video或link，不填默认为link
+							dataUrl: '',	// 如果type是music或video，则要提供数据链接，默认为空
+							success: function () {
+								alert('感谢您的分享');
+							},
+							cancel:  function () {
+								alert('欢迎您下次再进行分享');
+							}
+						});
+						//alert(title+'\n'+link+'\n'+imgUrl+'\n'+desc);
+					});
+				});
+			})
+		} else {
+			//不是销售模式，不小时销售信息
+			alert('发生错误，数据无效。');
+		}
+
+		$('document').ready(function () {
+			//通过正常途径访问才显示出投票按钮
+			if (_openid!='' && _infoid!=''){
+				$('body').animate({
+					'padding-bottom': '4.5em'
+				});
+				$('#btn-panel').show();
+			}
+			//构造投票功能
+			$('#btn-panel').delegate('.submit-btn', 'click', function(){
+				var degree = $(this).attr('degree');
+				//弹出投票中的modal
+				$('#loading').modal();
+				console.log('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&infoid='+_infoid+'&openid='+_openid+'&degree='+degree);
+				$.getJSON('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&infoid='+_infoid+'&openid='+_openid+'&degree='+degree, function(result){
+					//关闭loading的modal
+					$('#loading').modal('close');
+					//根据状态跳转到不同处理分支
+					if (result.status==1){
+						alert('投票成功，感谢您的支持！');
+						window.location.href = './fm_vote_final.html';
+					}else{
+						if (result.status==101){
+							alert('投票发生错误。');
+						}
+						if (result.status==102){
+							alert('请不要重复投票。');
+						}
+						//window.location.href = './fm_vote_final.html';
+					}
+				});
+			});
+		});
+
+		//根据跳转过来的openid获得销售人员信息
+		//http://ipad.htyou.comcommon/websinfo_queryWebsInfos.action?submit=ajax&jsoncallback=?&url=oiZKXjjPYlSmiN3yndvDLZ7-E-jA
+
+	</script>
+</head>
+<body>
+<div id="main-panel"></div>
+<div id="btn-panel">
+	<div class="submit-btn" degree="5" style="background-color: #5eb95e">满意</div>
+	<div class="submit-btn" degree="3" style="background-color: #e0690c">一般</div>
+	<div class="submit-btn" degree="1" style="background-color: #d7342e">不满意</div>
+</div>
+
+<div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="loading">
+	<div class="am-modal-dialog">
+		<div class="am-modal-hd">投票中...</div>
+		<div class="am-modal-bd">
+			<span class="am-icon-spinner am-icon-spin"></span>
+		</div>
+	</div>
+</div>
+</body>
+</html>
