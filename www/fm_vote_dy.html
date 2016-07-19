@@ -209,8 +209,8 @@
 				var degree = $(this).attr('degree');
 				//弹出投票中的modal
 				$('#loading').modal();
-				console.log('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&infoid='+_infoid+'&openid='+_openid+'&degree='+degree);
-				$.getJSON('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&infoid='+_infoid+'&openid='+_openid+'&degree='+degree, function(result){
+				console.log('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=422&infoid='+_infoid+'&openid='+_openid+'&degree='+degree);
+				$.getJSON('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=422&infoid='+_infoid+'&openid='+_openid+'&degree='+degree, function(result){
 					//关闭loading的modal
 					$('#loading').modal('close');
 					//根据状态跳转到不同处理分支
