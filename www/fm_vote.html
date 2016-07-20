@@ -197,7 +197,7 @@
 
 		$('document').ready(function () {
 			//通过正常途径访问才显示出投票按钮
-			if (_openid!='' && _infoid!=''){
+			if (_openid!='' && _infoid!='' && parseInt(_infoid)!=0){
 				$('body').animate({
 					'padding-bottom': '4.5em'
 				});
