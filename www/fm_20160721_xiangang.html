@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=480, user-scalable=no">
+	<script src="/static/jslib/jquery/jquery-1.12.3.min.js" charset="utf-8"></script>
+	<title>华天国际旅行社::2016年暑期岘港</title>
+	<script>
+		// 20160708 加入CSS样式函数
+		function addGlobalStyle(css) {
+			var head, style;
+			head = document.getElementsByTagName('head')[0];
+			if (!head) { return; }
+			style = document.createElement('style');
+			style.type = 'text/css';
+			style.innerHTML = css;
+			head.appendChild(style);
+		}
+		//去掉百度商桥
+		addGlobalStyle('#newBridge {display:none !important;}');
+	</script>
+	<style>
+		body {
+			margin:0;
+			padding:0;
+		}
+	</style>
+</head>
+<body>
+<style>
+	#main-panel {
+		width:480px;
+		height:1161px;
+		margin:0 auto;
+		background:url(/static/2016/20160720_xiangang_mobile.png) no-repeat 50% 0%;
+
+		position: relative;
+	}
+	.float-hotzone {
+		position: absolute;
+		cursor: pointer;
+
+		/*background-color: #5F52A0;
+		opacity: 0.6;*/
+	}
+	#xiangang1 {
+		width: 215px;
+		height: 264px;
+		left: 19px;
+		top: 233px;
+	}
+	#xiangang2 {
+		width: 219px;
+		height: 264px;
+		left: 246px;
+		top: 233px;
+	}
+	#changtan {
+		width: 445px;
+		height: 92px;
+		left: 19px;
+		top: 1050px;
+	}
+	a {
+		text-decoration:none;
+		border:0;
+	}
+</style>
+<!-- 20160720_xiangang_mobile.png -->
+<div id="main-panel">
+	<div id="xiangang1" class="float-hotzone" q="岘港_4天"></div>
+	<div id="xiangang2" class="float-hotzone" q="岘港_5天"></div>
+	<div id="changtan" class="float-hotzone"  q="长滩"></div>
+</div>
+<script>
+	$('.float-hotzone').click(function(){
+		window.location.href = 'http://www.htyou.com/weixin_h5/tour-list.html?q='+$(this).attr('q');
+	});
+</script>
+
+
+<!--百度统计工具 20160706-->
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?e0b438b1ca885b92b2ca277eeb16e0cf";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+<!--/百度统计工具-->
+
+<!--在线客服模块-->
+<style>
+	#online-tools {
+		width:66px;
+		height:198px;
+		position:fixed;
+		right:0;
+		bottom:200px;
+		z-index:99999;
+	}
+	#online-tools a>div {
+		cursor: pointer;
+		width:66px;
+		height:66px;
+		position:absolute;
+		z-index:999999;
+
+	}
+	#online-tools div.online {
+		right: 0;
+		top: 132px;
+		width: 66px;
+		height: 66px;
+		background: url(/static/2016/tools_off.png) no-repeat top left;
+		background-position-y: 0px;
+	}
+
+	#online-tools div.phone {
+		right:0;
+		top:198px;
+		width:66px;
+		height:66px;
+		background: url(/static/2016/tools_off.png) no-repeat top left;
+		background-position-y: -198px;
+	}
+	#online-tools div.return2top {
+		right:0;
+		top:264px;
+		width:66px;
+		height:66px;
+		background: url(/static/2016/tools_off.png) no-repeat top left;
+		background-position-y: -264px;
+	}
+</style>
+<div id="online-tools">
+	<!--在线客服-->
+	<!--<a href="http://www15.53kf.com/webCompany.php?arg=10102842&style=1" target="_blank">-->
+	<a href="http://p.qiao.baidu.com/cps/chat?siteId=1606197&userId=5231856" target="_blank">
+		<div class="online"></div>
+	</a>
+	<!--官方电话-->
+	<a href="tel:073155555555">
+		<div class="phone"></div>
+	</a>
+	<!--回到顶部-->
+	<a href="javascript:void(0)">
+		<div class="return2top" onclick="$('body,html').animate({scrollTop:0},600);"></div>
+	</a>
+</div>
+<!--/在线客服模块-->
+</body>
+</html>
