@@ -8,6 +8,12 @@
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<link rel="stylesheet" href="/static/jslib/amazeui2.70/css/amazeui.min.css">
 	<script src="/static/jslib/amazeui2.70/js/amazeui.min.js" charset="utf-8"></script>
+	<script>
+		//设置DEBUG模式，如果openid是我的就打开DEBUG模式
+		var _DEBUG = false;
+		if (window.location.href.indexOf('openid=oiZKXjjPYlSmiN3yndvDLZ7-E-jA')>-1)
+			_DEBUG = true;
+	</script>
 	<style>
 		body {
 			padding: 0;
@@ -107,6 +113,9 @@
 		}
 
 		//SAMPLE: http://ipad.htyou.com/weixin_h5/fm_vote.html?infoid=0&openid=oiZKXjjPYlSmiN3yndvDLZ7-E-jA
+		if (_DEBUG){
+			alert(window.location.href);
+		}
 
 		//首先检查url是否符合要求，没有则跳出
 		var _openid = getParameterValue(window.location.href, 'openid');
@@ -210,7 +219,13 @@
 				//弹出投票中的modal
 				$('#loading').modal();
 				console.log('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=422&infoid='+_infoid+'&openid='+_openid+'&degree='+degree);
+				if (_DEBUG){
+					alert('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=422&infoid='+_infoid+'&openid='+_openid+'&degree='+degree);
+				}
 				$.getJSON('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=422&infoid='+_infoid+'&openid='+_openid+'&degree='+degree, function(result){
+					if (_DEBUG){
+						alert(JSON.stringify(result));
+					}
 					//关闭loading的modal
 					$('#loading').modal('close');
 					//根据状态跳转到不同处理分支
@@ -223,6 +238,7 @@
 						}
 						if (result.status==102){
 							alert('请不要重复投票。');
+							window.location.href = './fm_vote_final.html';
 						}
 						//window.location.href = './fm_vote_final.html';
 					}
