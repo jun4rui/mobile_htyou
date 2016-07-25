@@ -434,6 +434,16 @@ function showSellerUI(inDATA) {
 	});
 }
 $(document).ready(function () {
+	// 竞网20160719要求加入的代码，根据检查发现是北京安与极公司开发的，用于采集用户信息投放广告用的代码。郑波要求加入
+	(function (a, b, c, d, e) {
+		var s   = b.createElement(c);
+		s.async = 1;
+		s.src   = '//t.agrantsem.com/tg.js?c=' + d + '&t=' + e;
+		var r   = b.getElementsByTagName(c)[0];
+		r.parentNode.insertBefore(s, r);
+	})(window, document, 'script', 'AG_260855_OXUQ', '1');
+
+
 	//页面载入后延迟3000ms再读取销售、员工数据，保证异步载入数据已处理完毕
 	setTimeout(function () {
 		_EMPLOYEE_DATA = window.localStorage.getItem('EMPLOYEE_DATA');	//员工数据
@@ -654,12 +664,3 @@ function addGlobalStyle(css) {
 	head.appendChild(style);
 }
 addGlobalStyle('#newBridge {display:none !important;}');
-
-// 竞网20160719要求加入的代码，根据检查发现是北京安与极公司开发的，用于采集用户信息投放广告用的代码。郑波要求加入
-(function (a, b, c, d, e) {
-	var s   = b.createElement(c);
-	s.async = 1;
-	s.src   = '//t.agrantsem.com/tg.js?c=' + d + '&t=' + e;
-	var r   = b.getElementsByTagName(c)[0];
-	r.parentNode.insertBefore(s, r);
-})(window, document, 'script', 'AG_260855_OXUQ', '1');
