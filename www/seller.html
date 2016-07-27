@@ -75,5 +75,16 @@
 
         });
     })(document);
+
+	//加入代码如果检测到百度的#LXB_CONTAINER载入，就隐藏掉它！
+	$('#LXB_CONTAINER').ready(function(){
+		$('#LXB_CONTAINER').css({
+			'width':'0',
+			'height':'0',
+			'z-index':'-9999999',
+			'overflow':'hidden'
+		});
+	});
+	addGlobalStyle('#LXB_CONTAINER {width:0 !important; height:0 !important; z-index:-9999999 !important; overflow:hidden !important;}');
 </script>
 <!--/销售员UI-->

@@ -12,6 +12,19 @@
 var server_addr = 'http://ipad.htyou.com';						//JSON接口服务器地址，调用接口时用，方便更换
 
 
+// 20160708 加入CSS样式函数
+function addGlobalStyle(css) {
+	var head, style;
+	head = document.getElementsByTagName('head')[0];
+	if (!head) { return; }
+	style = document.createElement('style');
+	style.type = 'text/css';
+	style.innerHTML = css;
+	head.appendChild(style);
+}
+//消除百度商桥！
+addGlobalStyle('#newBridge {display:none !important;}');
+
 //20160419 旧的销售人员逻辑用数据，即将取消
 var _INFODATA = window.localStorage.getItem('INFO_DATA');		//_INFODATA变量保存销售人员信息用，保存在localStorage中
 var _INFOID   = '';											//_INFOID表示销售人员的系统内部ID编号
@@ -652,15 +665,3 @@ var _hmt = _hmt || [];
 if ( !$('#seller').is(':visible') ) {
 	$('header .am-header-title>a').text('华天旅游 0731-5555 5555');
 }
-
-// 20160708 加入CSS样式函数
-function addGlobalStyle(css) {
-	var head, style;
-	head = document.getElementsByTagName('head')[0];
-	if (!head) { return; }
-	style = document.createElement('style');
-	style.type = 'text/css';
-	style.innerHTML = css;
-	head.appendChild(style);
-}
-addGlobalStyle('#newBridge {display:none !important;}');
