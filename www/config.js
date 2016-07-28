@@ -436,6 +436,18 @@ function showSellerUI(inDATA) {
 		//20160612 根据郑波的要求在华天国旅默认下才显示在线客服
 		if (inDATA.indexOf('华天国旅') != 0) {
 			$('#seller .content a').eq(1).remove();
+
+			//20160728 根据郑波要求如果在销售模式下，并且销售模式不是华天默认的，就关掉百度的咨询框
+			//加入代码如果检测到百度的#LXB_CONTAINER载入，就隐藏掉它！
+			$('#LXB_CONTAINER').ready(function () {
+				$('#LXB_CONTAINER').css({
+					'width':    '0',
+					'height':   '0',
+					'z-index':  '-9999999',
+					'overflow': 'hidden'
+				});
+			});
+			addGlobalStyle('#LXB_CONTAINER {width:0 !important; height:0 !important; z-index:-9999999 !important; overflow:hidden !important;}');
 		}
 		$('#seller .face').css({
 			'background':      'url(' + inDATA.split(',')[2] + ') 50% 0% no-repeat',

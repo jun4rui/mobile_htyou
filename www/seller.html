@@ -1,90 +1,82 @@
 <!--销售员UI-->
 <style>
-    #seller {
-        transition: top linear 0s, left linear 0s, border-radius ease-in-out .5s, width 1s;
-        position:fixed;
-        left:-6rem;
-        /*bottom:2rem;*/
-        bottom:100px;
-        width: 5rem;
-        height: 5rem;
-        border-radius: 50%;
-        border: 2px solid #FFF;
-        box-shadow: 0px 1px 15px #000;
-        background:#FFF;
-        overflow:hidden;
+	#seller {
+		transition: top linear 0s, left linear 0s, border-radius ease-in-out .5s, width 1s;
+		position: fixed;
+		left: -6rem;
+		/*bottom:2rem;*/
+		bottom: 100px;
+		width: 5rem;
+		height: 5rem;
+		border-radius: 50%;
+		border: 2px solid #FFF;
+		box-shadow: 0px 1px 15px #000;
+		background: #FFF;
+		overflow: hidden;
 
-        z-index:99999;
-    }
-    #seller>.face {
-        width:5rem;
-        height:5rem;
-        background:url(http://www.htyou.com/pic/news/2014-08-28_21-27-23_4564.jpg) 50% 50% no-repeat;
-        background-size:cover;
-        position:absolute;
-        left:0;
-        top:0;
-    }
-    #seller>.content {
-        font-size:14px;
-        display:block;
-        padding-left:5.5rem;
-    }
-    #seller.expand {
-        border-radius:0;
-        width: 25rem;
-        color:#555;
-    }
+		z-index: 99999;
+	}
+
+	#seller > .face {
+		width: 5rem;
+		height: 5rem;
+		background: url(http://www.htyou.com/pic/news/2014-08-28_21-27-23_4564.jpg) 50% 50% no-repeat;
+		background-size: cover;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+
+	#seller > .content {
+		font-size: 14px;
+		display: block;
+		padding-left: 5.5rem;
+	}
+
+	#seller.expand {
+		border-radius: 0;
+		width: 25rem;
+		color: #555;
+	}
 </style>
 <div id="seller" class="expand">
-    <div class="face"></div>
-    <div class="content">
+	<div class="face"></div>
+	<div class="content">
 		<span class="text"><strong>华天国旅客服</strong>为您服务<br/></span>
-        <a class="am-btn am-btn-success am-btn-sm" href="#">
-            <i class="am-icon-phone-square"></i>
-            电话
-        </a>
+		<a class="am-btn am-btn-success am-btn-sm" href="#">
+			<i class="am-icon-phone-square"></i>
+			电话
+		</a>
 		<a class="am-btn am-btn-success am-btn-sm" href="http://p.qiao.baidu.com/cps/chat?siteId=1606197&userId=5231856">
 			<i class="am-icon-user"></i>
 			客服
 		</a>
-    </div>
+	</div>
 </div>
 <script>
 
-    /* 20160612 郑波要求只展开不收拢，故删除函数，并默认加上expand
-    $('#seller .face').click(function(){
-        $('#seller').toggleClass('expand');
-    });
-    */
+	/* 20160612 郑波要求只展开不收拢，故删除函数，并默认加上expand
+	 $('#seller .face').click(function(){
+	 $('#seller').toggleClass('expand');
+	 });
+	 */
 
-    (function(){
-        var mouseFlag = false;
-        var obj = document.getElementById('seller');
-        obj.addEventListener('touchmove',function(event){
-            if (event.targetTouches.length == 1) {
-                event.preventDefault();// 阻止浏览器默认事件，重要
-                console.log(event.targetTouches[0]);
-                $('#seller').css(
-                        {
-                            'left':event.targetTouches[0].clientX,
-                            'top':event.targetTouches[0].clientY
-                        }
-                );
-            }
+	(function () {
+		var mouseFlag = false;
+		var obj       = document.getElementById('seller');
+		obj.addEventListener('touchmove', function (event) {
+			if (event.targetTouches.length == 1) {
+				event.preventDefault();// 阻止浏览器默认事件，重要
+				console.log(event.targetTouches[0]);
+				$('#seller').css(
+						{
+							'left': event.targetTouches[0].clientX,
+							'top':  event.targetTouches[0].clientY
+						}
+				);
+			}
 
-        });
-    })(document);
-
-	//加入代码如果检测到百度的#LXB_CONTAINER载入，就隐藏掉它！
-	$('#LXB_CONTAINER').ready(function(){
-		$('#LXB_CONTAINER').css({
-			'width':'0',
-			'height':'0',
-			'z-index':'-9999999',
-			'overflow':'hidden'
 		});
-	});
-	addGlobalStyle('#LXB_CONTAINER {width:0 !important; height:0 !important; z-index:-9999999 !important; overflow:hidden !important;}');
+	})(document);
 </script>
 <!--/销售员UI-->
