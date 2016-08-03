@@ -31,8 +31,10 @@ ajax载入数据用jquery，一来是amazeui依赖并且自带了，二来是ava
 ### 获取新闻的接口DEMO：
 http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoID=1215
 
-
 http://www.htyou.com/common/websinfo_queryHTClass.action?datatype=json&classId=722
+
+`注意: parentId的写法在json接口中改成classParent，例如：
+http://www.htyou.com/common/websinfo_queryHTClass.action?datatype=json&classParent=369`
 
 ### 获取销售人员信息的sample（同样是使用新闻接口）:
 http://www.htyou.com/common/websinfo_queryWebsInfos.action?submit=ajax&infoID=431
