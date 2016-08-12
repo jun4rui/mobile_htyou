@@ -47,10 +47,18 @@
 			<i class="am-icon-phone-square"></i>
 			电话
 		</a>
-		<a class="am-btn am-btn-success am-btn-sm" href="http://p.qiao.baidu.com/cps/chat?siteId=1606197&userId=5231856">
+		<script>
+			//20160812 因为竞网说他们的AG代码因为这个接口太快采集不到数据，所以要延迟500ms再跳转
+			function _toBaiduP(){
+				setTimeout(function(){
+					window.location.href = 'http://p.qiao.baidu.com/cps/chat?siteId=1606197&userId=5231856';
+				},500);
+			}
+		</script>
+		<button class="am-btn am-btn-success am-btn-sm" onclick="_toBaiduP()">
 			<i class="am-icon-user"></i>
 			客服
-		</a>
+		</button>
 	</div>
 </div>
 <script>

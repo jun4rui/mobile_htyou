@@ -435,7 +435,7 @@ function showSellerUI(inDATA) {
 	$('#seller-section').load('seller.html?20160714', function () {
 		//20160612 根据郑波的要求在华天国旅默认下才显示在线客服
 		if (inDATA.indexOf('华天国旅') != 0) {
-			$('#seller .content a').eq(1).remove();
+			$('#seller .content .am-btn').eq(1).remove();
 
 			//20160728 根据郑波要求如果在销售模式下，并且销售模式不是华天默认的，就关掉百度的咨询框
 			//加入代码如果检测到百度的#LXB_CONTAINER载入，就隐藏掉它！
@@ -665,17 +665,13 @@ $(document).ready(function () {
 
 // 百度统计工具 20160706
 // 20160812 竞网说加载太快导致数据有些读不到，要求我们晚点载入看看，现在延迟500ms载入吧
-setTimeout(function(){
-	var _hmt = _hmt || [];
-	(function () {
-		var hm = document.createElement("script");
-		hm.src = "//hm.baidu.com/hm.js?e0b438b1ca885b92b2ca277eeb16e0cf";
-		var s  = document.getElementsByTagName("script")[0];
-		s.parentNode.insertBefore(hm, s);
-	})();
-},500);
-
-
+var _hmt = _hmt || [];
+(function () {
+	var hm = document.createElement("script");
+	hm.src = "//hm.baidu.com/hm.js?e0b438b1ca885b92b2ca277eeb16e0cf";
+	var s  = document.getElementsByTagName("script")[0];
+	s.parentNode.insertBefore(hm, s);
+})();
 
 // 20160706 根据李莎要求，看不到销售面板的就修改顶部header的文字为“华天旅游 0731-5555 5555”
 if ( !$('#seller').is(':visible') ) {
