@@ -664,13 +664,17 @@ $(document).ready(function () {
 
 
 // 百度统计工具 20160706
-var _hmt = _hmt || [];
-(function () {
-	var hm = document.createElement("script");
-	hm.src = "//hm.baidu.com/hm.js?e0b438b1ca885b92b2ca277eeb16e0cf";
-	var s  = document.getElementsByTagName("script")[0];
-	s.parentNode.insertBefore(hm, s);
-})();
+// 20160812 竞网说加载太快导致数据有些读不到，要求我们晚点载入看看，现在延迟500ms载入吧
+setTimeout(function(){
+	var _hmt = _hmt || [];
+	(function () {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?e0b438b1ca885b92b2ca277eeb16e0cf";
+		var s  = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+},500);
+
 
 
 // 20160706 根据李莎要求，看不到销售面板的就修改顶部header的文字为“华天旅游 0731-5555 5555”
