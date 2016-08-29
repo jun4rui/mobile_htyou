@@ -308,10 +308,16 @@ function whereami() {
 
 
 // 配置jquery,requirejs语法
-avalon.config({
-	paths: {
-		/*jquery: '../jquery/dist/jquery.min.js',*/
-		/*config: '../../config.js',*/
+// avalon.config({
+// 	paths: {
+// 		/*jquery: '../jquery/dist/jquery.min.js',*/
+// 		/*config: '../../config.js',*/
+// 		wx: 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js'
+// 	}
+// });
+// 20160829 改用requirejs加载微信
+require.config({
+	paths:{
 		wx: 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js'
 	}
 });

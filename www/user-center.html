@@ -9,16 +9,39 @@
 	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
 	<!--amaze框架 需要jQuery支持-->
 	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
-	<!--<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>-->
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
 	<!--avalon框架-->
-	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--<script src="./bower_components/avalon/avalon.js"></script>-->
 	<!--fontawesome图标库-->
 	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
 	<!--js配置文件-->
 	<script src="./config.js?ver=20160331c"></script>
-
+	<!--VUE框架-->
+	<script src="bower_components/vue/dist/vue.min.js"></script>
 </head>
 <body>
-
+	<div id="app">
+		{{message}}
+		<input type="text" v-model="message">
+		<ul>
+			<li v-for="unit in list">{{unit.name}}-{{unit.age}}</li>
+		</ul>
+	</div>
+	<script>
+		var tempList = [
+			{name:'caojun0',age:30},
+			{name:'caojun1',age:31},
+			{name:'caojun2',age:32},
+			{name:'caojun3',age:33},
+			{name:'caojun4',age:34}
+		];
+		new Vue({
+			el:'#app',
+			data: {
+				message: "你好阿顶！",
+				list: tempList,
+			}
+		});
+	</script>
 </body>
 </html>
