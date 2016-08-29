@@ -14,8 +14,7 @@
   ],
   "dependencies": {
     "avalon": "~1.5.2",
-    "amazeui": "~2.4.2",
-    "amazeui-react": "^1.2.2"
+    "amazeui": "~2.4.2"
   },
   "homepage": "https://github.com/jun4rui/mobile_htyou"
 }
