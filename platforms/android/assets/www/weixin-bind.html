@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>会员登录</title>
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+	<script>
+		//先判断是不是在微信环境下
+		if (whereami().toLowerCase()=='weixin'){
+			var openid = getParameterValue(window.location.href, 'openid');
+			var accesstoken = getParameterValue(window.location.href, 'accesstoken');
+			if (openid=='' && accesstoken==''){
+				window.location.href = '/weixin/thirdWebPageLoginHT.action?page_url='+'weixin-bind.html';
+			}
+		}else{
+			alert('<h1>请在微信中访问</h1>');
+		}
+	</script>
+	<style>
+		.ms-controller, .ms-important, [ms-controller], [ms-important] {
+			visibility: hidden;
+		}
+
+		body {
+			/*background-color: #DFDFDF;*/
+		}
+
+		.am-input-group {
+			margin-top: .5em;
+		}
+	</style>
+</head>
+<body>
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单
+		<i class="am-header-icon am-icon-chevron-left htyou-header-menu" onclick="doBack()"></i>
+		<!--/下拉菜单-->
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			会员登录
+		</a>
+	</h1>
+	<!--右侧在线客服-->
+	<div class="am-header-right am-header-nav">
+		<!--<a href="user-login.html">
+			登录
+		</a>-->
+	</div>
+	<!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+<!--注册表单-->
+<div class="am-g">
+	<div class="am-u-md-10 am-u-sm-centered">
+		<img src="./images/htyou_logo.png" class="am-img-responsive" alt="" style="margin:1em auto;">
+		<form class="am-form">
+			<!--账号*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+				<input type="text" id="username" class="am-form-field" placeholder="请输入您的账号/手机号码" required>
+			</div>
+			<!--密码*-->
+			<div class="am-input-group">
+				<span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+				<input type="password" id="password" class="am-form-field" placeholder="请输入对应的密码" required>
+			</div>
+
+			<input type="hidden" id="openid" name="openid" value="">
+			<input type="hidden" id="accesstoken" name="accesstoken" value="">
+			<!--注册按钮-->
+			<div class="am-input-group am-block">
+				<button class="am-btn am-btn-warning am-btn-block" id="bind-button">登录</button>
+			</div>
+		</form>
+	</div>
+</div>
+<!--/登陆表单-->
+
+<!--其它登陆方式-->
+<style>
+	.login-unit {
+		padding: 2px;
+	}
+
+	#other-login {
+		margin-top: 20%;
+		display:none;
+	}
+</style>
+<div class="am-g" id="other-login">
+	您还可以使用下列方式登录
+	<ul class="am-avg-sm-4 am-u-md-10 am-u-sm-centered">
+		<li class="login-unit"><a href="#" class="am-btn am-btn-primary am-btn-block"><i class="fa fa-qq fa-lg"></i>&nbsp;QQ</a>
+		</li>
+		<li class="login-unit"><a href="#" class="am-btn am-btn-secondary am-btn-block"><i
+				class="fa fa-wechat fa-lg"></i>&nbsp;微信</a></li>
+		<li class="login-unit"><a href="#" class="am-btn am-btn-danger am-btn-block">支付宝</a></li>
+		<li class="login-unit"><a href="#" class="am-btn am-btn-success am-btn-block"><i class="fa fa-weibo fa-lg"></i>&nbsp;微博</a>
+		</li>
+	</ul>
+</div>
+<!--/其它登陆方式-->
+
+<script>
+	var openid = getParameterValue(window.location.href, 'openid');
+	var accesstoken = getParameterValue(window.location.href, 'accesstoken');
+	$('#openid').val(openid);
+	$('#accesstoken').val(accesstoken);
+
+
+	//点击注册按钮执行的操作
+	(function ($) {
+		$(document).delegate('#bind-button', 'click', function () {
+			//验证密码是否输入
+			if ($('#password').val().length<3 || $('#password').val().length>32) {
+				alert('请检查您的密码是否规范');
+				return false;
+			}
+			//验证用户输入的account：5～32个字符长度，不能是中文
+			if ($('#username').val().match(/^[a-zA-Z0-9_]{5,32}$/)==null){
+				alert('您的帐户名称必须用英文字母开头，并且只使用英文字符和数字，长度应该在5～32个字符之间');
+				return false;
+			}
+			//如果没有openid和accesstoken也无法注册
+			if ($('#openid').val()=='' || $('#accesstoken').val()==''){
+				alert('您没有通过微信接口验证，请重新进入该页面')
+				return false;
+			}
+			//提交用户注册信息到绑定接口
+			//
+			var regPort = '/user/htuser_login.action?info_type=120615';
+			regPort += '&account=' + $('#username').val();
+			regPort += '&password=' + $('#password').val();
+			regPort += '&openid=' + $('#openid').val();
+			regPort += '&accesstoken=' + $('#accesstoken').val();
+			//alert(regPort);
+			$.getJSON(regPort, function(result){
+				if (result.status=='-1'){
+					alert('账号密码错误或账号不存在或');
+					return false;
+				}
+				if (result.status=='120303'){
+					alert('该账号冻结中');
+					return false;
+				}
+				if (result.status=='120301'){
+					alert('该账号审核中');
+					return false;
+				}
+				if (result.status=='120302'){
+					alert('注册成功！系统将自动跳转到首页！');
+					window.localStorage.setItem('USER_DATA', JSON.stringify(result.guestVO));
+					window.location.href = 'index.html';
+				}
+			});
+			return false;
+		});
+	})($);
+</script>
+
+</body>
+</html>
