@@ -318,7 +318,8 @@ function whereami() {
 // 20160829 改用requirejs加载微信
 require.config({
 	paths:{
-		wx: 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js'
+		wx: 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js',
+		vue: 'bower_components/vue/dist/vue'
 	}
 });
 
