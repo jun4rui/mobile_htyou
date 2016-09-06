@@ -31,6 +31,7 @@
   border-top: none;
   z-index: 100;
   transition: height .3s;
+  .clearfix();
   .hook-tabs-bd;
 
   .@{ns}tab-panel {
@@ -64,6 +65,20 @@
   // nested Tabs
   .@{ns}tabs-bd {
     border: none;
+  }
+}
+
+// #699
+// @since 2.5
+.@{ns}tabs-bd-ofv {
+  overflow: visible;
+
+  > .@{ns}tab-panel {
+    display: none;
+
+    &.@{ns}active {
+      display: block;
+    }
   }
 }
 

@@ -71,7 +71,7 @@ Dropdown.prototype.open = function(e) {
 
   $toggle.trigger('focus');
 
-  this.checkDimensions();
+  this.checkDimensions(e);
 
   var complete = $.proxy(function() {
     $element.trigger('opened.dropdown.amui');
@@ -127,12 +127,26 @@ Dropdown.prototype.close = function() {
   }
 };
 
-Dropdown.prototype.checkDimensions = function() {
+Dropdown.prototype.enable = function() {
+  this.$toggle.prop('disabled', false);
+},
+
+Dropdown.prototype.disable = function() {
+  this.$toggle.prop('disabled', true);
+},
+
+Dropdown.prototype.checkDimensions = function(e) {
   if (!this.$dropdown.length) {
     return;
   }
 
   var $dropdown = this.$dropdown;
+  
+  // @see #873
+  if (e && e.offset) {
+    $dropdown.offset(e.offset);
+  }
+
   var offset = $dropdown.offset();
   var width = $dropdown.outerWidth();
   var boundaryWidth = this.$boundary.width();

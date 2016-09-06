@@ -1,6 +1,202 @@
 # Amaze UI Change Log
 ---
 
+## Amaze UI 2.7.1 (2016.07.11)
+
+### 2016.07 W2
+
+**CSS**:
+
+- `Fixed` #193 修复 Icon font 在某些酷派机型上不显示问题（移除 svg 格式字体文件）。
+
+
+### 2016.06 W3
+
+**JS**:
+
+- `Fixed` 修复 ScrollSpyNav 自动初始化 API 和参数 API 不一致问题，统一为 `data-am-scrollspynav`;
+- `Fixed` Selected 初始化时，没有正确处理 `<select>` 元素的 `disabled`  属性。
+
+
+### 2016.06 W2
+
+**CSS**:
+
+- `Improved` #868 处理 `date`/`datetime-local` 类型的 `input` 在较旧版本 Safari 等浏览器上高度与其他类型的输入框不一致问题。
+
+**JS**:
+
+- `Fixed` #880 Selected `change` 事件在支持 MutationObserver 的浏览器上无限触发问题。
+
+### 2016.06 W1
+
+**CSS**:
+
+- `Improved` #878 面包屑导航分隔符乱码问题。
+
+## Amaze UI 2.7.0 (2016.05.24)
+
+**CSS**:
+
+- `Update` 升级 FontAwesome 至 `4.6.3`。
+
+**JS**:
+
+- `Update` JS 插件更新
+  - Hammer.js 2.0.8
+  - iScroll-lite 5.2.0
+  - FlexSlider 2.6.1
+  - PinchZoom: 使用 `requestAnimationFrame` 替换 `setInterval`
+- `Fixed` #872 修复 Dropdown 嵌套在包含 `.am-active` 状态的元素中的样式问题；
+- `Improved` #866 简化 radio/checkbox 按钮组默认选中状态设置（只需在 `input` 上添加 `checked` 属性）。
+
+**NPM**:
+
+- `Improved` #874 NPM 包根目录下添加 `fonts` 文件夹，解决 Webpack 引用 Less 源文件报错问题。
+
+**示例：**
+
+- `Improved` #863 后台模板容器内滚动条 iOS 上卡顿问题。
+
+## Amaze UI 2.6.2 (2016.04.22)
+
+- `Fixed` #860，Selected 单选点击已选中的项时关闭下拉框（和 `<select>` 保持一致）；
+- `Fixed` 修复 Nav `justify` 宽度样式；
+- `Fixed` #858，调整 Button 颜色 modifier 定义顺序，遵循 primary - secondary - success - warning -danger；
+- `Fixed` 示例后台模板中 `<input>` 类型修正（@karlew）；
+- `Changed` JS 代码质量控制工具由 JSHint + JSCS 迁移到 ESLint.
+
+## Amaze UI 2.6.1 (2016.04.06)
+
+- `Fixed` #398，修复在 Modal 中使用 Popover `z-index` 过低问题；
+- `Fixed` 修复 Navbar 宽度样式。
+
+## Amaze UI 2.6.0 (2016.03.31)
+
+### 2016.03 W5
+
+**CSS：**
+
+- `Improved` 处理部分组件等分列效果在安卓微信等 UA 中无效的问题（flexbox 兼容性所致）。
+
+**JS:**
+
+- `Improved` #821, amazeui/amazeui-react#56 调整 Modal，内容超出窗口高度时显示滚动条；
+- `Update` 更新 store.js `1.3.20`，hammer.js `2.0.6`。
+
+**示例：**
+
+- 后台模板示例调整为固定边栏和页头的形式。
+
+### 2016.03 W2
+
+**JS:**
+
+- `Fixed` #843 修复 uCheck `toggle` 方法没有正确触发 `change` 事件问题。
+
+**构建:**
+
+- `Fixed` 修复定制工具打包 JS 任务出错问题；
+- `Fixed` 调整 IE polyfill 合并顺序，修复在 IE8 脚本运行报错问题。
+
+## Amaze UI 2.5.2 (2016.01.26)
+
+**JS:**
+
+- `Fixed` #825 Datepicker `trigger` 报错问题。
+
+## Amaze UI 2.5.1 (2016.01.19)
+
+**JS:**
+
+- `Fixed` #809 Popup header 未设置 `z-index` 引起的穿透问题；
+- `Fixed` #807 Tabs 切换时出现水平滚动条问题；
+- `Fixed` #799 uCheck 移动端 `this` 引用错误问题。
+
+## Amaze UI 2.5.0 (2015.11.30)
+
+### 2015.11 W5
+
+**CSS:**
+
+- `Update` 升级 Font Awesome 至 4.5.0。
+
+**JS:**
+
+- `Improved` #756 Validator 支持 selected 验证。
+
+### 2015.11 W4
+
+**JS:**
+
+- `Changed` #716 Datepicker onRender 增加视图参数，以处理不同的日历视图渲染；
+- `Fixed` #770 Datepicker onRender 禁用日期时候，年份视图当前年份会被禁用（thx @kermit-china）；
+- `Fixed` #711 Datepicker 与 Validator 结合使用时没有触发验证问题；
+- `NEW` #689 Modal 新增 `dimmer` 选项，允许用户关闭 dimmer；
+- `NEW` #719 Validator 新增 `destroy` 方法；
+- `NEW` #734 Dropdown、Selected 新增 `enable`、`disable` 方法；
+- `Improved` #733 Selected 增加超过最多可选值时提示接口；
+- `Improved` #749 Selected 允许添加一个空的 `<option>` 实现不自动选择第一项。
+
+**构建:**
+
+- `Changed` 使用 webpack 替换 browserify：更好的 UMD 输出、减少开发依赖。
+
+### 2015.11 W3
+
+**构建:**
+
+- `New` #759 添加排除文件列表（`tools/excluded.js`），方便用户自行构建时排除不需要的组件（Thx @icepy；
+- `Changed` CSS 构建时不再包含内部的使用的 `one` 系列样式。
+
+
+### 2015.11 W2
+
+**CSS:**
+
+- `Update` 升级 Font Awesome 至 4.4.0。
+
+
+### 2015.11 W1
+
+**文档：**
+
+- `New` #761 Collapse 文档增加折叠列表的例子。
+
+### 2015.09 W3
+
+**Web 组件：**
+
+- `Fixed` #737 修复组件调试 JS 报错。
+
+### 2015.08 W3
+
+**JS:**
+
+- `Fixed` #712 修复 Modal 在 Edge 中偏移、字体发虚的问题（包括 IE11 #387）；
+- `Fixed` #419 修复 Modal popup 在 IE 中标题栏偏移问题。
+
+### 2015.08 W1
+
+**JS:**
+
+- `Fixed` #783 处理 Browserify 输出 UMD 文件时没有添加 AMD 和 CommonJS 依赖的问题。
+
+### 2015.07 W4
+
+**CSS:**
+
+- `Fixed` Icon 图标使用 `<i>` 元素时在 IE9 中渲染为斜体问题。
+
+### 2015.07 W2
+
+**JS:**
+
+- `New` Popover 增加 `theme` 选项，用于设置颜色和尺寸；
+- `New` Popover 增加 `destroy` 方法，用于销毁实例。
+
+## Amaze UI 2.4.2 (2015.07.06)
+
 ### 2015.07 W2
 
 **Web 组件：**
