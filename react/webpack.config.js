@@ -24,6 +24,7 @@ var _dir_ = path.resolve();
 
 module.exports = {
 	entry: {
+		//a: ["./a", "./b"],
 		'commonlib': _dir_+'/modules/mobile_htyou.jsx',
 		'usercenter': _dir_+'/modules/user_center.jsx'
 	},
