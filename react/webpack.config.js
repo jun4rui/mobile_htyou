@@ -1,14 +1,13 @@
 var path = require('path');
-
-var__dirname = path.resolve();
+var _dir_ = path.resolve();
 
 module.exports = {
 	entry: [
-		__dirname+'/modules/mobile_htyou.js'
+		_dir_+'/modules/mobile_htyou.js'
 	],
 	output: {
-		path: __dirname+'/build/',
-		filename: 'bundle.js'
+		path: '../www/',
+		filename: 'bundle-react.js'
 	},
 	module: {
 		loaders: [{
