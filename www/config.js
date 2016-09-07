@@ -316,13 +316,14 @@ function whereami() {
 // 	}
 // });
 // 20160829 改用requirejs加载微信
-require.config({
-	paths:{
-		wx: 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js',
-		vue: 'bower_components/vue/dist/vue'
-	}
-});
-
+if (whereami() == 'weixin') {
+	require.config({
+		paths: {
+			wx: 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js'
+			/*vue: 'bower_components/vue/dist/vue'*/
+		}
+	});
+}
 
 // 判断用户设备类型
 function deviceType() {

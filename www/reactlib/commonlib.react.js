@@ -60,7 +60,7 @@
 		}
 	});
 
-	ReactDOM.render(React.createElement(TestUnit, { text: 'test' }), document.body);
+	//ReactDOM.render(<TestUnit text="test"/>, document.body);
 
 /***/ },
 /* 1 */

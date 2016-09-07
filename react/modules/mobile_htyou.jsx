@@ -10,4 +10,4 @@ var TestUnit = new React.createClass({
 	}
 });
 
-ReactDOM.render(<TestUnit text="test"/>, document.body);
+//ReactDOM.render(<TestUnit text="test"/>, document.body);
