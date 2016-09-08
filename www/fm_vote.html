@@ -23,9 +23,9 @@
 
 		#main-panel {
 			width: 600px;
-			height: 2283px;
+			height: 3061px;
 			margin: 0 auto;
-			background: url(./images/fm_vote_main.jpg) no-repeat center top;
+			background: url(./images/20160908vote.jpg) no-repeat center top;
 
 			position:relative;
 		}
@@ -76,6 +76,23 @@
 			box-shadow: 2px 2px 12px #333;
 			display: block;
 			margin: 0 auto;
+		}
+		#score {
+			/*padding-top: 435px;*/
+			text-align: center;
+		}
+		#score>span {
+			padding: 5px 20px;
+			background-color: #f00;
+			color: #FFF;
+			font-size: 30px;
+			font-weight: bold;
+			border-radius: 10px;
+			line-height: 48px;
+			width: auto;
+			text-align: center;
+			margin: 0 auto;
+			max-width: 100%;
 		}
 	</style>
 
@@ -135,7 +152,7 @@
 
 				console.log(result[0].info_thumbpic,result[0].info_name);
 				//设置销售员信息
-				$('#main-panel').append('<div id="info_panel"><img src="http://www.htyou.com/'+result[0].info_thumbpic+'" alt="">'+result[0].info_name+'</div>');
+				$('#main-panel').append('<div id="info_panel"><img src="http://www.htyou.com/'+result[0].info_thumbpic+'" alt=""><div id="score"><span>'+result[0].info_name+'</span></div></div>');
 				/**
 				 * 构造WEIXIN分享功能
 				 * 必须：载入微信JSSDK库（http://res.wx.qq.com/open/js/jweixin-1.0.0.js）
@@ -220,13 +237,23 @@
 			}
 			*/
 
+			//获得投票分数
+			$('#score').ready(function(){
+				console.log('#scrore is ready.',_infoid);
+				if (_infoid!='' && parseInt(_infoid)!=0){
+					$.getJSON('http://ipad.htyou.com/user/htuser_weixinPiaoShu.action?jsoncallback=?&voteclass=421&infoid='+_infoid, function(result){
+						$('#score>span').text($('#score>span').text()+' '+result.count+'票');
+					});
+				}
+			});
+
 			//构造投票功能
 			$('#btn-panel').delegate('#submit-btn', 'click', function(){
 				var degree = $(this).attr('degree');
 				//弹出投票中的modal
 				$('#loading').modal();
 				if (_DEBUG){
-					alert('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=422&infoid='+_infoid+'&openid='+_openid+'&degree='+degree);
+					alert('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=421&infoid='+_infoid+'&openid='+_openid+'&degree='+degree);
 				}
 				console.log('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=421&infoid='+_infoid+'&openid='+_openid);
 				$.getJSON('http://ipad.htyou.com/user/htuser_weixinVote.action?jsoncallback=?&voteclass=421&infoid='+_infoid+'&openid='+_openid, function(result){
