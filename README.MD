@@ -140,3 +140,7 @@ http://www.htyou.com/mobile/tourorder_addTourOrder.action?jsoncallback=jQuery214
 keytool -genkey -v -keystore htyou-release-key.keystore -alias htyou -keyalg RSA -validity 365
 
 **Cordova 5.x开始不用ant.properties了，改在项目root目录下新建build.json代替
+
+#### 多个产品ID列表查询
+http://www.htyou.com/mobile/ipad_queryTourLine.action?KeyWords=13518%2012841
+keywords后面加上ID，用空格(%20)分开
