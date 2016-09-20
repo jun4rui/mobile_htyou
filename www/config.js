@@ -463,7 +463,7 @@ function showSellerUI(inDATA) {
 		});
 		$('#seller .content strong').text(inDATA.split(',')[0]);
 		$('#seller .content a').eq(0).attr('href', 'tel:' + inDATA.split(',')[1]);
-		$('#seller').animate({'left': '1rem', 'bottom:': '100px'});
+		$('#seller').animate({'left': (window.innerWidth-300)/2, 'bottom:': (window.innerHeight-125)/2});
 	});
 }
 $(document).ready(function () {

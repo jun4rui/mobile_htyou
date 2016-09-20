@@ -1,4 +1,5 @@
 <!--销售员UI-->
+<!-- 20160917 放弃的老板
 <style>
 	#seller {
 		transition: top linear 0s, left linear 0s, border-radius ease-in-out .5s, width 1s;
@@ -38,7 +39,8 @@
 		width: 25rem;
 		color: #555;
 	}
-</style>
+</style>-->
+<!--20160917 放弃的老版本
 <div id="seller" class="expand">
 	<div class="face"></div>
 	<div class="content">
@@ -60,31 +62,101 @@
 			客服
 		</button>
 	</div>
+</div>-->
+
+<!--/销售员UI-->
+
+
+
+<!--
+20160918 新版
+width: 300px;
+height:125px;
+-->
+<style>
+	#seller {
+		width: 300px;
+		height: 125px;
+		transition: top linear 0s, left linear 0s, border-radius ease-in-out .5s, width 1s;
+		position: fixed;
+		bottom: 100px;
+		border-radius: 5px;
+		box-shadow: 0px 1px 15px #000;
+		background: #FFF url(images/seller_bg.png) no-repeat center center;
+		overflow: hidden;
+		z-index: 99999;
+	}
+
+	#seller > .face {
+		width: 126px;
+		height: 125px;
+		background: url(http://www.htyou.com/pic/news/2014-08-28_21-27-23_4564.jpg) 50% 50% no-repeat;
+		background-size: cover;
+		position: absolute;
+		left: -1px;
+		top: 0;
+	}
+
+	#seller > .content {
+		color: #013e42;
+		font-family: '微软雅黑','Microsoft YaHei';
+		position: absolute;
+		left: 138px;
+		top: 65px;
+		z-index: 999;
+		font-size: 15px;
+		display: block;
+	}
+
+	#seller>.content button.am-btn.am-btn-success.am-btn-sm {
+		position: absolute;
+		background: url(images/seller_btn1.png);
+		width: 63px;
+		height: 28px;
+		border-radius: 5px;
+		left: 3px;
+		top: 24px;
+		border: 0;
+	}
+
+	#seller>.content a.am-btn.am-btn-success.am-btn-sm {
+		position: absolute;
+		background: url(images/seller_btn2.png);
+		border: 0px;
+		width: 63px;
+		height: 28px;
+		left: 83px;
+		top: 24px;
+	}
+	#seller>.close {
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		top: 0px;
+		right: 0px;
+	}
+</style>
+
+<div id="seller" class="expand">
+	<div class="face"></div>
+	<div class="content">
+		<span class="text"><strong>华天国旅客服</strong>为您服务<br/></span>
+		<a class="am-btn am-btn-success am-btn-sm" href="#">
+		</a>
+		<script>
+			//20160812 因为竞网说他们的AG代码因为这个接口太快采集不到数据，所以要延迟500ms再跳转
+			function _toBaiduP(){
+				setTimeout(function(){
+					window.location.href = 'http://p.qiao.baidu.com/cps/chat?siteId=1606197&userId=5231856';
+				},500);
+			}
+		</script>
+		<button class="am-btn am-btn-success am-btn-sm" onclick="_toBaiduP()">
+		</button>
+	</div>
+	<div class="close" onclick="$('#seller').hide()"></div>
 </div>
+
 <script>
 
-	/* 20160612 郑波要求只展开不收拢，故删除函数，并默认加上expand
-	 $('#seller .face').click(function(){
-	 $('#seller').toggleClass('expand');
-	 });
-	 */
-
-	(function () {
-		var mouseFlag = false;
-		var obj       = document.getElementById('seller');
-		obj.addEventListener('touchmove', function (event) {
-			if (event.targetTouches.length == 1) {
-				event.preventDefault();// 阻止浏览器默认事件，重要
-				console.log(event.targetTouches[0]);
-				$('#seller').css(
-						{
-							'left': event.targetTouches[0].clientX,
-							'top':  event.targetTouches[0].clientY
-						}
-				);
-			}
-
-		});
-	})(document);
 </script>
-<!--/销售员UI-->
