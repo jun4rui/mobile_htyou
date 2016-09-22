@@ -420,6 +420,8 @@ function showSellerUI(inDATA) {
 		return true;
 	}
 	//首页的处理方式
+	//20160922 新版客服面板上线后，郑波要求首页不做特殊处理，故关闭该功能
+	/*
 	if (window.location.href.indexOf('main.html') > -1) {
 		//20160606 郑波要求无销售信息则默认显示华天国旅的漂浮信息，所以首页判断如果_SHOW_DATA的开始不是'华天国旅'则才显示顶部信息并推出，是则继续走到下一步显示漂浮信息
 		if (inDATA.indexOf('华天国旅') != 0) {
@@ -438,6 +440,7 @@ function showSellerUI(inDATA) {
 			return true;
 		}
 	}
+	*/
 	//一般的处理方式
 	$('body').append('<div id="seller-section"></div>');
 	$('#seller-section').load('seller.html?20160714', function () {
