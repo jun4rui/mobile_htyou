@@ -414,7 +414,7 @@ function showSellerUI(inDATA) {
 			'background':      'url(' + inDATA.split(',')[2] + ') 50% 50% no-repeat',
 			'background-size': 'cover'
 		});
-		$('#btn-style-2 a').attr('href', 'tel:' + inDATA.split(',')[1]);
+		$('#btn-style-2 a.phone-btn').attr('href', 'tel:' + inDATA.split(',')[1]);
 		$('#btn-style-1').hide();
 		$('#btn-style-2').show();
 		return true;
