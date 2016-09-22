@@ -441,7 +441,7 @@
 	}
 	#tour-modal .album-unit>.album-mask {
 		position: absolute;
-		background-color: rgba(0, 0, 0, 0.7);
+		background-color: rgba(0, 0, 0, 0.5);
 		color: #FFF;
 		width: 100%;
 		line-height: 1.5em;
@@ -470,7 +470,7 @@
 				<!--<img ms-repeat="unit.albumList" class="am-thumbnail" ms-attr-src="http://www.htyou.com/{{el}}" />-->
 				<div class="album-unit" ms-repeat="unit.spot_album">
 					<img class="am-thumbnail" ms-attr-src="http://www.htyou.com/{{el}}" ms-attr-title="{{unit.spotviewpic[$index]}}"/>
-					<input type="text" class="album-mask" readonly="readonly" ms-attr-value="{{unit.spotviewpic[$index]}}">
+					<input type="text" class="album-mask" readonly="readonly" ms-attr-value="{{unit.spotviewpic[$index]}}" ms-if="unit.spotviewpic[$index].match(/^[0-9a-z]/)==null">
 				</div>
 				<!--/图片轮播-->
 				<p>
