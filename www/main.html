@@ -557,6 +557,18 @@
 	<a href="http://www.htyou.com/page/single/device_type.htm">下载APP客户端</a>
 	Copyright@华天国际旅行社
 </div>
+<script>
+	//如果弹出了百度的LXB_CONTAINER，就把bady的底部垫高(原来body的padding-bottom高度+LXB_CONTAINER高度)
+	$(document).ready(function(){
+		//因为百度这玩意出现没啥规律ready之类事件都没用，所以只好循环检查，等发现出来后再干掉循环了
+		var getBottom = setInterval(function(){
+			if ($('#LXB_CONTAINER').height()>0){
+				$('body').css({'padding-bottom': parseInt($('body').css('padding-bottom').replace(/px/g ,''))+$('#LXB_CONTAINER').height() });
+				clearInterval(getBottom);
+			}
+		},3000);
+	});
+</script>
 <!--/公用底部（只在非APP中显示）-->
 </body>
 </html>
