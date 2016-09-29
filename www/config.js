@@ -16,9 +16,11 @@ var server_addr = 'http://ipad.htyou.com';						//JSON接口服务器地址，�
 function addGlobalStyle(css) {
 	var head, style;
 	head = document.getElementsByTagName('head')[0];
-	if (!head) { return; }
-	style = document.createElement('style');
-	style.type = 'text/css';
+	if (!head) {
+		return;
+	}
+	style           = document.createElement('style');
+	style.type      = 'text/css';
 	style.innerHTML = css;
 	head.appendChild(style);
 }
@@ -411,8 +413,8 @@ function showSellerUI(inDATA) {
 	//线路详情页面的处理方式
 	if (window.location.href.indexOf('tour-detail.html') > -1) {
 		$('#btn-style-2 .face').css({
-			'background':      'url(' + inDATA.split(',')[2] + ') 50% 50% no-repeat',
-			'background-size': 'cover'
+			'background':       'url(' + inDATA.split(',')[2] + ') 50% 50% no-repeat',
+			'background-size':  'cover'
 		});
 		$('#btn-style-2 a.phone-btn').attr('href', 'tel:' + inDATA.split(',')[1]);
 		$('#btn-style-1').hide();
@@ -422,25 +424,25 @@ function showSellerUI(inDATA) {
 	//首页的处理方式
 	//20160922 新版客服面板上线后，郑波要求首页不做特殊处理，故关闭该功能
 	/*
-	if (window.location.href.indexOf('main.html') > -1) {
-		//20160606 郑波要求无销售信息则默认显示华天国旅的漂浮信息，所以首页判断如果_SHOW_DATA的开始不是'华天国旅'则才显示顶部信息并推出，是则继续走到下一步显示漂浮信息
-		if (inDATA.indexOf('华天国旅') != 0) {
-			$('#seller-panel').height(parseInt($(window).width() / 1000 * 657));
-			$('#seller-panel .seller-panel-bg').height(parseInt($(window).width() / 1000 * 657));
-			//$('#seller-panel .seller-panel-bg').css({'background':'url('+inDATA.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
-			$('#seller-panel .seller-panel-bg').css({
-				'background':      'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat',
-				'background-size': 'cover'
-			});
-			$('#seller-panel img').attr({'src': '' + inDATA.split(',')[2]});
-			$('#seller-panel a').attr({'href': 'tel:' + inDATA.split(',')[1]});
-			$('#seller-panel a span').text(inDATA.split(',')[0]);
-			$('#galleryAD').hide();
-			$('#seller-panel').show();
-			return true;
-		}
-	}
-	*/
+	 if (window.location.href.indexOf('main.html') > -1) {
+	 //20160606 郑波要求无销售信息则默认显示华天国旅的漂浮信息，所以首页判断如果_SHOW_DATA的开始不是'华天国旅'则才显示顶部信息并推出，是则继续走到下一步显示漂浮信息
+	 if (inDATA.indexOf('华天国旅') != 0) {
+	 $('#seller-panel').height(parseInt($(window).width() / 1000 * 657));
+	 $('#seller-panel .seller-panel-bg').height(parseInt($(window).width() / 1000 * 657));
+	 //$('#seller-panel .seller-panel-bg').css({'background':'url('+inDATA.split(',')[2]+') 50% 50% no-repeat','background-size':'cover'});
+	 $('#seller-panel .seller-panel-bg').css({
+	 'background':      'url(http://www.htyou.com/pic/adpic/2014-08-28_16-45-21_5192.jpg) 50% 50% no-repeat',
+	 'background-size': 'cover'
+	 });
+	 $('#seller-panel img').attr({'src': '' + inDATA.split(',')[2]});
+	 $('#seller-panel a').attr({'href': 'tel:' + inDATA.split(',')[1]});
+	 $('#seller-panel a span').text(inDATA.split(',')[0]);
+	 $('#galleryAD').hide();
+	 $('#seller-panel').show();
+	 return true;
+	 }
+	 }
+	 */
 	//一般的处理方式
 	$('body').append('<div id="seller-section"></div>');
 	$('#seller-section').load('seller.html?20160714', function () {
@@ -462,11 +464,12 @@ function showSellerUI(inDATA) {
 		}
 		$('#seller .face').css({
 			'background':      'url(' + inDATA.split(',')[2] + ') 50% 0% no-repeat',
-			'background-size': 'cover'
+			'background-size': 'cover',
+			'background-color': '#92f2ff'
 		});
 		$('#seller .content strong').text(inDATA.split(',')[0]);
 		$('#seller .content a').eq(0).attr('href', 'tel:' + inDATA.split(',')[1]);
-		$('#seller').animate({'left': (window.innerWidth-300)/2, 'top': (window.innerHeight-125)/2});
+		$('#seller').animate({'left': (window.innerWidth - 300) / 2, 'top': (window.innerHeight - 125) / 2});
 	});
 }
 $(document).ready(function () {
@@ -560,7 +563,7 @@ $(document).ready(function () {
 						var desc   = $('title').text();
 						var link   = window.location.href;
 						var imgUrl = $('body img').eq(0).attr('src');
-						if (link.indexOf('?')!=-1) {
+						if (link.indexOf('?') != -1) {
 							link = link + '&infoid=' + shareID;
 						} else {
 							link = link + '?infoid=' + shareID;
@@ -685,6 +688,6 @@ var _hmt = _hmt || [];
 })();
 
 // 20160706 根据李莎要求，看不到销售面板的就修改顶部header的文字为“华天旅游 0731-5555 5555”
-if ( !$('#seller').is(':visible') ) {
+if (!$('#seller').is(':visible')) {
 	$('header .am-header-title>a').text('华天旅游 0731-5555 5555');
 }
