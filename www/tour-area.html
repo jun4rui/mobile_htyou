@@ -44,8 +44,11 @@
 		if (classParent==424){
 			className   = '国内热门目的地';
 		}
+		if (classParent==753){
+			className   = '自由客目的地';
+		}
 		/*输入允许的classParent才能继续执行*/
-		if (classParent == 423 || classParent == 424) {
+		if (classParent == 423 || classParent == 424 || classParent == 753) {
 			//Avalon模型
 			avalon.ready(function () {
 				//景区VM
@@ -87,7 +90,9 @@
 				if (classParent==424){
 					searchUrl   = '/mobile/ipad_queryTourLine.action?commendtype=16&isnative=2&pagesize=8&jsoncallback=?';
 				}
-
+				if (classParent==753){
+					searchUrl   = '/mobile/ipad_queryTourLine.action?tourtype=3&jsoncallback=?';
+				}
 				$.getJSON(server_addr + searchUrl, function(result){
 					recommendTourVM.list = result.value;
 				});
