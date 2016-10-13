@@ -115,7 +115,7 @@
 				var status = false;	//记录链接是否被处理过的状态位
 				for (var i = 0; i < result.length; i++) {
 					status = false;	//重制状态位
-					console.log('link:'+result[i].url);
+					//console.log('link:'+result[i].url);
 					//直达产品的处理
 					if (result[i].url.indexOf('/mobileTour/tourbrowse/') == 0) {
 						result[i].url = 'tour-detail.html?lineid=' + result[i].url.substring(result[i].url.lastIndexOf('/') + 1, result[i].url.lastIndexOf('.'));
