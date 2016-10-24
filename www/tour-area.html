@@ -57,12 +57,13 @@
 					titleText: className,
 					classID: classParent,
 					areaList: [],
+					tourType: '',	//用来设定t参数，也就是类型用的
 					areaRendered: function(){
 						$('.point-panel').each(function(){
 							var classid = $(this).attr('classid');
 							$.getJSON(server_addr + '/common/websinfo_queryHTClass.action?datatype=json&classParent=' + classid + '&jsoncallback=?', function(result){
 								for (var i=0; i<result.length; i++){
-									var tempHTML    = '<!--热门线路unit--> <li> <div class="am-gallery-item"> <a href="tour-list.html?a='+result[i].typename+'"> <img src="http://www.htyou.com/'+result[i].pic+'" alt=""/> <h3 class="am-gallery-title">'+result[i].typename+'</h3> <div class="am-gallery-desc"></div> </a> </div> </li> <!--/热门线路unit-->';
+									var tempHTML    = '<!--热门线路unit--> <li> <div class="am-gallery-item"> <a href="tour-list.html?a='+result[i].typename+'&t='+tourAreaVM.tourType+'"> <img src="http://www.htyou.com/'+result[i].pic+'" alt=""/> <h3 class="am-gallery-title">'+result[i].typename+'</h3> <div class="am-gallery-desc"></div> </a> </div> </li> <!--/热门线路unit-->';
 									$('.point-panel[classid='+result[0].parent_id+']').append(tempHTML);
 								}
 							});
@@ -85,12 +86,15 @@
 				//Ajax载入推荐产品数据
 				var searchUrl   = '';
 				if (classParent==423){
+					tourAreaVM.tourType = '';
 					searchUrl   = '/mobile/ipad_queryTourLine.action?commendtype=15&isnative=4&pagesize=8&jsoncallback=?';
 				}
 				if (classParent==424){
+					tourAreaVM.tourType = '';
 					searchUrl   = '/mobile/ipad_queryTourLine.action?commendtype=16&isnative=2&pagesize=8&jsoncallback=?';
 				}
 				if (classParent==753){
+					tourAreaVM.tourType = '3';
 					searchUrl   = '/mobile/ipad_queryTourLine.action?tourtype=3&jsoncallback=?';
 				}
 				$.getJSON(server_addr + searchUrl, function(result){

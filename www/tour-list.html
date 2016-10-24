@@ -66,10 +66,10 @@
 			//Ajax载入推荐产品数据
 			var getJsonUrl  = server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&jsoncallback=?';
 			if (getParameterValue(window.location.href, 'q')!='') {
-				getJsonUrl  = server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&KeyWords='+getParameterValue(window.location.href, 'q')+'&jsoncallback=?';
+				getJsonUrl  = server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&KeyWords='+getParameterValue(window.location.href, 'q')+'&tourtype='+getParameterValue(window.location.href, 't')+'&jsoncallback=?';
 			}
 			if (getParameterValue(window.location.href, 'a')!='') {
-				getJsonUrl  = server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&area='+getParameterValue(window.location.href, 'a')+'&jsoncallback=?';
+				getJsonUrl  = server_addr + '/mobile/ipad_queryTourLine.action?pagesize=999&area='+getParameterValue(window.location.href, 'a')+'&tourtype='+getParameterValue(window.location.href, 't')+'&jsoncallback=?';
 			}
 			$.getJSON(getJsonUrl, function (result, status) {
 				/*console.log(status, result);*/
