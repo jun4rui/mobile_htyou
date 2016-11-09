@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>华天旅游网:自由客专区</title>
+	<!--<script type="text/javascript" src="cordova.js"></script>-->
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--requirejs框架-->
+	<script src="./bower_components/requirejs/require.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
+	<style>
+		body {
+			background-color: #F3F3F3;
+		}
+
+		.hide {
+			display: none;
+		}
+
+		.am-form-group {
+			margin-bottom: 2px;
+		}
+	</style>
+	<script>
+		//Avalon模型
+		avalon.ready(function () {
+			//全局VM
+
+			//产品VM
+			var tourListVM = avalon.define({
+				$id:     'tourList',
+				keyword: '',
+				list:    []
+			});
+
+			avalon.scan();
+
+			//Ajax载入产品列表
+			$.getJSON(server_addr + '/mobile/ipad_queryTourLine.action?tourtype=3&jsoncallback=?', function (result) {
+				tourListVM.list = result.value;
+			});
+
+
+		});
+	</script>
+</head>
+<body ms-controller="tourList">
+<!--头部-->
+<style>
+	header.am-header .am-header-title {
+		margin: 0 3em;
+	}
+
+	.htyou-header-menu {
+		color: #FFF;
+	}
+</style>
+<header data-am-widget="header" class="am-header am-header-default am-header-fixed">
+	<div class="am-header-left am-header-nav">
+		<!--下拉菜单-->
+		<i class="am-header-icon am-icon-arrow-left am-dropdown-toggle htyou-header-menu" onclick="doBack()"></i>
+		<!--/下拉菜单-->
+	</div>
+
+	<h1 class="am-header-title">
+		<a href="#title-link" class="">
+			自由客专区
+		</a>
+	</h1>
+	<!--右侧在线客服
+	<div class="am-header-right am-header-nav">
+		<a href="#" data-am-offcanvas="{target: '#side-panel'}">
+			<i class="am-header-icon am-icon-bars"></i>
+		</a>
+	</div>
+	<!--/右侧在线客服-->
+</header>
+<!--/头部-->
+
+<!--主内容区-->
+<style>
+	#main-section {
+		padding-top: 10px;
+	}
+	.tour-unit {
+		box-sizing: border-box;
+		background-color: #FFF;
+		margin: 0 10px 20px 10px;
+		box-shadow: 1px 5px 5px #d9d9d9;
+		padding-bottom: 10px;
+	}
+
+	.tour-unit img.image {
+		width: 100%;
+		display: block;
+	}
+
+	.tour-unit .title {
+		font: 24px/36px 'Microsoft YaHei', '微软雅黑', '黑体', 'Heiti';
+		height: 36px;
+		overflow: hidden;
+		display: block;
+		color: #333;
+		padding: 0 10px;
+	}
+
+	.tour-unit .desc {
+		font: 16px/32px 'Microsoft YaHei', '微软雅黑', '黑体', 'Heiti';
+		height: 32px;
+		overflow: hidden;
+		display: block;
+		color: #999;
+		padding: 0 10px;
+		display: none;
+	}
+
+	.tour-unit .states {
+		display: block;
+		font: 16px/32px 'Microsoft YaHei', '微软雅黑', '黑体', 'Heiti';
+		height: 40px;
+		overflow: hidden;
+		color: #37C3CD;
+		padding: 0 10px;
+		margin-top: 10px;
+		position: relative;
+	}
+
+	.tour-unit .states > .icon-unit {
+		border: 1px solid #37C3CD;
+		line-height: 30px;
+		border-radius: 2px;
+		font-size: 14px;
+		padding: 0px 6px;
+		display: inline-block;
+		margin-left: 5px;
+	}
+
+	.tour-unit .states > .price {
+		color: #FD7202;
+		font-size: 16px;
+		position: absolute;
+		right: 36px;
+		top: 0px;
+		z-index: 9;
+		background-color: #FFF;
+	}
+
+	.tour-unit .states > .price > span {
+		font-size: 30px;
+	}
+</style>
+<div id="main-section">
+	<!--产品模块-->
+	<div class="tour-unit" ms-repeat-unit="list">
+		<a ms-attr-href="tour-detail.html?lineid={{unit.lineid}}">
+			<img ms-attr-src="http://www.htyou.com/{{unit.spotviewpic}}" alt="" class="image">
+			<div class="title">{{unit.tourproname}}</div>
+			<div class="desc"></div>
+			<div class="states">
+				<span class="am-icon-map-marker"></span>
+				<span class="icon-unit">{{unit.tourtype}}</span>
+				<div class="price">¥<span>{{unit.leastprice}}</span>起</div>
+			</div>
+		</a>
+	</div>
+	<!--/产品模块-->
+</div>
+<!--/主内容区-->
+
+<!--回顶部-->
+<style>
+	.am-gotop-fixed {
+		width: 47px !important;
+		max-width: 47px !important;
+		bottom:40px !important;
+	}
+
+	.am-gotop-icon-custom {
+		width: 47px;
+		max-width: 47px !important;
+		height: 47px;
+		max-height: 47px !important;
+	}
+</style>
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed">
+	<a href="#top" title="">
+		<img class="am-gotop-icon-custom" src="./images/return2top.png"/>
+	</a>
+</div>
+<!--/回顶部-->
+</body>
+</html>
