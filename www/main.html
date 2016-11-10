@@ -51,6 +51,14 @@
 		}
 	</style>
 	<script>
+		/**
+		 * 20161110
+		 * Author: Caojun
+		 * 将曹熙传过来的userid记录到localStorage中去
+		 */
+		window.localStorage.setItem('USERID',getParameterValue(window.location.href, 'userid'));
+
+
 		$('#galleryAD').ready(function () {
 			$('#galleryAD').height(parseInt($(window).width() / 110 * 44));
 		});
