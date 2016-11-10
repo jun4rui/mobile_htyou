@@ -34,7 +34,7 @@
         }
     </style>
     <script>
-        var iframeUrl   = 'http://www.htyou.com'+decodeURIComponent(getParameterValue(window.location.href,'inurl'));
+        var iframeUrl   = decodeURIComponent(getParameterValue(window.location.href,'inurl'));
         $('#otherframe').ready(function(){
             $('#otherframe').attr('src',iframeUrl).css({'width':window.innerWidth,'height':window.innerHeight});
         });
