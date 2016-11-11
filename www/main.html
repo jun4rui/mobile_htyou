@@ -207,7 +207,7 @@
 	<!--/右侧用户中心：仅限weixin用户-->
 	<script>
 		//判断如果是weixin中，则右侧显示会员中心，一般页面则显示在线客服
-		if (whereami() == 'weixin') {
+		if (whereami() == 'weixin' || getParameterValue(window.location.href, 'userid')!=0) {
 			//$('#weixin-user').show();
 			$('#user-center').show();
 		}else{
