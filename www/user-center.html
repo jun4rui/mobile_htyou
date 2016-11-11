@@ -2,57 +2,403 @@
 <html lang="zh-CN">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title>用户中心</title>
-	<!--引入require库: 针对config.sys的载入模块（weixin，vue（这个暂时没用））-->
-	<script src="bower_components/requirejs/require.js"></script>
-	<!--引入jquery库-->
-	<script src="bower_components/jquery/dist/jquery.min.js"></script>
-	<!--引入react库-->
-	<!--<script src="bower_components/react/react.min.js"></script>-->
-	<!--<script src="bower_components/react/react-dom.min.js"></script>-->
-	<!--引入Amazeui-react相关库-->
-	<link rel="stylesheet" href="bower_components/amazeui/dist/css/amazeui.min.css">
-	<!--<script src="bower_components/amazeui-react/dist/amazeui.react.min.js"></script>-->
-	<!--htyou-mobile功能和函数库-->
-	<script src="config.js"></script>
+	<!--<meta name="viewport" content="width=640, user-scalable=no">-->
+	<title>会员信息</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<title>华天旅游网</title>
+	<!--<script type="text/javascript" src="cordova.js"></script>-->
+	<!--jQuery框架-->
+	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
+	<!--amaze框架 需要jQuery支持-->
+	<link href="./bower_components/amazeui/dist/css/amazeui.css" rel="stylesheet"/>
+	<script src="./bower_components/amazeui/dist/js/amazeui.min.js" charset="UTF-8"></script>
+	<!--avalon框架-->
+	<script src="./bower_components/avalon/avalon.js"></script>
+	<!--requirejs框架-->
+	<script src="./bower_components/requirejs/require.js"></script>
+	<!--fontawesome图标库-->
+	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
+	<!--js配置文件-->
+	<script src="./config.js"></script>
 
-	<!--样式表-->
 	<style>
-		body {
-			background-color: #eeeeee;
-		}
-		#userinfo-panel {
-			position:relative;
-			background-color: #FFF;
-		}
-		#userinfo-panel>img{
-			filter: blur(5px);
-			-webkit-filter: blur(5px);
-		}
-
-		.am-thumbnails>li {
-			padding: 0.2rem;
-		}
-
-		img.face {
-			position: absolute;
-			left: 35%;
-			top: 8%;
-			width: 6em;
-			height: 6em;
-		}
-		span.username {
-			position: absolute;
-			color: #FFF;
-			left: 40%;
-			top: 120px;
+		html {
+			/*font-size: 18px !important;*/
 		}
 	</style>
+
+	<script>
+		//支付类型keycode转文字
+		var keycode2name = {
+			'160401': '已付费',
+			'160402': '未付费',
+			'160403': '已部分支付',
+			'160404': '托收',
+			'160405': '支付宝支付失败',
+			'160406': '支付宝未支付',
+			'160407': '已积分'
+		};
+		var mainVM       = avalon.define({
+			$id:                'main',
+			link:               'usercenter-user-info.htm',
+			userid:             window.localStorage.getItem('USERID'),//用户信息
+			info:               {},//用户账单信息
+			userorder:          [],//账单支付类型过滤key
+			orderPayTypeFilter: '',//支付类型列表
+			paytypeList:        [],//用户中心菜单数据
+			list:               [
+				{
+					name: '个人中心',
+					list: [
+						{name: '个人信息', link: 'user-info'},
+						{name: '密码修改', link: 'change-password'}
+					]
+				},
+				{
+					name: '订单中心',
+					list: [
+						{name: '全部订单', link: 'order-all'},
+						{name: '机票订单', link: ''},
+						{name: '酒店订单', link: ''},
+						{name: '旅游订单', link: ''},
+						{name: '保险订单', link: ''},
+						{name: '签证订单', link: ''},
+						{name: '礼品订单', link: ''},
+						{name: '秒杀，抢购订单', link: ''}
+					]
+				},
+				{
+					name: '我的积分',
+					list: [
+						{name: '查询积分', link: ''}
+					]
+				}
+			],
+			menuClick:          function () {
+				//针对服务器会把html变成htm，而本地调试又是用html特别做识别处理
+				var extName = '.htm';
+				if (window.location.href.indexOf('http://localhost') == 0 || window.location.href.indexOf('http://127.0.0.1') == 0) {
+					extName = '.html';
+				}
+				if ($(this).attr('link') != '') {
+					mainVM.link = 'usercenter-' + $(this).attr('link') + extName;
+				}
+
+				console.log(mainVM.link);
+				console.log(mainVM.list);
+			},
+			paytypeClick:       function () {
+				$('#order-panel .info-content ul li.active').removeClass('active');
+				$(this).addClass('active');
+				mainVM.orderPayTypeFilter = $(this).attr('code');
+				console.log($(this).attr('code'));
+			}
+		});
+
+		//载入用户信息数据
+		console.log('http://www.htyou.com/user/htuser_getGuestsInfoById.action?jsoncallback=?&userid=' + mainVM.userid);
+		$.getJSON('http://www.htyou.com/user/htuser_getGuestsInfoById.action?jsoncallback=?&userid=' + mainVM.userid, function (result) {
+			mainVM.info = result.guestVO;
+			console.log('userinfo:', result.guestVO);
+
+			//用户等级ID2中文
+			$.getJSON('http://www.htyou.com/common/common_getSysKeyValue.action?jsoncallback=?&skvcolumn=BizDes&skvvalue=' + mainVM.info.vip_class, function (result) {
+				mainVM.info.vip_class = result.desc;
+				console.log('vipclass:', result.desc);
+			});
+			//用户性别ID2中文
+			$.getJSON('http://www.htyou.com/common/common_getSysKeyValue.action?jsoncallback=?&skvcolumn=BizDes&skvvalue=' + mainVM.info.guestSex, function (result) {
+				mainVM.info.guestSex = result.desc;
+			});
+		});
+
+		//载入订单数据
+		console.log('Order:', 'http://www.htyou.com/user/htuser_getTourOrderDetail.action?jsoncallback=?&userid=' + mainVM.userid);
+		$.getJSON('http://www.htyou.com/user/htuser_getTourOrderDetail.action?jsoncallback=?&userid=' + mainVM.userid, function (result) {
+			/*$.getJSON('http://www.htyou.com/user/htuser_getTourOrderDetail.action?userid=' + '233111', function (result) {*/
+			mainVM.userorder = result;
+			//遍历获取订单中所有的类型
+			var _tempPayType = [];
+			//获取所有类型对应的名称，并push到数组paytypeList
+			$.each(result, function (index, el) {
+				if ($.inArray(el.is_paystr, _tempPayType) === -1) {
+					_tempPayType.push(el.is_paystr);
+				}
+			});
+			//根据支付状态类型code获取对应的文字，然后push到paytypeList去
+			for (var i = 0; i < _tempPayType.length; i++) {
+				mainVM.paytypeList.push({code: _tempPayType[i], name: keycode2name[_tempPayType[i]] || '未知'});
+			}
+		});
+
+	</script>
 </head>
-<body>
-<div id="top-section"></div>
+<body ms-controller="main">
+
+<!--主要内容区-->
+<style>
+	#main-section {
+		background-color: #FFF;
+		box-sizing: border-box;
+		padding: 0 0 5rem 0;
+		width: 100%;
+	}
+
+	.nobb {
+		border-bottom: 0px !important;
+	}
+
+	.hot {
+		color: #F00;
+	}
+
+	.highlight {
+		color: #108BDD;
+	}
+
+	.am-accordion-gapped {
+		margin: 0 !important;
+	}
+
+	.am-accordion-gapped .am-accordion-item {
+		margin: 0 !important;
+		border: 0 !important;
+	}
+
+	.am-accordion-title {
+		border: 0 !important;
+	}
+
+	.am-panel-hd {
+		border: 0 !important;
+	}
+
+	.am-panel {
+		margin-bottom: 0 !important;
+	}
+
+	.am-panel-default > .am-panel-hd {
+		color: #444;
+		background-color: #FFF;
+		border-color: #DDD;
+	}
+
+	.am-accordion-gapped .am-active .am-accordion-title,
+	.am-list > li {
+		background-color: #F8F8F8;
+	}
+	h3 {
+		font-weight:bold !important;
+	}
+</style>
+<div id="main-section">
+	<!--头像-->
+	<style scoped>
+		#face > #info-panel {
+			margin: 0 auto;
+			width: 10em;
+			text-align: center;
+			padding-top: 32px;
+		}
+
+		#face img {
+			width: 6em;
+			height: 6em;
+			border: 4px solid #FFF;
+			border-radius: 50%;
+			margin: 0 auto;
+		}
+
+		div#username {
+			color: #FFF;
+			font-size: 36px;
+		}
+
+		div#sex {
+			font-size: 18px;
+			color: #FFF;
+			background-color: #FDAE05;
+			border-radius: 20px;
+			width: 3em;
+			margin: 0 auto;
+		}
+	</style>
+	<div id="face" style="background:url(images/userinfo_bg.png) no-repeat center top; background-size:cover; height:240px;">
+		<div id="info-panel">
+			<img ms-attr-src="{{info.profession}}" alt="">
+			<div id="username">{{info.guestName}}</div>
+			<div id="sex">{{info.ui_guestSex}}</div>
+		</div>
+	</div>
+	<!--/头像-->
+
+	<div class="am-panel am-panel-default nobb">
+		<div class="am-panel-hd">
+			<h3 class="am-panel-title">个人信息</h3>
+		</div>
+		<ul class="am-list am-list-static">
+			<li>姓名：{{info.guestName}}</li>
+			<li style="position:relative;">手机：{{info.mobilePhone}}
+				<!--<a ms-attr-href="bindphone.html?userid={{window.localStorage.getItem('XLY_USERID')||''}}&state=userinfo.html" style="position: absolute; right: 10px; top: 10px; padding: 4px !important;">绑定手机&gt;&gt;</a>-->
+			</li>
+			<li>等级：{{info.vip_class}}</li>
+			<li>积分：{{userinfo.tot_score}}</li>
+		</ul>
+	</div>
+
+	<div class="am-panel am-panel-default nobb">
+		<div class="am-panel-hd">
+			<h3 class="am-panel-title">客户服务</h3>
+		</div>
+		<ul class="am-list am-list-static">
+			<li>客户经理：{{info.cuser||'华天国旅'}}</li>
+			<li>联系电话：<a ms-attr-href="tel:{{info.cphone||'073155555555'}}" style="padding:0;display:inline;">{{info.cphone||'0731-5555 5555'}}</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="am-panel am-panel-default nobb">
+		<div class="am-panel-hd">
+			<h3 class="am-panel-title">全部订单</h3>
+		</div>
+		<ul class="am-list">
+			<li>
+				<section data-am-widget="accordion" class="am-accordion am-accordion-gapped" data-am-accordion='{  }'>
+					<dl class="am-accordion-item am-active">
+						<dt class="am-accordion-title">
+							您有<span class="hot">{{userorder.length}}</span>条订单
+						</dt>
+						<dd class="am-accordion-bd am-collapse">
+							<!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
+							<div class="am-accordion-content">
+								<table class="am-table">
+									<thead>
+									<tr>
+										<th>线路名称</th>
+										<th>出行时间</th>
+										<!--<th>人数</th>-->
+										<!--<th>联系人</th>-->
+										<th>状态</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr ms-repeat-unit="userorder">
+										<td>{{unit.tourproname}}</td>
+										<td style="white-space: nowrap">{{unit.start_date||date('yyyy MM dd')}}</td>
+										<!--<td>{{unit.adult_num+unit.child_num}}</td>-->
+										<!--<td>{{unit.contact_name}}</td>-->
+										<td style="white-space: nowrap">{{keycode2name[unit.is_paystr]}}</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</dd>
+					</dl>
+				</section>
+			</li>
+		</ul>
+	</div>
+
+	<div class="am-panel am-panel-default nobb">
+		<div class="am-panel-hd">
+			<h3 class="am-panel-title">优惠券</h3>
+		</div>
+		<ul class="am-list">
+			<li>
+				<section data-am-widget="accordion" class="am-accordion am-accordion-gapped" data-am-accordion='{  }'>
+					<dl class="am-accordion-item am-active">
+						<dt class="am-accordion-title">
+							您有<span class="hot">{{coupon.length}}</span>张优惠券未使用
+						</dt>
+						<dd class="am-accordion-bd am-collapse">
+							<!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
+							<div class="am-accordion-content">
+								<table class="am-table">
+									<thead>
+									<tr>
+										<th>优惠码</th>
+										<th>优惠金额</th>
+										<th>有效期</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr ms-repeat-unit="coupon">
+										<td class="highlight">{{unit.info_name}}</td>
+										<td class="hot">{{unit.origin}}元</td>
+										<td>{{unit.info_endtime}}</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</dd>
+					</dl>
+				</section>
+			</li>
+		</ul>
+	</div>
+
+	<div class="am-panel am-panel-default nobb" style="display:none;">
+		<div class="am-panel-hd">
+			<h3 class="am-panel-title">用户功能</h3>
+		</div>
+		<ul class="am-list am-list-static am-list-border">
+			<li data-am-modal="{target: '#shoucangxianlu', closeViaDimmer: 0, width: 400, height: 225}">收藏线路
+				<span class="am-badge am-badge-danger am-round am-align-right" style="font-size:1.6rem">99</span>
+			</li>
+			<li data-am-modal="{target: '#liulanjilu', closeViaDimmer: 0, width: 400, height: 225}">浏览记录
+				<span class="am-badge am-badge-danger am-round am-align-right" style="font-size:1.6rem">99</span>
+			</li>
+			<li>意见反馈</li>
+		</ul>
+	</div>
+</div>
+<!--/主要内容区-->
+
+<!--TODO 收藏线路弹出窗口-->
+<div class="am-popup" id="shoucangxianlu">
+	<div class="am-popup-inner">
+		<div class="am-popup-hd">
+			<h4 class="am-popup-title">收藏线路弹出窗口</h4>
+			<span data-am-modal-close
+				  class="am-close">&times;</span>
+		</div>
+		<div class="am-popup-bd">
+			...
+		</div>
+	</div>
+</div>
+<!--/收藏线路弹出窗口-->
+
+<!--TODO 浏览记录弹出窗口-->
+<div class="am-popup" id="liulanjilu">
+	<div class="am-popup-inner">
+		<div class="am-popup-hd">
+			<h4 class="am-popup-title">浏览记录弹出窗口</h4>
+			<span data-am-modal-close
+				  class="am-close">&times;</span>
+		</div>
+		<div class="am-popup-bd">
+			...
+		</div>
+	</div>
+</div>
+<!--/浏览记录弹出窗口-->
+
+<!--返回首页按钮-->
+<style scoped>
+	#ret-btn {
+		opacity: 0.5;
+		position: absolute;
+		left: 0;
+		top: 0;
+		/*width: 88px;
+		height: 88px;
+		font-size: 44px;
+		line-height: 88px;*/
+		background-color: rgba(238, 238, 238, 0);
+		color: rgb(255, 255, 255);
+	}
+</style>
+<a href="/" class="am-icon-btn am-icon-chevron-left" id="ret-btn"></a>
 </body>
 </html>
-<!--<script src="./reactlib/commonlib.react.js"></script>-->
-<script src="./reactlib/usercenter.react.js"></script>

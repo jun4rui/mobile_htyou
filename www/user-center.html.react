@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>用户中心</title>
+	<!--引入require库: 针对config.sys的载入模块（weixin，vue（这个暂时没用））-->
+	<script src="bower_components/requirejs/require.js"></script>
+	<!--引入jquery库-->
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<!--引入react库-->
+	<!--<script src="bower_components/react/react.min.js"></script>-->
+	<!--<script src="bower_components/react/react-dom.min.js"></script>-->
+	<!--引入Amazeui-react相关库-->
+	<link rel="stylesheet" href="bower_components/amazeui/dist/css/amazeui.min.css">
+	<!--<script src="bower_components/amazeui-react/dist/amazeui.react.min.js"></script>-->
+	<!--htyou-mobile功能和函数库-->
+	<script src="config.js"></script>
+
+	<!--样式表-->
+	<style>
+		body {
+			background-color: #eeeeee;
+		}
+		#userinfo-panel {
+			position:relative;
+			background-color: #FFF;
+		}
+		#userinfo-panel>img{
+			filter: blur(5px);
+			-webkit-filter: blur(5px);
+		}
+
+		.am-thumbnails>li {
+			padding: 0.2rem;
+		}
+
+		img.face {
+			position: absolute;
+			left: 35%;
+			top: 8%;
+			width: 6em;
+			height: 6em;
+		}
+		span.username {
+			position: absolute;
+			color: #FFF;
+			left: 40%;
+			top: 120px;
+		}
+	</style>
+</head>
+<body>
+<div id="top-section"></div>
+</body>
+</html>
+<!--<script src="./reactlib/commonlib.react.js"></script>-->
+<script src="./reactlib/usercenter.react.js"></script>
