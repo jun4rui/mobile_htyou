@@ -46,6 +46,7 @@
 			userorder:          [],//账单支付类型过滤key
 			orderPayTypeFilter: '',//支付类型列表
 			paytypeList:        [],//用户中心菜单数据
+			lotteryList:        [],//用户优惠券数据
 			list:               [
 				{
 					name: '个人中心',
@@ -131,6 +132,11 @@
 			}
 		});
 
+		//载入优惠券信息
+		$.getJSON(server_addr + '/miaosha/miaosha_queryMiaoShaOrderByGuestId.action?userid=' + mainVM.userid, function (result) {
+			mainVM.lotteryList = result;
+		});
+
 	</script>
 </head>
 <body ms-controller="main">
@@ -187,8 +193,9 @@
 	.am-list > li {
 		background-color: #F8F8F8;
 	}
+
 	h3 {
-		font-weight:bold !important;
+		font-weight: bold !important;
 	}
 </style>
 <div id="main-section">
@@ -308,7 +315,7 @@
 				<section data-am-widget="accordion" class="am-accordion am-accordion-gapped" data-am-accordion='{  }'>
 					<dl class="am-accordion-item am-active">
 						<dt class="am-accordion-title">
-							您有<span class="hot">{{coupon.length}}</span>张优惠券未使用
+							您有<span class="hot">{{lotteryList.length}}</span>张优惠券
 						</dt>
 						<dd class="am-accordion-bd am-collapse">
 							<!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
@@ -316,16 +323,16 @@
 								<table class="am-table">
 									<thead>
 									<tr>
-										<th>优惠码</th>
-										<th>优惠金额</th>
-										<th>有效期</th>
+										<th>名称</th>
+										<th>获得时间</th>
+										<th>状态</th>
 									</tr>
 									</thead>
 									<tbody>
-									<tr ms-repeat-unit="coupon">
-										<td class="highlight">{{unit.info_name}}</td>
-										<td class="hot">{{unit.origin}}元</td>
-										<td>{{unit.info_endtime}}</td>
+									<tr ms-repeat-unit="lotteryList">
+										<td class="highlight">{{unit.miaoshaname}}</td>
+										<td>{{unit.miaoshatime}}</td>
+										<td class="hot">{{unit.paystatedes||'未获取'}}</td>
 									</tr>
 									</tbody>
 								</table>
