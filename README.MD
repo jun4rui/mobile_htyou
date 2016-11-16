@@ -1,3 +1,4 @@
+TODO:636773
 TODO:1. 首页销售大图还是按照第一个weixin版本的做 2. 销售模式分享的文字不对
 ### 20160415 原来计划加入的注册、登陆互相跳转，因为考虑到跳转后没有带openid之类信息，所以暂时不加入
 
@@ -144,3 +145,25 @@ keytool -genkey -v -keystore htyou-release-key.keystore -alias htyou -keyalg RSA
 #### 多个产品ID列表查询
 http://www.htyou.com/mobile/ipad_queryTourLine.action?KeyWords=13518%2012841
 keywords后面加上ID，用空格(%20)分开
+
+
+#### 用户注册登录后 抢券 获取 优惠券 （秒杀订单）
+接口地址：
+/miaosha/miaosha_addChouJiangOrder.action 
+
+参数：
+- userid
+
+返回：
+- status 1 成功  102 已抽奖 
+- miaoshaname 奖品名称
+
+#### 个人中心查看奖券
+接口地址：
+- /miaosha/miaosha_queryMiaoShaOrderByGuestId.action
+
+参数：
+- userid
+
+返回：
+- list<PanicbuyingOrderVO> 活动订单列表

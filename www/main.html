@@ -20,7 +20,7 @@
 	<script src="./config.js?20160612"></script>
 	<style>
 		body {
-			background-color: #f3f3f3;
+			background-color: #F3F3F3;
 		}
 
 		.hide {
@@ -56,7 +56,7 @@
 		 * Author: Caojun
 		 * 将曹熙传过来的userid记录到localStorage中去
 		 */
-		window.localStorage.setItem('USERID',getParameterValue(window.location.href, 'userid'));
+		window.localStorage.setItem('USERID', getParameterValue(window.location.href, 'userid'));
 
 
 		$('#galleryAD').ready(function () {
@@ -69,9 +69,9 @@
 		avalon.ready(function () {
 			//全局VM
 			//顶部广告轮播VM
-			var galleryVM = avalon.define({
-				$id: 'gallery',
-				list: [],
+			var galleryVM       = avalon.define({
+				$id:             'gallery',
+				list:            [],
 				galleryRendered: function (type) {
 					//$('#galleryAD').show();
 					//激活滑动gallery
@@ -82,13 +82,13 @@
 			});
 			//推荐产品VM
 			var recommendTourVM = avalon.define({
-				$id: 'recommendTour',
+				$id:  'recommendTour',
 				list: []
 			});
 			//热门目的地VM
-			var hotTourVM = avalon.define({
-				$id: 'hotTour',
-				list: [],
+			var hotTourVM       = avalon.define({
+				$id:                'hotTour',
+				list:               [],
 				//渲染后调整图片尺寸来适应屏幕尺寸
 				hotSectionRendered: function () {
 					$('#hot-section .am-gallery-item img').css({'height': parseInt($(window).innerWidth() / 2 / 450 * 260)});
@@ -127,17 +127,17 @@
 					//直达产品的处理
 					if (result[i].url.indexOf('/mobileTour/tourbrowse/') == 0) {
 						result[i].url = 'tour-detail.html?lineid=' + result[i].url.substring(result[i].url.lastIndexOf('/') + 1, result[i].url.lastIndexOf('.'));
-						status = true;
+						status        = true;
 					}
 					//搜索关键字的处理
 					if (result[i].url.indexOf('/mobileTour/isnative/area/keyword') == 0) {
 						result[i].url = 'tour-list.html?q=' + result[i].url.substring(result[i].url.lastIndexOf('/keyword') + 8, result[i].url.lastIndexOf('.'));
-						status = true;
+						status        = true;
 					}
 					//搜索关键字的处理 第二种形式
 					if (result[i].url.indexOf('/tour/type/month/keyword') == 0) {
 						result[i].url = 'tour-list.html?q=' + result[i].url.substring(result[i].url.lastIndexOf('/keyword') + 8, result[i].url.lastIndexOf('.'));
-						status = true;
+						status        = true;
 					}
 					//其它的处理
 					if (!status) {
@@ -171,8 +171,11 @@
 			<ul class="am-dropdown-content">
 				<!--<li class="am-dropdown-header">用户功能</li>-->
 				<!--<li class="am-divider"></li>-->
-				<li><a href="http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=weixin-register.html">注册会员</a></li>
-				<li><a href="http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=weixin-bind.html">会员登录</a></li>
+				<li>
+					<a href="http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=weixin-register.html">注册会员</a>
+				</li>
+				<li><a href="http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=weixin-bind.html">会员登录</a>
+				</li>
 				<li><a href="./user-info.html">会员资料</a></li>
 				<li><a href="./user-findpw.html">找回密码</a></li>
 			</ul>
@@ -207,10 +210,10 @@
 	<!--/右侧用户中心：仅限weixin用户-->
 	<script>
 		//判断如果是weixin中，则右侧显示会员中心，一般页面则显示在线客服
-		if (whereami() == 'weixin' || getParameterValue(window.location.href, 'userid')!=0) {
+		if (whereami() == 'weixin' || getParameterValue(window.location.href, 'userid') != 0) {
 			//$('#weixin-user').show();
 			$('#user-center').show();
-		}else{
+		} else {
 			//不在微信中则显示在线客服
 			$('#online-server').show();
 		}
@@ -380,6 +383,102 @@
 	</div>
 </form>
 <!--/搜索栏-->
+
+<!--2016元旦抽奖-->
+<style>
+	#nwlottery {
+		position: relative;
+		margin: 10px 2px;
+		display: none;
+	}
+
+	#nwlottery > img {
+		display: block;
+		width: 100%;
+	}
+
+	#nwlottery > #lotteryBtn {
+		position: absolute;
+		/* background: #F00; */
+		width: 25%;
+		height: 67%;
+		right: 3%;
+		top: 21%;
+	}
+
+	#nwlottery > img.lotteryimg {
+		position: absolute;
+		width: 20% !important;
+		height: 71%;
+		left: 2.1%;
+		top: 16%;
+
+		display: none;
+	}
+
+	img.lotteryimg.active {
+		display: block !important;
+	}
+</style>
+<div id="nwlottery">
+	<img alt="" class="lotteryimg active" src="./images/nwlottery0.png">
+	<img alt="" class="lotteryimg" src="./images/nwlottery5.png">
+	<img alt="" class="lotteryimg" src="./images/nwlottery10.png">
+	<img alt="" class="lotteryimg" src="./images/nwlottery20.png">
+	<img alt="" class="lotteryimg" src="./images/nwlottery50.png">
+	<img src="./images/newyearlottery.png" alt="">
+	<div id="lotteryBtn" todo="0"></div>
+</div>
+<script>
+	//在微信中才显示抽奖活动
+	//TODO:现在是测试任何地方都显示
+	if (whereami() == 'weixin' || true) {
+		$('#nwlottery').show();
+	}
+
+	//点击抽奖按钮触发事件
+	$('#lotteryBtn').click(function () {
+
+		//TODO:现在都是测试数据
+		$.getJSON(server_addr + '/miaosha/miaosha_addChouJiangOrder.action?jsoncallback=?&userid=' + '636773', function (result) {
+			if (result.status == '1' || true) {
+				//返回成功的处理
+				var _maxCicle    = 50;	//默认先滚动多少次
+				var _circleCount = 0;	//滚动计数器
+				var _active      = 0;	//抽到第几个
+				if (result.miaoshaname == '谢谢参与') _active = 1;
+				if (result.miaoshaname == '双12红包-5元')  _active = 2;
+				if (result.miaoshaname == '双12红包-10元') _active = 3;
+				if (result.miaoshaname == '双12红包-20元') _active = 4;
+				if (result.miaoshaname == '双12红包-50元') _active = 5;
+
+				console.log('actice:', _active);
+
+				var _siPoint = setInterval(function () {
+					$('.lotteryimg.active').removeClass('active');
+					$('.lotteryimg').eq(_circleCount % 5).addClass('active');
+					_circleCount++;
+					console.log(_circleCount);
+					if (_circleCount >= _maxCicle + _active) {
+						clearInterval(_siPoint);
+					}
+				}, 100);
+			} else {
+				//返回失败的处理
+				var errMsg = '';
+				if (result.status == '102') {
+					errMsg = '您已参加过抽奖，请点击右上角进入用户中心查看。';
+				}
+				if (errMsg != '') {
+					alert(errMsg);
+				}
+				return false;
+			}
+		});
+	});
+</script>
+<!--/2016元旦抽奖-->
+
 <!--热门目的地-->
 <style>
 	.am-titlebar {
@@ -604,14 +703,14 @@
 </div>
 <script>
 	//如果弹出了百度的LXB_CONTAINER，就把bady的底部垫高(原来body的padding-bottom高度+LXB_CONTAINER高度)
-	$(document).ready(function(){
+	$(document).ready(function () {
 		//因为百度这玩意出现没啥规律ready之类事件都没用，所以只好循环检查，等发现出来后再干掉循环了
-		var getBottom = setInterval(function(){
-			if ($('#LXB_CONTAINER').height()>0){
-				$('body').css({'padding-bottom': parseInt($('body').css('padding-bottom').replace(/px/g ,''))+$('#LXB_CONTAINER').height() });
+		var getBottom = setInterval(function () {
+			if ($('#LXB_CONTAINER').height() > 0) {
+				$('body').css({'padding-bottom': parseInt($('body').css('padding-bottom').replace(/px/g, '')) + $('#LXB_CONTAINER').height()});
 				clearInterval(getBottom);
 			}
-		},3000);
+		}, 3000);
 	});
 </script>
 <!--/公用底部（只在非APP中显示）-->

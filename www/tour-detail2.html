@@ -40,6 +40,9 @@
 				nation:          [],
 				tourdate:        [],
 				tourtype:        '其它',
+				adultsNum:       1,
+				childNum:        3,
+
 				galleryRendered: function (type) {
 					$('#galleryAD').show();
 					//激活滑动gallery
@@ -367,9 +370,10 @@
 
 <style>
 	.widget-unit {
-		margin: 1em 2px 0 2px;
-		border: 1px solid #3BB4F2;
+		margin: 1em 0 0 0;
+		/*border: 1px solid #3BB4F2;*/
 		background-color: #FFF;
+		box-shadow: 0px 1px 3px #CCC;
 	}
 
 	.widget-unit .am-titlebar-multi {
@@ -720,7 +724,17 @@
 <div class="am-popup" id="order-modal">
 	<div class="am-popup-inner">
 		<div class="am-popup-hd">
-			<h4 class="am-popup-title">填写订单</h4><span data-am-modal-close class="am-close">&times;</span>
+			<!--<h4 class="am-popup-title">填写订单</h4><span data-am-modal-close class="am-close">&times;</span>-->
+			<ul class="am-avg-sm-2">
+				<li>
+					<span class="am-block">成人价：123412元</span>
+					<span class="am-block">儿童价：111111元</span>
+				</li>
+				<li>
+					<h4 class="am-popup-title">订单金额：9999999元</h4>
+					<span data-am-modal-close class="am-close">&times;</span>
+				</li>
+			</ul>
 		</div>
 		<div class="am-popup-bd">
 			<!--日历选择器-->
@@ -794,6 +808,17 @@
 					<td>&nbsp;</td>
 				</tr>
 			</table>
+			<style>
+				div#show-current-date {
+					background-color: #FFF;
+					line-height: 200%;
+					box-shadow: 0px 1px 3px #CCC;
+					color: #009CE7;
+					font-weight: 600;
+					text-align: center;
+				}
+			</style>
+			<div id="show-current-date">请选择出行日期</div>
 			<script>
 				var tourList = {
 					//"2015-12-31":[1150,"大于9",0,"8154_2015-12-31.htm"]
@@ -891,6 +916,9 @@
 				$("#calendar_table").delegate("td.flag_day", "click", function () {
 					//console.log("Bind flag_day");
 					var inDate = currentYear + "-" + ('00' + (currentMonth + 1)).substr(-2, 2) + "-" + ('00' + $(this).find('.day').text()).substr(-2, 2);
+
+					var weekday = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+					$('#show-current-date').text(currentYear + '年' + ('00' + (currentMonth + 1)).substr(-2, 2) + '月' + ('00' + $(this).find('.day').text()).substr(-2, 2) + '日 ' + weekday[(new Date(inDate)).getDay()]);
 					if ($(this).attr('pop_num') == '已满') {	// 人满
 						alert('人数已满，请选择其它日期。');
 					} else {	// 人未满
@@ -927,96 +955,406 @@
 			</script>
 
 			<!--/日历选择器-->
-			<!--订购区-->
-			<div class="widget-unit ms-controller">
-				<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi">
-					<h2 class="am-titlebar-title">
-						提交订单
-					</h2>
-				</div>
-				<div class="content">
-					<form action="" class="am-form">
-						<fieldset>
-							<div class="am-form group">
-								<label for="tour-price"><span class="ht-text-red">*</span>当前单价：</label>
-								<input type="text" id="tour-price" value="" disabled/>
-							</div>
-							<div class="am-form group">
-								<!--<label for="tour-date">选择出行时间：</label>-->
-								<!--<select name="" id="tour-date" onchange="$('#tour-price').val($(this).children('option:selected').attr('rt-price'))">-->
-								<!--<option value="" >请选择出行日期</option>-->
-								<!--<option ms-attr-value="{{unit.tourdate}}" ms-attr-rt-price="{{unit.adultprice}}" ms-repeat-unit="tourdate">{{unit.tourdate}}</option>-->
-								<!--</select>-->
-								<label for="tour-date"><span class="ht-text-red">*</span>出行时间：</label>
-								<input type="text" id="tour-date" value="" disabled/>
-							</div>
-							<div class="am-form-group">
-								<label for="username"><span class="ht-text-red">*</span>联系人姓名：</label>
-								<input type="text" id="username" placeholder="请输入联系人称呼"/>
-							</div>
-							<div class="am-form-group">
-								<label for="idcard"><span class="ht-text-red">*</span>联系人身份证：</label>
-								<input type="text" id="idcard" placeholder="请填写身份证号码"/>
-							</div>
-							<div class="am-form group">
-								<label for="user-sex">性别：</label>
-								<select name="" id="user-sex">
-									<option value="120201">男</option>
-									<option value="120202">女</option>
-								</select>
-							</div>
-							<div class="am-form-group">
-								<label for="phone-number"><span class="ht-text-red">*</span>联系人手机号码：</label>
-								<input type="text" id="phone-number" placeholder="请输入联系人的联系电话"/>
-							</div>
-							<div class="am-form-group">
-								<label for="persons"><span class="ht-text-red">*</span>出行人数：</label>
-								<select name="" id="persons">
-									<option value="1">1人</option>
-									<option value="2">2人</option>
-									<option value="3">3人</option>
-									<option value="4">4人</option>
-									<option value="5">5人</option>
-									<option value="6">6人</option>
-									<option value="7">7人</option>
-									<option value="8">8人</option>
-									<option value="9">9人</option>
-									<option value="10">10人</option>
-								</select>
-							</div>
-							<div class="am-form-group">
-								<label for="pay_type"><span class="ht-text-red">*</span>支付方式：</label>
-								<select name="pay_tpe" id="pay_type">
-									<option value="121604">线下支付</option>
-									<option value="121603">微信</option>
-									<option value="121601">支付宝</option>
-								</select>
-							</div>
-							<!--20160520加入销售员信息-->
-							<div class="am-form-group">
-								<label for="seller-name">客户经理：</label>
-								<input type="text" id="seller-name" placeholder="您的客户经理姓名"/>
-							</div>
-							<div class="am-form-group">
-								<label for="seller-phone">联系方式：</label>
-								<input type="text" id="seller-phone" placeholder="客户经理手机号码"/>
-							</div>
-							<!--/20160520加入销售员信息-->
-							<div class="am-form-group" style="margin:0;">
-								<div class="am-u-sm-12 am-u-sm-center am-u-sm-centered" style="padding:0;">
-									<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()" style="display:none;">提交</button>
+			<!--form开始-->
+			<div class="am-form">
+				<!--<form action="" class="am-form">-->
+				<!--选择出行人数-->
+				<div class="widget-unit ms-controller">
+					<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi">
+						<h2 class="am-titlebar-title">
+							选择出行人数
+						</h2>
+					</div>
+					<div class="content">
+						<ul class="am-avg-sm-2">
+							<style>
+								.click-input {
+									line-height: 2em;
+									width: 160px;
+									display: block;
+									background-color: #FFF;
+									margin: 0 auto;
+								}
+
+								.click-input button {
+									display: inline-block;
+									border: 1px solid #DCDCDC;
+									width: 2em;
+									height: 2em;
+									float: left;
+									background-color: #FFF;
+									color: #019AE6;
+									font-weight: bold;
+								}
+
+								.click-input span {
+									display: inline-block;
+									height: 2em;
+									width: 2em;
+									text-align: center;
+									border: 1px solid #019AE6;
+									float: left;
+									background-color: #019AE6;
+									color: #FFF;
+								}
+
+								.click-input-desc {
+									color: #FD9001;
+									text-align: center;
+								}
+							</style>
+							<li>
+								<div class="click-input" min="1">
+									<button>-</button>
+									<span ms-duplex="adultsNum">{{el}}</span>
+									<button>+</button>
+									&nbsp;成人数
 								</div>
+								<div class="click-input-desc">
+									成人：&yen;34800/人
+								</div>
+							</li>
+							<li>
+								<div class="click-input" min="0">
+									<button>-</button>
+									<span ms-duplex="chileNum">{{el}}</span>
+									<button>+</button>
+									&nbsp;儿童数
+								</div>
+								<div class="click-input-desc">
+									儿童：&yen;34800/人
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<script>
+					/**
+					 * 选择出行人点击按钮选择
+					 * 描述：点击+/-按钮触发的处理
+					 */
+					$('.click-input').delegate('button', 'click', function () {
+						var _max   = 10;								//设置最大值
+						var _min   = $(this).parent().attr('min');	//设置最小值（记录在DOM的min属性上）
+						var _btn   = '1';								//设置默认按钮为+1
+						var _value = $(this).parent().find('span').text();	//设置当前值（从span取得）
+						if ($(this).text() == '-') _btn = -1;		//如果按下的是-按钮，则按钮改成-1
+
+						_value = parseInt(_value) + parseInt(_btn);	//值变成当前值+/-1
+						if (_value < _min) _value = _min;				//如果小于最小值则等于最小值
+						if (_value > _max) _value = _max;				//如果大于最大值则等于最大值
+
+						$(this).parent().find('span').text(_value);	//赋值给span显示出来
+						console.log(_max, _min, _btn, _value);			//DEBUG
+					});
+				</script>
+				<!--/选择出行人数-->
+
+				<!--联系人信息-->
+				<div class="widget-unit ms-controller">
+					<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi">
+						<h2 class="am-titlebar-title">
+							联系人信息
+						</h2>
+					</div>
+					<div class="content">
+						<fieldset>
+							<style scoped>
+								.am-input-group {
+									margin-bottom: 10px;
+									width: 100%;
+								}
+
+								.am-input-group-label:first-child {
+									border-right: 0;
+									color: #555;
+									font-weight: bold;
+
+									border: 0px;
+									background: transparent;
+									padding: 0 10px 0 0;
+									width: 6em;
+									text-align: left;
+								}
+
+								.am-input-group-label {
+
+								}
+							</style>
+							<div class="am-input-group">
+								<span class="am-input-group-label">联系人</span>
+								<input type="text" id="tour-price" class="am-form-field" placeholder="必填，姓名" disabled>
+							</div>
+							<div class="am-input-group">
+								<span class="am-input-group-label">手机号码</span>
+								<input type="text" id="tour-date" class="am-form-field" placeholder="必填，接收短信" disabled>
+							</div>
+							<div class="am-input-group">
+								<span class="am-input-group-label">身份证</span>
+								<input type="text" id="username" class="am-form-field" placeholder="必填，确定订单">
 							</div>
 							<input type="hidden" id="order_amount" ms-attr-value="{{detail.value.adultprice}}"/>
 							<input type="hidden" id="preferential_price" ms-attr-value="{{detail.value.adultprice}}"/>
 							<input type="hidden" id="tourproid" ms-attr-value="{{detail.value.tourproid}}"/>
 							<input type="hidden" id="jzl_cteamcode" ms-attr-value="{{detail.value.jzluid}}"/>
-
 						</fieldset>
-					</form>
+					</div>
 				</div>
+				<!--/联系人信息-->
+
+				<!--出行人信息-->
+				<div class="widget-unit ms-controller">
+					<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi">
+						<h2 class="am-titlebar-title">
+							出行人信息
+						</h2>
+					</div>
+					<div class="content">
+						<fieldset>
+							<!--出行人信息-->
+							<style scoped>
+								#traveler-info .am-panel-hd .am-input-group {
+									margin-bottom: 0;
+								}
+
+								#traveler-info .am-selected {
+									width: 100%;
+								}
+							</style>
+							<div class="am-panel-group" id="traveler-info">
+								<div class="am-panel am-panel-default">
+									<div class="am-panel-hd">
+										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-1'}">
+											<div class="am-input-group am-input-group-secondary">
+												<span class="am-input-group-label">成人1</span>
+												<input type="text" id="do-not-say1" class="am-form-field" placeholder="必填，姓名" disabled>
+												<span class="am-input-group-label">填写</span>
+											</div>
+										</h4>
+									</div>
+									<div id="do-not-say-1" class="am-panel-collapse am-collapse">
+										<div class="am-panel-bd">
+											<!--出行人信息表单-->
+											<ul class="am-avg-sm-3 am-thumbnails">
+												<li class="am-text-lg">
+													填写信息
+												</li>
+												<li>
+													<select data-am-selected>
+														<option value="d" selected>选择联系人</option>
+														<option value="a">Apple</option>
+														<option value="b">Banana</option>
+														<option value="o">Orange</option>
+														<option value="m">Mango</option>
+													</select>
+												</li>
+												<li class="am-text-right">
+													<button type="button" class="am-btn am-btn-success am-radius">保存</button>
+												</li>
+											</ul>
+											<div class="am-input-group">
+												<span class="am-input-group-label">中文姓名</span>
+												<input type="text" class="am-form-field" placeholder="与证件姓名一致">
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">证件类型</span>
+												<select class=" am-input-lg">
+													<option value="">身份证</option>
+													<option value="">护照</option>
+													<option value="">护照1</option>
+													<option value="">护照4</option>
+												</select>
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">证件号码</span>
+												<input type="text" class="am-form-field" placeholder="可稍后提供">
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">手机号码</span>
+												<input type="text" class="am-form-field" placeholder="出行人的手机号码">
+											</div>
+											<!--/出行人信息表单-->
+										</div>
+									</div>
+								</div>
+								<div class="am-panel am-panel-default">
+									<div class="am-panel-hd">
+										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+											<div class="am-input-group am-input-group-secondary">
+												<span class="am-input-group-label">成人2</span>
+												<input type="text" id="do-not-say2" class="am-form-field" placeholder="必填，姓名" disabled>
+												<span class="am-input-group-label">填写</span>
+											</div>
+										</h4>
+									</div>
+									<div id="do-not-say-2" class="am-panel-collapse am-collapse">
+										<div class="am-panel-bd">
+											<!--出行人信息表单-->
+											<ul class="am-avg-sm-3 am-thumbnails">
+												<li class="am-text-lg">
+													填写信息
+												</li>
+												<li>
+													<select data-am-selected>
+														<option value="d" selected>选择联系人</option>
+														<option value="a">Apple</option>
+														<option value="b">Banana</option>
+														<option value="o">Orange</option>
+														<option value="m">Mango</option>
+													</select>
+												</li>
+												<li class="am-text-right">
+													<button type="button" class="am-btn am-btn-success am-radius">保存</button>
+												</li>
+											</ul>
+											<div class="am-input-group">
+												<span class="am-input-group-label">中文姓名</span>
+												<input type="text" class="am-form-field" placeholder="与证件姓名一致">
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">证件类型</span>
+												<select class=" am-input-lg">
+													<option value="">身份证</option>
+													<option value="">护照</option>
+													<option value="">护照1</option>
+													<option value="">护照4</option>
+												</select>
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">证件号码</span>
+												<input type="text" class="am-form-field" placeholder="可稍后提供">
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">手机号码</span>
+												<input type="text" class="am-form-field" placeholder="出行人的手机号码">
+											</div>
+											<!--/出行人信息表单-->
+										</div>
+									</div>
+								</div>
+								<div class="am-panel am-panel-default">
+									<div class="am-panel-hd">
+										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-3'}">
+											<div class="am-input-group am-input-group-secondary">
+												<span class="am-input-group-label">成人3</span>
+												<input type="text" id="do-not-say3" class="am-form-field" placeholder="必填，姓名" disabled>
+												<span class="am-input-group-label">填写</span>
+											</div>
+										</h4>
+									</div>
+									<div id="do-not-say-3" class="am-panel-collapse am-collapse">
+										<div class="am-panel-bd">
+											<!--出行人信息表单-->
+											<ul class="am-avg-sm-3 am-thumbnails">
+												<li class="am-text-lg">
+													填写信息
+												</li>
+												<li>
+													<select data-am-selected>
+														<option value="d" selected>选择联系人</option>
+														<option value="a">Apple</option>
+														<option value="b">Banana</option>
+														<option value="o">Orange</option>
+														<option value="m">Mango</option>
+													</select>
+												</li>
+												<li class="am-text-right">
+													<button type="button" class="am-btn am-btn-success am-radius">保存</button>
+												</li>
+											</ul>
+											<div class="am-input-group">
+												<span class="am-input-group-label">中文姓名</span>
+												<input type="text" class="am-form-field" placeholder="与证件姓名一致">
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">证件类型</span>
+												<select class=" am-input-lg">
+													<option value="">身份证</option>
+													<option value="">护照</option>
+													<option value="">护照1</option>
+													<option value="">护照4</option>
+												</select>
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">证件号码</span>
+												<input type="text" class="am-form-field" placeholder="可稍后提供">
+											</div>
+											<div class="am-input-group">
+												<span class="am-input-group-label">手机号码</span>
+												<input type="text" class="am-form-field" placeholder="出行人的手机号码">
+											</div>
+											<!--/出行人信息表单-->
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/出行人信息-->
+						</fieldset>
+					</div>
+				</div>
+				<!--/出行人信息-->
+
+				<!--支付-->
+				<div class="widget-unit ms-controller">
+					<div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi">
+						<h2 class="am-titlebar-title">
+							支付选项
+						</h2>
+					</div>
+					<div class="content">
+						<div class="am-form-group am-input-group">
+							<span class="am-input-group-label">支付方式</span>
+							<label class="am-radio-inline">
+								<input type="radio" value="" name="docInlineRadio" checked="checked">线下支付
+							</label>
+							<label class="am-radio-inline">
+								<input type="radio" value="" name="docInlineRadio">支付宝
+							</label>
+							<label class="am-radio-inline">
+								<input type="radio" value="" name="docInlineRadio">微信
+							</label>
+						</div>
+
+						<div class="am-form-group am-input-group">
+							<span class="am-input-group-label">优惠券</span>
+							<div>
+								<button type="button" class="am-btn am-btn-primary am-radius am-btn-xs"><span>现金券</span>5元
+								</button>
+								<button type="button" class="am-btn am-btn-warning am-radius am-btn-xs">10元</button>
+								<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">15元</button>
+								<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">20元</button>
+								<button type="button" class="am-btn am-btn-default am-radius am-btn-xs">999元</button>
+								<button type="button" class="am-btn am-btn-secondary am-radius am-btn-xs">1000元</button>
+								<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">9999元</button>
+								<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">10000元</button>
+								<button type="button" class="am-btn am-btn-success am-active am-radius am-btn-xs">99999元</button>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+				<!--/支付-->
+
+				<!--客户经理-->
+				<div class="widget-unit ms-controller">
+					<div class="content">
+						<fieldset>
+							<div class="am-input-group">
+								<span class="am-input-group-label">客户经理</span>
+								<input type="text" id="waiter" class="am-form-field" placeholder="您的客户经理">
+							</div>
+							<div class="am-input-group">
+								<span class="am-input-group-label">联系人</span>
+								<input type="text" id="waiter-phone" class="am-form-field" placeholder="您的客户经理联系方式">
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<!--/客户经理-->
+				<!--</form>-->
 			</div>
-			<!--/订购区-->
+			<!--/form结束-->
 		</div>
 	</div>
 </div>
@@ -1052,12 +1390,12 @@
 
 			/*20160408开放非自组产品的购买*/
 			/*20161108如果是非自组产品，则无法在线支付只能跳咨询框*/
-			console.log('tourtype:',result.value.tourtype.substr(0, 1),result.value.tourtype.substr(0, 1) != 1);
+			console.log('tourtype:', result.value.tourtype.substr(0, 1), result.value.tourtype.substr(0, 1) != 1);
 			if (result.value.tourtype.substr(0, 1) != 1) {		//1是散客自组
 				//删除提交订单的激活状态
-				$('.am-navbar button').attr('data-am-modal','');
+				$('.am-navbar button').attr('data-am-modal', '');
 				//给提交订单的按钮添加弹出在线客服的代码
-				$('.am-navbar button').attr('onclick','window.location.href="http://p.qiao.baidu.com/cps/chat?siteId=1606197&userId=5231856"');
+				$('.am-navbar button').attr('onclick', 'window.location.href="http://p.qiao.baidu.com/cps/chat?siteId=1606197&userId=5231856"');
 			}
 
 			//根据接口返回状态判断线路拥有何种支付方式
