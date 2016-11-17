@@ -35,13 +35,17 @@
 		var lineid = getParameterValue(window.location.href, 'lineid');
 		avalon.ready(function () {
 			var tourVM = avalon.define({
-				$id:             'tour',
-				detail:          {},
-				nation:          [],
-				tourdate:        [],
-				tourtype:        '其它',
-				adultsNum:       1,
-				childNum:        3,
+				$id:        'tour',
+				detail:     {},
+				nation:     [],
+				tourdate:   [],
+				tourtype:   '其它',
+				adultPrice: 0,	//成人单价
+				childPrice: 0,	//儿童单价
+				adultNum:   1,	//成人人数
+				childNum:   0,	//儿童人数
+				adultList:  [1],	//成人数组
+				childList:  [],	//儿童数组
 
 				galleryRendered: function (type) {
 					$('#galleryAD').show();
@@ -58,6 +62,23 @@
 
 				}
 			});
+
+			//监控成人数，生成相应的数组
+			tourVM.$watch('adultNum', function (a) {
+				tourVM.adultList = new Array(parseInt(a));
+				for (var i = 0; i < parseInt(a); i++) {
+					tourVM.adultList[i] = i+1;
+				}
+			});
+			//监控儿童数，生成相应的数组
+			tourVM.$watch('childNum', function (a, b) {
+				tourVM.childList = new Array(parseInt(a));
+				for (var i = 0; i < parseInt(a); i++) {
+					tourVM.childList[i] = i+1;
+				}
+			});
+
+
 			avalon.scan();
 			//$.getJSON('http://www.htyou.com/mobile/ipad_queryTourTeam.action?lineid=8155&jsoncallback=?',function(result){
 			//console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
@@ -70,7 +91,10 @@
 				tourVM.nation = result.value.nation.split(',');
 			});
 			$.getJSON(server_addr + '/mobile/ipad_queryTourTeam.action?jsoncallback=?&lineid=' + lineid, function (result) {
-				tourVM.tourdate = result.value;
+				tourVM.tourdate   = result.value;
+				tourVM.adultPrice = result.value[0].adultprice;
+				//TODO: 先做测试数据tourVM.childPrice = result.value[0].childprice;
+				tourVM.childPrice = 111;
 			});
 			//页面载入后执行的代码
 
@@ -727,11 +751,11 @@
 			<!--<h4 class="am-popup-title">填写订单</h4><span data-am-modal-close class="am-close">&times;</span>-->
 			<ul class="am-avg-sm-2">
 				<li>
-					<span class="am-block">成人价：123412元</span>
-					<span class="am-block">儿童价：111111元</span>
+					<span class="am-block" ms-if="adultPrice>0">成人价：{{adultPrice}}x{{adultNum}}元</span>
+					<span class="am-block" ms-if="childPrice>0">儿童价：{{childPrice}}x{{childNum}}元</span>
 				</li>
 				<li>
-					<h4 class="am-popup-title">订单金额：9999999元</h4>
+					<h4 class="am-popup-title">订单金额：{{adultPrice*adultNum+childPrice*childNum}}元</h4>
 					<span data-am-modal-close class="am-close">&times;</span>
 				</li>
 			</ul>
@@ -987,7 +1011,7 @@
 									font-weight: bold;
 								}
 
-								.click-input span {
+								.click-input input[type=text] {
 									display: inline-block;
 									height: 2em;
 									width: 2em;
@@ -996,6 +1020,8 @@
 									float: left;
 									background-color: #019AE6;
 									color: #FFF;
+
+									padding: 0;
 								}
 
 								.click-input-desc {
@@ -1006,23 +1032,25 @@
 							<li>
 								<div class="click-input" min="1">
 									<button>-</button>
-									<span ms-duplex="adultsNum">{{el}}</span>
+									<!--<span>{{adultNum}}</span>-->
+									<input type="text" ms-duplex="adultNum">
 									<button>+</button>
 									&nbsp;成人数
 								</div>
 								<div class="click-input-desc">
-									成人：&yen;34800/人
+									成人：&yen;{{adultPrice}}/人
 								</div>
 							</li>
-							<li>
+							<li ms-if="childPrice>0">
 								<div class="click-input" min="0">
 									<button>-</button>
-									<span ms-duplex="chileNum">{{el}}</span>
+									<!--<span>{{chileNum}}</span>-->
+									<input type="text" ms-duplex="childNum">
 									<button>+</button>
 									&nbsp;儿童数
 								</div>
 								<div class="click-input-desc">
-									儿童：&yen;34800/人
+									儿童：&yen;{{childPrice}}/人
 								</div>
 							</li>
 						</ul>
@@ -1037,14 +1065,14 @@
 						var _max   = 10;								//设置最大值
 						var _min   = $(this).parent().attr('min');	//设置最小值（记录在DOM的min属性上）
 						var _btn   = '1';								//设置默认按钮为+1
-						var _value = $(this).parent().find('span').text();	//设置当前值（从span取得）
+						var _value = $(this).parent().find('input').val();	//设置当前值（从input取得）
 						if ($(this).text() == '-') _btn = -1;		//如果按下的是-按钮，则按钮改成-1
 
 						_value = parseInt(_value) + parseInt(_btn);	//值变成当前值+/-1
 						if (_value < _min) _value = _min;				//如果小于最小值则等于最小值
 						if (_value > _max) _value = _max;				//如果大于最大值则等于最大值
 
-						$(this).parent().find('span').text(_value);	//赋值给span显示出来
+						$(this).parent().find('input').val(_value);	//赋值给input显示出来
 						console.log(_max, _min, _btn, _value);			//DEBUG
 					});
 				</script>
@@ -1121,18 +1149,20 @@
 									width: 100%;
 								}
 							</style>
+
 							<div class="am-panel-group" id="traveler-info">
-								<div class="am-panel am-panel-default">
+								<!--出行人成人单元-->
+								<div class="am-panel am-panel-default" ms-repeat-unit="adultList">
 									<div class="am-panel-hd">
-										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-1'}">
+										<h4 class="am-panel-title" ms-attr-data-am-collapse="{parent: '#accordion', target: '#traveler-adult-{{unit}}'}">
 											<div class="am-input-group am-input-group-secondary">
-												<span class="am-input-group-label">成人1</span>
-												<input type="text" id="do-not-say1" class="am-form-field" placeholder="必填，姓名" disabled>
+												<span class="am-input-group-label">成人{{unit}}</span>
+												<input type="text" class="am-form-field" placeholder="必填，姓名" disabled>
 												<span class="am-input-group-label">填写</span>
 											</div>
 										</h4>
 									</div>
-									<div id="do-not-say-1" class="am-panel-collapse am-collapse">
+									<div ms-attr-id="traveler-adult-{{unit}}" class="am-panel-collapse am-collapse">
 										<div class="am-panel-bd">
 											<!--出行人信息表单-->
 											<ul class="am-avg-sm-3 am-thumbnails">
@@ -1177,17 +1207,20 @@
 										</div>
 									</div>
 								</div>
-								<div class="am-panel am-panel-default">
+								<!--/出行人成人单元-->
+								<!--出行人儿童单元-->
+								<!--出行人成人单元-->
+								<div class="am-panel am-panel-default" ms-repeat-unit="childList">
 									<div class="am-panel-hd">
-										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+										<h4 class="am-panel-title" ms-attr-data-am-collapse="{parent: '#accordion', target: '#traveler-child-{{unit}}'}">
 											<div class="am-input-group am-input-group-secondary">
-												<span class="am-input-group-label">成人2</span>
-												<input type="text" id="do-not-say2" class="am-form-field" placeholder="必填，姓名" disabled>
+												<span class="am-input-group-label">儿童{{unit}}</span>
+												<input type="text" class="am-form-field" placeholder="必填，姓名" disabled>
 												<span class="am-input-group-label">填写</span>
 											</div>
 										</h4>
 									</div>
-									<div id="do-not-say-2" class="am-panel-collapse am-collapse">
+									<div ms-attr-id="traveler-child-{{unit}}" class="am-panel-collapse am-collapse">
 										<div class="am-panel-bd">
 											<!--出行人信息表单-->
 											<ul class="am-avg-sm-3 am-thumbnails">
@@ -1232,61 +1265,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="am-panel am-panel-default">
-									<div class="am-panel-hd">
-										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-3'}">
-											<div class="am-input-group am-input-group-secondary">
-												<span class="am-input-group-label">成人3</span>
-												<input type="text" id="do-not-say3" class="am-form-field" placeholder="必填，姓名" disabled>
-												<span class="am-input-group-label">填写</span>
-											</div>
-										</h4>
-									</div>
-									<div id="do-not-say-3" class="am-panel-collapse am-collapse">
-										<div class="am-panel-bd">
-											<!--出行人信息表单-->
-											<ul class="am-avg-sm-3 am-thumbnails">
-												<li class="am-text-lg">
-													填写信息
-												</li>
-												<li>
-													<select data-am-selected>
-														<option value="d" selected>选择联系人</option>
-														<option value="a">Apple</option>
-														<option value="b">Banana</option>
-														<option value="o">Orange</option>
-														<option value="m">Mango</option>
-													</select>
-												</li>
-												<li class="am-text-right">
-													<button type="button" class="am-btn am-btn-success am-radius">保存</button>
-												</li>
-											</ul>
-											<div class="am-input-group">
-												<span class="am-input-group-label">中文姓名</span>
-												<input type="text" class="am-form-field" placeholder="与证件姓名一致">
-											</div>
-											<div class="am-input-group">
-												<span class="am-input-group-label">证件类型</span>
-												<select class=" am-input-lg">
-													<option value="">身份证</option>
-													<option value="">护照</option>
-													<option value="">护照1</option>
-													<option value="">护照4</option>
-												</select>
-											</div>
-											<div class="am-input-group">
-												<span class="am-input-group-label">证件号码</span>
-												<input type="text" class="am-form-field" placeholder="可稍后提供">
-											</div>
-											<div class="am-input-group">
-												<span class="am-input-group-label">手机号码</span>
-												<input type="text" class="am-form-field" placeholder="出行人的手机号码">
-											</div>
-											<!--/出行人信息表单-->
-										</div>
-									</div>
-								</div>
+								<!--/出行人儿童单元-->
 							</div>
 							<!--/出行人信息-->
 						</fieldset>
