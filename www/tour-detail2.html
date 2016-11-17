@@ -35,17 +35,18 @@
 		var lineid = getParameterValue(window.location.href, 'lineid');
 		avalon.ready(function () {
 			var tourVM = avalon.define({
-				$id:        'tour',
-				detail:     {},
-				nation:     [],
-				tourdate:   [],
-				tourtype:   '其它',
-				adultPrice: 0,	//成人单价
-				childPrice: 0,	//儿童单价
-				adultNum:   1,	//成人人数
-				childNum:   0,	//儿童人数
-				adultList:  [1],	//成人数组
-				childList:  [],	//儿童数组
+				$id:         'tour',
+				detail:      {},
+				nation:      [],
+				tourdate:    [],
+				tourtype:    '其它',
+				adultPrice:  0,	//成人单价
+				childPrice:  0,	//儿童单价
+				adultNum:    1,	//成人人数
+				childNum:    0,	//儿童人数
+				adultList:   [1],	//成人数组
+				childList:   [],	//儿童数组
+				lotteryList: [],	//优惠券信息
 
 				galleryRendered: function (type) {
 					$('#galleryAD').show();
@@ -67,19 +68,20 @@
 			tourVM.$watch('adultNum', function (a) {
 				tourVM.adultList = new Array(parseInt(a));
 				for (var i = 0; i < parseInt(a); i++) {
-					tourVM.adultList[i] = i+1;
+					tourVM.adultList[i] = i + 1;
 				}
 			});
 			//监控儿童数，生成相应的数组
 			tourVM.$watch('childNum', function (a, b) {
 				tourVM.childList = new Array(parseInt(a));
 				for (var i = 0; i < parseInt(a); i++) {
-					tourVM.childList[i] = i+1;
+					tourVM.childList[i] = i + 1;
 				}
 			});
 
 
 			avalon.scan();
+
 			//$.getJSON('http://www.htyou.com/mobile/ipad_queryTourTeam.action?lineid=8155&jsoncallback=?',function(result){
 			//console.log(server_addr+'/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid='+lineid);
 			$.getJSON(server_addr + '/mobile/ipad_getTourTeam.action?jsoncallback=?&lineid=' + lineid, function (result) {
@@ -94,7 +96,13 @@
 				tourVM.tourdate   = result.value;
 				tourVM.adultPrice = result.value[0].adultprice;
 				//TODO: 先做测试数据tourVM.childPrice = result.value[0].childprice;
-				tourVM.childPrice = 111;
+				tourVM.childPrice = 1;
+			});
+
+			//载入优惠券信息
+			/*TODO:用户ID记得改成mainVM.userid*/
+			$.getJSON(server_addr + '/miaosha/miaosha_queryMiaoShaOrderByGuestId.action?jsoncallback=?&userid=' + '636773', function (result) {
+				tourVM.lotteryList = result;
 			});
 			//页面载入后执行的代码
 
@@ -744,19 +752,24 @@
 		padding: 0;
 		background-color: #DFDFDF;
 	}
+
+	.am-block {
+		display: block !important;
+		margin: 1px 1em 0 .5em;
+	}
 </style>
 <div class="am-popup" id="order-modal">
 	<div class="am-popup-inner">
 		<div class="am-popup-hd">
 			<!--<h4 class="am-popup-title">填写订单</h4><span data-am-modal-close class="am-close">&times;</span>-->
 			<ul class="am-avg-sm-2">
-				<li>
-					<span class="am-block" ms-if="adultPrice>0">成人价：{{adultPrice}}x{{adultNum}}元</span>
-					<span class="am-block" ms-if="childPrice>0">儿童价：{{childPrice}}x{{childNum}}元</span>
+				<li style="text-align: left; font-size: 0.8em; /* line-height: 170%; */ color: #343434;">
+					<span class="am-block" ms-if="adultPrice>0">成人价：{{adultPrice}}元/人x{{adultNum}}</span>
+					<span class="am-block" ms-if="childPrice>0">儿童价：{{childPrice}}元/人x{{childNum}}</span>
 				</li>
 				<li>
-					<h4 class="am-popup-title">订单金额：{{adultPrice*adultNum+childPrice*childNum}}元</h4>
-					<span data-am-modal-close class="am-close">&times;</span>
+					<h4 class="am-popup-title" style="margin:0; color:#FD9001;border-left: 2px solid #d2d2d2;/* padding: 2px 0; *//* box-sizing: border-box; */">订单金额：{{adultPrice*adultNum+childPrice*childNum}}元</h4>
+					<span data-am-modal-close class="am-close" style="color:#F00 !important; opacity: 1;">&times;</span>
 				</li>
 			</ul>
 		</div>
@@ -1294,10 +1307,16 @@
 							</label>
 						</div>
 
+						<style scoped>
+							.lottery-card {
+								margin: 0 .5em .5em 0;
+							}
+						</style>
 						<div class="am-form-group am-input-group">
 							<span class="am-input-group-label">优惠券</span>
 							<div>
-								<button type="button" class="am-btn am-btn-primary am-radius am-btn-xs"><span>现金券</span>5元
+								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs">{{unit.miaoshaname}}</button>
+<!--								<button type="button" class="am-btn am-btn-primary am-radius am-btn-xs"><span>现金券</span>5元
 								</button>
 								<button type="button" class="am-btn am-btn-warning am-radius am-btn-xs">10元</button>
 								<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">15元</button>
@@ -1306,7 +1325,7 @@
 								<button type="button" class="am-btn am-btn-secondary am-radius am-btn-xs">1000元</button>
 								<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">9999元</button>
 								<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">10000元</button>
-								<button type="button" class="am-btn am-btn-success am-active am-radius am-btn-xs">99999元</button>
+								<button type="button" class="am-btn am-btn-success am-active am-radius am-btn-xs">99999元</button>-->
 							</div>
 						</div>
 
