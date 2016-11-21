@@ -174,11 +174,23 @@ keywords后面加上ID，用空格(%20)分开
 - /user/htuser_addPassengerInfo.action 
 
 参数
-- passengerVO.guestId 用户id						
+- passengerVO.guestId 用户id		注意：如果没有（未注册用户之类）则填写0
 - passengerVO.passengerName     姓名
 - passengerVO.passengerIdentify 证件号
 - passengerVO.passengerPhone    手机号
 - passengerVO.identifytype      证件类型  120702 护照  120701 身份证
+
+测试
+
+```
+http://www.htyou.com/user/htuser_addPassengerInfo.action?passengerVO.guestId=636773&passengerVO.passengerName=测试阿顶1&passengerVO.passengerIdentify=430000000000000000&passengerVO.passengerPhone=13333333333&passengerVO.identifytype=120701
+```
+
+返回值
+{
+"status": "1",      //1成功 别的失败
+"passengerid": 1    //代表出行人ID
+}
 
 #### 查询出行人接口 queryPassengerInfo
 接口地址：
@@ -193,5 +205,10 @@ keywords后面加上ID，用空格(%20)分开
 - passengerVO.passengerIdentify 证件号
 - passengerVO.passengerPhone    手机号
 - passengerVO.identifytype      证件类型  120702 护照  120701 身份证
+
+测试
+```
+http://www.htyou.com/user/htuser_queryPassengerInfo.action?userid=636773
+```
 
 #### 新版提交订单接口（2016-11-21日）
