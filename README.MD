@@ -167,3 +167,31 @@ keywords后面加上ID，用空格(%20)分开
 
 返回：
 - list<PanicbuyingOrderVO> 活动订单列表
+
+#### 添加出行人接口 addPassengerInfo
+
+接口地址
+- /user/htuser_addPassengerInfo.action 
+
+参数
+- passengerVO.guestId 用户id						
+- passengerVO.passengerName     姓名
+- passengerVO.passengerIdentify 证件号
+- passengerVO.passengerPhone    手机号
+- passengerVO.identifytype      证件类型  120702 护照  120701 身份证
+
+#### 查询出行人接口 queryPassengerInfo
+接口地址：
+- /user/htuser_queryPassengerInfo.action
+
+返回：
+- passengerVO 对象
+
+参数：
+- passengerVO.guestId 用户id
+- passengerVO.passengerName     姓名
+- passengerVO.passengerIdentify 证件号
+- passengerVO.passengerPhone    手机号
+- passengerVO.identifytype      证件类型  120702 护照  120701 身份证
+
+#### 新版提交订单接口（2016-11-21日）

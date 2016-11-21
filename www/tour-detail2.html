@@ -169,11 +169,11 @@
 						//成功的处理
 						//console.log('成功');
 						var oderInfo = ''
-								+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
-								+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
-								+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
-								+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
-								+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
+							+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
+							+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
+							+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
+							+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
+							+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
 
 						$('#order-message .order-message-title').text('订单提交成功！');
 						//$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，'+alertMsg+'很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
@@ -209,11 +209,11 @@
 						//成功的处理
 						//console.log('成功');
 						var oderInfo = ''
-								+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
-								+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
-								+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
-								+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
-								+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
+							+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
+							+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
+							+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
+							+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
+							+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
 
 						$('#order-message .order-message-title').text('进入微信支付流程');
 						//$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">微信支付</a> 付款');
@@ -250,11 +250,11 @@
 						//成功的处理
 						//console.log('成功');
 						var oderInfo = ''
-								+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
-								+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
-								+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
-								+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
-								+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
+							+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
+							+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
+							+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
+							+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
+							+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
 
 						$('#order-message .order-message-title').text('订单确认');
 						//如果在IOS设备则需要用这个方式:cordova.InAppBrowser.open('http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id=C160322314241', '_blank', 'location=yes');
@@ -754,8 +754,8 @@
 	}
 
 	.am-block {
-		display: block !important;
-		margin: 1px 1em 0 .5em;
+		margin: 1px 0 0 .5em;
+		display: inline-block !important;
 	}
 </style>
 <div class="am-popup" id="order-modal">
@@ -768,7 +768,7 @@
 					<span class="am-block" ms-if="childPrice>0">儿童价：{{childPrice}}元/人x{{childNum}}</span>
 				</li>
 				<li>
-					<h4 class="am-popup-title" style="margin:0; color:#FD9001;border-left: 2px solid #d2d2d2;/* padding: 2px 0; *//* box-sizing: border-box; */">订单金额：{{adultPrice*adultNum+childPrice*childNum}}元</h4>
+					<h4 class="am-popup-title" style="margin:0; color:#FD9001;border-left: 2px solid #D2D2D2;/* padding: 2px 0; *//* box-sizing: border-box; */">订单金额：{{adultPrice*adultNum+childPrice*childNum}}元</h4>
 					<span data-am-modal-close class="am-close" style="color:#F00 !important; opacity: 1;">&times;</span>
 				</li>
 			</ul>
@@ -1316,16 +1316,16 @@
 							<span class="am-input-group-label">优惠券</span>
 							<div>
 								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs">{{unit.miaoshaname}}</button>
-<!--								<button type="button" class="am-btn am-btn-primary am-radius am-btn-xs"><span>现金券</span>5元
-								</button>
-								<button type="button" class="am-btn am-btn-warning am-radius am-btn-xs">10元</button>
-								<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">15元</button>
-								<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">20元</button>
-								<button type="button" class="am-btn am-btn-default am-radius am-btn-xs">999元</button>
-								<button type="button" class="am-btn am-btn-secondary am-radius am-btn-xs">1000元</button>
-								<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">9999元</button>
-								<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">10000元</button>
-								<button type="button" class="am-btn am-btn-success am-active am-radius am-btn-xs">99999元</button>-->
+								<!--								<button type="button" class="am-btn am-btn-primary am-radius am-btn-xs"><span>现金券</span>5元
+																</button>
+																<button type="button" class="am-btn am-btn-warning am-radius am-btn-xs">10元</button>
+																<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">15元</button>
+																<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">20元</button>
+																<button type="button" class="am-btn am-btn-default am-radius am-btn-xs">999元</button>
+																<button type="button" class="am-btn am-btn-secondary am-radius am-btn-xs">1000元</button>
+																<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">9999元</button>
+																<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">10000元</button>
+																<button type="button" class="am-btn am-btn-success am-active am-radius am-btn-xs">99999元</button>-->
 							</div>
 						</div>
 
