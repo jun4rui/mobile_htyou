@@ -35,20 +35,23 @@
 		var lineid = getParameterValue(window.location.href, 'lineid');
 		avalon.ready(function () {
 			var tourVM = avalon.define({
-				$id:         'tour',
-				detail:      {},
-				nation:      [],
-				tourdate:    [],
-				tourtype:    '其它',
-				adultPrice:  0,	//成人单价
-				childPrice:  0,	//儿童单价
-				adultNum:    1,	//成人人数
-				childNum:    0,	//儿童人数
-				adultList:   [1],	//成人数组
-				childList:   [],	//儿童数组
-				lotteryList: [],	//优惠券信息
+				$id:                      'tour',
+				detail:                   {},
+				nation:                   [],
+				tourdate:                 [],
+				tourtype:                 '其它',
+				adultPrice:               0,	//成人单价
+				childPrice:               0,	//儿童单价
+				adultNum:                 1,	//成人人数
+				childNum:                 0,	//儿童人数
+				adultList:                [1],	//成人数组
+				childList:                [],	//儿童数组
+				lotteryList:              [],	//优惠券信息
+				travelerList:             [],	//出行人数组
+				currentAdult: [],	//临时填充的成人出行人数组信息，因为用mvvm框架生成出行人表单会清空数据！所以采用这个机制记录一下，每次更新出行人input就会保存所有出行人信息到这里，生成的时候自动填充
+				currentChild: [],	//临时填充的儿童出行人数组信息
 
-				galleryRendered: function (type) {
+				galleryRendered:  function (type) {
 					$('#galleryAD').show();
 					//激活滑动gallery
 					$('.am-slider-manual').flexslider({"directionNav": false});
@@ -56,13 +59,41 @@
 					//$('#galleryAD a img').height(parseInt($('#galleryAD').width()/110*44));
 					$('.ms-controller').removeClass('ms-controller');
 				},
-				detailRendered:  function (type) {
+				detailRendered:   function (type) {
 					$.getJSON(server_addr + '/common/common_getHtConstant.action?skvcolumn=TOURPRO_TYPE&jsoncallback=?', function (result) {
 						$('#tourtype').text(result['' + $('#tourtype').attr('typeid')]);
 					});
-
+				},
+				//点击已有出行人下拉框后，将自动填充出行人
+				fillTravelerInfo: function (inThis) {
+					setTraveler(inThis, inThis.val().split('|')[1], inThis.val().split('|')[0]);
 				}
 			});
+
+			//更新出行人信息函数
+			function setTraveler(inDOM, inName, inID) {
+				console.log('inDOM:', inDOM, inDOM.parents('.traveler-unit').length, inDOM.length);
+				//填充到input元素中去
+				inDOM.parents('.traveler-unit').find('.am-panel-hd input').val(inName).attr('tid', inID);
+				//记录到currentFillTraveler
+				tourVM.currentAdult = [];	//清空当前填充成人出行人列表
+				tourVM.currentChild = [];	//清空当前填充儿童出行人列表
+				//将当前出行人表单记录到currentAdult中去
+				$('.traveler-adult.traveler-name').each(function () {
+					tourVM.currentAdult.push({
+						'tName': $(this).val(),
+						'tID':   $(this).attr('tid')
+					});
+				});
+				//记录儿童组的到，当前出行人表单记录到currentChild中去
+				$('.traveler-child.traveler-name').each(function () {
+					tourVM.currentChild.push({
+						'tName': $(this).val(),
+						'tID':   $(this).attr('tid')
+					});
+				});
+				console.dirxml(tourVM.currentAdult,tourVM.currentChild);
+			}
 
 			//监控成人数，生成相应的数组
 			tourVM.$watch('adultNum', function (a) {
@@ -109,7 +140,67 @@
 			//自定义的nl2br过滤器
 			avalon.filters.nl2br = function (str) {
 				return str.replace(/\n/g, '<br/>');
+			};
+
+			//刷新出行人的函数
+			function getTraveler() {
+				$.getJSON(server_addr + '/user/htuser_queryPassengerInfo.action?jsoncallback=?&userid=' + '636773', function (result) {
+					tourVM.travelerList = result;
+					console.log('getTraveler:', result);
+				});
 			}
+
+			getTraveler();//立刻更新出行人
+
+
+			$('#order-modal').delegate('.saveTravelerBtn', 'click', function (event) {
+				console.log(Math.random());
+				console.log('target:', event.target);
+				console.log('jquery:', $(event.target));
+
+				//获得当前表单位置
+				var _inForm = $(event.target).parents('.traveler-form');
+
+				//获得当前所有用户输入元素
+				var _username        = _inForm.find('.username').val();				//用户名字
+				var _certificatetype = _inForm.find('.certificatetype').val();		//证件类型
+				var _certificatenum  = _inForm.find('.certificatenum').val();		//证件号码
+				var _userphone       = _inForm.find('.userphone').val();			//用户电话
+				console.log(_username, _certificatetype, _certificatenum, _userphone);
+
+				//检查用户输入
+				var _errMsg = '';
+				if (_username == '')
+					_errMsg += '请输入中文姓名\n';
+				if (_certificatetype == '')
+					_errMsg += '请选择证件类型\n';
+				if (_certificatenum == '')
+					_errMsg += '请输入证件号码\n';
+				if (_userphone == '')
+					_errMsg += '请输入手机号码\n';
+				if (_errMsg != '') {
+					alert(_errMsg);
+					return false;
+				} else {
+					//http://www.htyou.com/user/htuser_addPassengerInfo.action?passengerVO.guestId=636773&passengerVO.passengerName=测试阿顶1&passengerVO.passengerIdentify=430000000000000000&passengerVO.passengerPhone=13333333333&passengerVO.identifytype=120701
+					var _userid = window.localStorage.getItem('USERID') || 0;//有userid则用有的，没有一定要设置为0，这个参数必须有值
+					//TODO：记得guestid改成用户自己的
+					$.getJSON(server_addr + '/user/htuser_addPassengerInfo.action?jsoncallback=?&passengerVO.guestId=' + '636773' + '&passengerVO.passengerName=' + _username + '&passengerVO.passengerIdentify=' + _certificatenum + '&passengerVO.passengerPhone=' + _userphone + '&passengerVO.identifytype=' + _certificatetype, function (result) {
+						if (result.status == 1) {
+							//提交成功的操作
+							//更新当前表单的出行人信息
+							setTraveler(_inForm, _username, result.passengerid);
+							getTraveler();//刷新已有出行人
+							return true;
+						} else {
+							//提交失败发生错误
+							alert('新增出行人失败，请稍后再尝试');
+							return false;
+						}
+					});
+				}
+				console.log('Continue.');
+			});
 		});
 
 
@@ -1165,17 +1256,17 @@
 
 							<div class="am-panel-group" id="traveler-info">
 								<!--出行人成人单元-->
-								<div class="am-panel am-panel-default" ms-repeat-unit="adultList">
+								<div class="am-panel am-panel-default traveler-unit" ms-repeat-unit="adultList">
 									<div class="am-panel-hd">
 										<h4 class="am-panel-title" ms-attr-data-am-collapse="{parent: '#accordion', target: '#traveler-adult-{{unit}}'}">
 											<div class="am-input-group am-input-group-secondary">
 												<span class="am-input-group-label">成人{{unit}}</span>
-												<input type="text" class="am-form-field" placeholder="必填，姓名" disabled>
+												<input type="text" ms-attr-tid="{{currentAdult[unit-1].tID||''}}" ms-attr-value="{{currentAdult[unit-1].tName||''}}" class="traveler-adult traveler-name am-form-field" placeholder="点击打开填写表单" disabled>
 												<span class="am-input-group-label">填写</span>
 											</div>
 										</h4>
 									</div>
-									<div ms-attr-id="traveler-adult-{{unit}}" class="am-panel-collapse am-collapse">
+									<div ms-attr-id="traveler-adult-{{unit}}" class="traveler-form am-panel-collapse am-collapse">
 										<div class="am-panel-bd">
 											<!--出行人信息表单-->
 											<ul class="am-avg-sm-3 am-thumbnails">
@@ -1183,38 +1274,33 @@
 													填写信息
 												</li>
 												<li>
-													<select data-am-selected>
-														<option value="d" selected>选择联系人</option>
-														<option value="a">Apple</option>
-														<option value="b">Banana</option>
-														<option value="o">Orange</option>
-														<option value="m">Mango</option>
+													<select ms-on-change="fillTravelerInfo($(this))">
+														<option value="" selected>选择联系人</option>
+														<option ms-repeat-traveler="travelerList" ms-attr-value="{{traveler.passengerId+'|'+traveler.passengerName}}">{{traveler.passengerName}}</option>
 													</select>
 												</li>
 												<li class="am-text-right">
-													<button type="button" class="am-btn am-btn-success am-radius">保存</button>
+													<button type="button" class="am-btn am-btn-success am-radius saveTravelerBtn">保存</button>
 												</li>
 											</ul>
 											<div class="am-input-group">
 												<span class="am-input-group-label">中文姓名</span>
-												<input type="text" class="am-form-field" placeholder="与证件姓名一致">
+												<input type="text" class="am-form-field username" placeholder="与证件姓名一致">
 											</div>
 											<div class="am-input-group">
 												<span class="am-input-group-label">证件类型</span>
-												<select class=" am-input-lg">
-													<option value="">身份证</option>
-													<option value="">护照</option>
-													<option value="">护照1</option>
-													<option value="">护照4</option>
+												<select class="certificatetype am-input-lg">
+													<option value="120701">身份证</option>
+													<option value="120702">护照</option>
 												</select>
 											</div>
 											<div class="am-input-group">
 												<span class="am-input-group-label">证件号码</span>
-												<input type="text" class="am-form-field" placeholder="可稍后提供">
+												<input type="text" class="am-form-field certificatenum" placeholder="可稍后提供">
 											</div>
 											<div class="am-input-group">
 												<span class="am-input-group-label">手机号码</span>
-												<input type="text" class="am-form-field" placeholder="出行人的手机号码">
+												<input type="text" class="am-form-field userphone" placeholder="出行人的手机号码">
 											</div>
 											<!--/出行人信息表单-->
 										</div>
@@ -1222,13 +1308,12 @@
 								</div>
 								<!--/出行人成人单元-->
 								<!--出行人儿童单元-->
-								<!--出行人成人单元-->
-								<div class="am-panel am-panel-default" ms-repeat-unit="childList">
+								<div class="am-panel am-panel-default traveler-unit" ms-repeat-unit="childList">
 									<div class="am-panel-hd">
 										<h4 class="am-panel-title" ms-attr-data-am-collapse="{parent: '#accordion', target: '#traveler-child-{{unit}}'}">
 											<div class="am-input-group am-input-group-secondary">
 												<span class="am-input-group-label">儿童{{unit}}</span>
-												<input type="text" class="am-form-field" placeholder="必填，姓名" disabled>
+												<input type="text" ms-attr-tid="{{currentChild[unit-1].tID||''}}" ms-attr-value="{{currentChild[unit-1].tName||''}}" class="traveler-child traveler-name am-form-field" placeholder="点击打开填写表单" disabled>
 												<span class="am-input-group-label">填写</span>
 											</div>
 										</h4>
@@ -1241,38 +1326,33 @@
 													填写信息
 												</li>
 												<li>
-													<select data-am-selected>
-														<option value="d" selected>选择联系人</option>
-														<option value="a">Apple</option>
-														<option value="b">Banana</option>
-														<option value="o">Orange</option>
-														<option value="m">Mango</option>
+													<select ms-on-change="fillTravelerInfo($(this))">
+														<option value="" selected>选择联系人</option>
+														<option ms-repeat-traveler="travelerList" ms-attr-value="{{traveler.passengerId+'|'+traveler.passengerName}}">{{traveler.passengerName}}</option>
 													</select>
 												</li>
 												<li class="am-text-right">
-													<button type="button" class="am-btn am-btn-success am-radius">保存</button>
+													<button type="button" class="am-btn am-btn-success am-radius saveTravelerBtn">保存</button>
 												</li>
 											</ul>
 											<div class="am-input-group">
 												<span class="am-input-group-label">中文姓名</span>
-												<input type="text" class="am-form-field" placeholder="与证件姓名一致">
+												<input type="text" class="am-form-field username" placeholder="与证件姓名一致">
 											</div>
 											<div class="am-input-group">
 												<span class="am-input-group-label">证件类型</span>
-												<select class=" am-input-lg">
-													<option value="">身份证</option>
-													<option value="">护照</option>
-													<option value="">护照1</option>
-													<option value="">护照4</option>
+												<select class="certificatetype am-input-lg">
+													<option value="120701">身份证</option>
+													<option value="120702">护照</option>
 												</select>
 											</div>
 											<div class="am-input-group">
 												<span class="am-input-group-label">证件号码</span>
-												<input type="text" class="am-form-field" placeholder="可稍后提供">
+												<input type="text" class="am-form-field certificatenum" placeholder="可稍后提供">
 											</div>
 											<div class="am-input-group">
 												<span class="am-input-group-label">手机号码</span>
-												<input type="text" class="am-form-field" placeholder="出行人的手机号码">
+												<input type="text" class="am-form-field userphone" placeholder="出行人的手机号码">
 											</div>
 											<!--/出行人信息表单-->
 										</div>
