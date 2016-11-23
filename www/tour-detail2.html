@@ -35,19 +35,20 @@
 		var lineid = getParameterValue(window.location.href, 'lineid');
 		avalon.ready(function () {
 			var tourVM = avalon.define({
-				$id:                      'tour',
-				detail:                   {},
-				nation:                   [],
-				tourdate:                 [],
-				tourtype:                 '其它',
-				adultPrice:               0,	//成人单价
-				childPrice:               0,	//儿童单价
-				adultNum:                 1,	//成人人数
-				childNum:                 0,	//儿童人数
-				adultList:                [1],	//成人数组
-				childList:                [],	//儿童数组
-				lotteryList:              [],	//优惠券信息
-				travelerList:             [],	//出行人数组
+				$id:          'tour',
+				detail:       {},
+				nation:       [],
+				tourdate:     [],
+				tourtype:     '其它',
+				adultPrice:   0,	//成人单价
+				childPrice:   0,	//儿童单价
+				adultNum:     1,	//成人人数
+				childNum:     0,	//儿童人数
+				adultList:    [1],	//成人数组
+				childList:    [],	//儿童数组
+				lotteryList:  [],	//优惠券信息
+				lotteryCard:  '',	//当前所选择的优惠券
+				travelerList: [],	//出行人数组
 				currentAdult: [],	//临时填充的成人出行人数组信息，因为用mvvm框架生成出行人表单会清空数据！所以采用这个机制记录一下，每次更新出行人input就会保存所有出行人信息到这里，生成的时候自动填充
 				currentChild: [],	//临时填充的儿童出行人数组信息
 
@@ -92,7 +93,7 @@
 						'tID':   $(this).attr('tid')
 					});
 				});
-				console.dirxml(tourVM.currentAdult,tourVM.currentChild);
+				console.dirxml(tourVM.currentAdult, tourVM.currentChild);
 			}
 
 			//监控成人数，生成相应的数组
@@ -133,6 +134,15 @@
 			//载入优惠券信息
 			/*TODO:用户ID记得改成mainVM.userid*/
 			$.getJSON(server_addr + '/miaosha/miaosha_queryMiaoShaOrderByGuestId.action?jsoncallback=?&userid=' + '636773', function (result) {
+				//获得优惠券后，先从高到低金额排序
+				result.sort(function(a,b){
+					if (a.fraction<b.fraction){
+						return 1;
+					}else{
+						return -1;
+					}
+				});
+				//将排序后的值赋给lotteryList
 				tourVM.lotteryList = result;
 			});
 			//页面载入后执行的代码
@@ -152,7 +162,7 @@
 
 			getTraveler();//立刻更新出行人
 
-
+			//点击提交出行人
 			$('#order-modal').delegate('.saveTravelerBtn', 'click', function (event) {
 				console.log(Math.random());
 				console.log('target:', event.target);
@@ -200,6 +210,11 @@
 					});
 				}
 				console.log('Continue.');
+			});
+
+			//点击优惠券
+			$('#order-modal').delegate('.lottery-card', 'click', function(result){
+				console.log($(this).attr('discount'), $(this).attr('cardid'), $(this).text());
 			});
 		});
 
@@ -1215,11 +1230,11 @@
 							</style>
 							<div class="am-input-group">
 								<span class="am-input-group-label">联系人</span>
-								<input type="text" id="tour-price" class="am-form-field" placeholder="必填，姓名" disabled>
+								<input type="text" id="tour-price" class="am-form-field" placeholder="必填，姓名">
 							</div>
 							<div class="am-input-group">
 								<span class="am-input-group-label">手机号码</span>
-								<input type="text" id="tour-date" class="am-form-field" placeholder="必填，接收短信" disabled>
+								<input type="text" id="tour-date" class="am-form-field" placeholder="必填，接收短信">
 							</div>
 							<div class="am-input-group">
 								<span class="am-input-group-label">身份证</span>
@@ -1391,11 +1406,16 @@
 							.lottery-card {
 								margin: 0 .5em .5em 0;
 							}
+
+							.lottery-card:hover {
+								border-color: #A94444;
+								background-color: #FF6400;
+							}
 						</style>
 						<div class="am-form-group am-input-group">
 							<span class="am-input-group-label">优惠券</span>
 							<div>
-								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs">{{unit.miaoshaname}}</button>
+								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs" ms-attr-discount="{{unit.fraction}}" ms-attr-cardid="{{unit.id}}" ms-visible="unit.fraction>0">{{unit.miaoshaname}}</button>
 								<!--								<button type="button" class="am-btn am-btn-primary am-radius am-btn-xs"><span>现金券</span>5元
 																</button>
 																<button type="button" class="am-btn am-btn-warning am-radius am-btn-xs">10元</button>
@@ -1430,11 +1450,25 @@
 					</div>
 				</div>
 				<!--/客户经理-->
-				<!--</form>-->
+
+				<!--提交按钮-->
+				<div class="widget-unit ms-controller">
+					<div class="content">
+						<fieldset>
+							<div class="am-form-group" style="margin:0;">
+								<div class="am-u-sm-12 am-u-sm-center am-u-sm-centered" style="padding:0;">
+									<button type="button" class="am-center am-btn am-btn-primary am-btn-block" id="submit-btn" onclick="doSubmit()" style="display:none;">提交</button>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<!--/提交按钮-->
 			</div>
 			<!--/form结束-->
 		</div>
 	</div>
+
 </div>
 <!--/购买窗口-->
 

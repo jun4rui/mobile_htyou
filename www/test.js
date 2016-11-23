@@ -1,10 +1,13 @@
-(function(){
-	//找到每一张景点图
-	$('.htyou_album').each(function(){
-		//获得这张图的位置
-		//在这张图下面添加一个遮罩层
-		//在这张图下面添加一个文字层
-		//
-
+$.getJSON('http://www.htyou.com/miaosha/miaosha_queryMiaoShaOrderByGuestId.action?jsoncallback=?&&userid=636773',function(result){
+	console.log(result.length);
+	result.sort(function(a,b){
+		if (a.fraction<b.fraction){
+			return 1;
+		}else{
+			return -1;
+		}
 	});
-})(window);
+	result.map(function(unit){
+		console.log(unit.fraction, unit.miaoshaname);
+	});
+});
