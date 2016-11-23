@@ -427,7 +427,7 @@
 	<img alt="" class="lotteryimg" src="./images/nwlottery20.png">
 	<img alt="" class="lotteryimg" src="./images/nwlottery50.png">
 	<img src="./images/newyearlottery.png" alt="">
-	<div id="lotteryBtn" todo="0"></div>
+	<div id="lotteryBtn" running="0"></div>
 </div>
 <script>
 	//在微信中才显示抽奖活动
@@ -438,7 +438,13 @@
 
 	//点击抽奖按钮触发事件
 	$('#lotteryBtn').click(function () {
-
+		//如果已经在运行状态了（running==1）了就提示并且不执行
+		if ($('#lotteryBtn').attr('running')==1) {
+			alert('您正在抽奖中');
+			return false;
+		}
+		//设置运行状态为1
+		$('#lotteryBtn').attr('running',1);
 		//TODO:现在都是测试数据
 		$.getJSON(server_addr + '/miaosha/miaosha_addChouJiangOrder.action?jsoncallback=?&userid=' + '636773', function (result) {
 			if (result.status == '1' || true) {
@@ -461,6 +467,8 @@
 					console.log(_circleCount);
 					if (_circleCount >= _maxCicle + _active) {
 						clearInterval(_siPoint);
+						//设置运行状态为0
+						$('#lotteryBtn').attr('running',0);
 					}
 				}, 100);
 			} else {
