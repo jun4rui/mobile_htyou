@@ -212,3 +212,16 @@ http://www.htyou.com/user/htuser_queryPassengerInfo.action?userid=636773
 ```
 
 #### 新版提交订单接口（2016-11-21日）
+
+#### 验证优惠券接口
+地址：
+- /mobile／tourorder_isVaildCoupon.action
+ps : 线路必须设置discount 字段
+
+参数：
+- coupon: 优惠券订单id 从优惠卷接口能获得的字段叫sys_show_order_id，可以同时使用多个，用','逗号分隔
+- lineid: 线路ID
+
+返回：
+- status:1 正常,104 不可优惠,105 线路不存在
+- sumFraction: 优惠金额
