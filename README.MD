@@ -224,4 +224,4 @@ ps : 线路必须设置discount 字段
 
 返回：
 - status:1 正常,104 不可优惠,105 线路不存在
-- sumFraction: 优惠金额
+- sumFraction: 优惠金额共计
