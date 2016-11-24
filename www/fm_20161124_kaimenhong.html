@@ -2,7 +2,7 @@
 <html lang="zh_CN">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+	<meta name="viewport" content="width=640, user-scalable=no">
 	<title>华天旅游网</title>
 	<!--jQuery框架-->
 	<script src="./bower_components/jquery/dist/jquery.min.js" charset="UTF-8"></script>
@@ -17,7 +17,190 @@
 	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
 	<!--js配置文件-->
 	<script src="./config.js?20160612"></script>
+
+	<style>
+		body {
+			padding:0;
+			margin:0;
+			background-color: #f20000;
+		}
+
+		img {
+			display:block;
+		}
+
+		a {
+			text-decoration:none;
+		}
+	</style>
+
+	<script>
+		avalon.ready(function () {
+			var mainVM = avalon.define({
+				$id:                 'main',
+
+				redpackRules:        '',	//红包规则
+				lotteryRules:        '',	//抽奖规则
+				nanyueblessing:      [],	//南岳祈福产品信息
+				internationalticket: [],	//国际机票产品列表
+				visa:                [],	//签证产品列表
+
+				thailand:          [],	//泰国产品列表
+				maldives:          [],	//马尔代夫产品列表
+				taiwan:            [],	//台湾产品列表
+				australia:         [],	//澳大利亚产品列表
+				japan:             [],	//日本产品列表
+				wildsmiles:        [],	//野斯米兰产品列表
+				phuket:            [],	//普吉岛产品列表
+				quantumcruises:    [],	//量子号产品邮轮产品列表
+				europeandamericas: []	//欧美产品列表
+			})
+	</script>
 </head>
-<body>
+<body ms-controller="main">
+
+<!--顶部广告banner-->
+<style>
+	#banner {
+		width:640px;
+		height:368px;
+		background-image: url(images/kaimenhong/banner.png);
+	}
+</style>
+<div id="banner"></div>
+<!--红包规则-->
+<div id="redpacketrules"></div>
+<!--抽奖活动-->
+<div id="lottery">
+	<!--2016元旦抽奖-->
+	<style>
+		#nwlottery {
+			position: relative;
+			margin: 10px 10px;
+			/*display: none;*/
+		}
+
+		#nwlottery > img {
+			display: block;
+			width: 100%;
+		}
+
+		#nwlottery > #lotteryBtn {
+			position: absolute;
+			/* background: #F00; */
+			width: 25%;
+			height: 67%;
+			right: 3%;
+			top: 21%;
+		}
+
+		#nwlottery > img.lotteryimg {
+			position: absolute;
+			width: 20% !important;
+			height: 71%;
+			left: 2.1%;
+			top: 16%;
+
+			display: none;
+		}
+
+		img.lotteryimg.active {
+			display: block !important;
+		}
+	</style>
+	<div id="nwlottery">
+		<img alt="" class="lotteryimg active" src="./images/nwlottery0.png">
+		<img alt="" class="lotteryimg" src="./images/nwlottery5.png">
+		<img alt="" class="lotteryimg" src="./images/nwlottery10.png">
+		<img alt="" class="lotteryimg" src="./images/nwlottery20.png">
+		<img alt="" class="lotteryimg" src="./images/nwlottery50.png">
+		<img src="./images/newyearlottery.png" alt="">
+		<div id="lotteryBtn" running="0"></div>
+	</div>
+	<script>
+		//在微信中才显示抽奖活动
+		//TODO:现在是测试任何地方都显示
+		if (whereami() == 'weixin' || true) {
+			$('#nwlottery').show();
+		}
+
+		//点击抽奖按钮触发事件
+		$('#lotteryBtn').click(function () {
+			//如果已经在运行状态了（running==1）了就提示并且不执行
+			if ($('#lotteryBtn').attr('running')==1) {
+				alert('您正在抽奖中');
+				return false;
+			}
+			//设置运行状态为1
+			$('#lotteryBtn').attr('running',1);
+			//TODO:现在都是测试数据
+			$.getJSON(server_addr + '/miaosha/miaosha_addChouJiangOrder.action?jsoncallback=?&userid=' + '636773', function (result) {
+				if (result.status == '1' || true) {
+					//返回成功的处理
+					var _maxCicle    = 50;	//默认先滚动多少次
+					var _circleCount = 0;	//滚动计数器
+					var _active      = 0;	//抽到第几个
+					if (result.miaoshaname == '谢谢参与') _active = 1;
+					if (result.miaoshaname == '双12红包-5元')  _active = 2;
+					if (result.miaoshaname == '双12红包-10元') _active = 3;
+					if (result.miaoshaname == '双12红包-20元') _active = 4;
+					if (result.miaoshaname == '双12红包-50元') _active = 5;
+
+					console.log('actice:', _active);
+
+					var _siPoint = setInterval(function () {
+						$('.lotteryimg.active').removeClass('active');
+						$('.lotteryimg').eq(_circleCount % 5).addClass('active');
+						_circleCount++;
+						console.log(_circleCount);
+						if (_circleCount >= _maxCicle + _active) {
+							clearInterval(_siPoint);
+							//设置运行状态为0
+							$('#lotteryBtn').attr('running',0);
+						}
+					}, 100);
+				} else {
+					//返回失败的处理
+					var errMsg = '';
+					if (result.status == '102') {
+						errMsg = '您已参加过抽奖，请点击右上角进入用户中心查看。';
+					}
+					if (errMsg != '') {
+						alert(errMsg);
+					}
+					return false;
+				}
+			});
+		});
+	</script>
+	<!--/2016元旦抽奖-->
+</div>
+<!--南岳祈福-->
+<div id="nanyueblessing"></div>
+<!--国际机票-->
+<div id="internationalticket"></div>
+<!--签证-->
+<div id="visa"></div>
+
+<!--出境游折后红包再降-->
+<!--泰国-->
+<div id="thailand"></div>
+<!--马尔代夫-->
+<div id="maldives"></div>
+<!--台湾-->
+<div id="taiwan"></div>
+<!--澳大利亚-->
+<div id="australia"></div>
+<!--日本-->
+<div id="japan"></div>
+<!--野斯米兰-->
+<div id="wildsmiles"></div>
+<!--普吉-->
+<div id="phuket"></div>
+<!--量子号邮轮-->
+<div id="quantumcruises"></div>
+<!--欧美-->
+<div id="europeandamericas"></div>
+<!--/出境游折后红包再降-->
 </body>
 </html>
