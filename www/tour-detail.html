@@ -1064,7 +1064,7 @@
 			//TODO：等活动开始记得要改成能购买的，到时候问
 			if (result.value.tourproname.indexOf('开门红')>-1){
 				//提交按钮变灰色，并修改文字
-				$('.am-navbar button').removeClass('am-btn-secondary').addClass('am-btn-default1').text('活动尚未开始');
+				$('.am-navbar button').removeClass('am-btn-secondary').addClass('am-btn-warning').text('活动尚未开始');
 				//删除提交订单的激活状态
 				$('.am-navbar button').attr('data-am-modal','');
 				//给提交订单的按钮添加alert信息
