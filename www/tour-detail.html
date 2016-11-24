@@ -1052,12 +1052,23 @@
 
 			/*20160408开放非自组产品的购买*/
 			/*20161108如果是非自组产品，则无法在线支付只能跳咨询框*/
-			console.log('tourtype:',result.value.tourtype.substr(0, 1),result.value.tourtype.substr(0, 1) != 1);
+			//console.log('tourtype:',result.value.tourtype.substr(0, 1),result.value.tourtype.substr(0, 1) != 1);
 			if (result.value.tourtype.substr(0, 1) != 1) {		//1是散客自组
 				//删除提交订单的激活状态
 				$('.am-navbar button').attr('data-am-modal','');
 				//给提交订单的按钮添加弹出在线客服的代码
 				$('.am-navbar button').attr('onclick','window.location.href="http://p.qiao.baidu.com/cps/chat?siteId=1606197&userId=5231856"');
+			}
+
+			//20161124 如果是“开门红”活动产品则无法购买
+			//TODO：等活动开始记得要改成能购买的，到时候问
+			if (result.value.tourproname.indexOf('开门红')>-1){
+				//提交按钮变灰色，并修改文字
+				$('.am-navbar button').removeClass('am-btn-secondary').addClass('am-btn-default1').text('活动尚未开始');
+				//删除提交订单的激活状态
+				$('.am-navbar button').attr('data-am-modal','');
+				//给提交订单的按钮添加alert信息
+				$('.am-navbar button').attr('onclick','javascript:alert("开门红活动产品，请活动开始后再购买");return false;');
 			}
 
 			//根据接口返回状态判断线路拥有何种支付方式
