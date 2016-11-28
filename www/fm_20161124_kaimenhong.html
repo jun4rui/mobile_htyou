@@ -23,6 +23,7 @@
 			padding: 0;
 			margin: 0;
 			background-color: #F20000;
+			padding-bottom: 50px;
 		}
 
 		img {
@@ -44,7 +45,7 @@
 			width: 640px;
 			height: 229px;
 			box-sizing: border-box;
-			padding-left: 316px;
+			padding-left: 320px;
 		}
 
 		/*列表模块*/
@@ -165,10 +166,10 @@
 			color: #000;
 			font-size: 18px;
 			line-height: 45px;
-			left: 150px;
+			left: 100px;
 			top: 0;
 			position: absolute;
-			width: 12em;
+			width: 18em;
 			overflow: hidden;
 		}
 
@@ -196,6 +197,13 @@
 			background-color: #FFF;
 			border-radius: 5px;
 			overflow: hidden;
+
+			transition: transform 500ms ease-out, z-index 0s;
+		}
+
+		.tour-unit:hover {
+			transform: scale(1.15);
+			z-inedx: 9;
 		}
 
 		.panel-bigpic .tour-unit {
@@ -236,29 +244,19 @@
 			left: 0;
 			bottom: 57px;
 			width: 280px;
-			height: 30px;
+			max-height: 30px;
 			background-color: rgba(0, 0, 0, 0.7);
 			color: #FFF;
 			line-height: 30px;
 			box-sizing: border-box;
 			padding: 0 10px;
+
+			transition: max-height 1s ease-out, background-color 1s ease-out;
 		}
-		@keyframes height-auto {
-			from {
-				height:30px;
-				background-color:rgba(0, 0, 0, 0.7);
-			}
-			to {
-				height:60px;
-				background-color:rgba(0, 0, 0, 1);
-			}
-		}
+
 		.tour-unit:hover > .name {
-			/*height:auto;*/
-			animation: height-auto 0.6s;
-			animation-fill-mode:both;
-			animation-direction:alternate;
-			transition: transform 500ms ease-out;
+			max-height: 153px;
+			background-color: rgba(0, 0, 0, 1);
 		}
 
 		.tour-unit > .orgprice {
@@ -330,41 +328,76 @@
 				//将所有结果扫描一遍，分拣到对应的数组中去
 				result.value.map(function (unit) {
 					console.log(unit.tourproname);
+					//原价的计算
+					console.log('折扣价格:', unit.pricedescribe, unit.pricedescribe == '');
+					if (unit.pricedescribe == '') {
+						unit.pricedescribe = (parseInt(unit.leastprice / 0.8 / 10)) + '0';
+					}
 					//签证
-					if (unit.tourproname.indexOf('签证') > -1)
+					if (unit.tourproname.indexOf('签证') > -1) {
 						mainVM.visa.push(unit);
-					//机票
-					if (unit.tourproname.indexOf('直飞') > -1)
-						mainVM.internationalticket.push(unit);
+						return true;
+					}
 					//野斯米兰
-					if (unit.tourproname.indexOf('墅斯米兰') > -1)
+					if (unit.tourproname.indexOf('墅斯米兰') > -1) {
 						mainVM.wildsmiles.push(unit);
+						return true;
+					}
 					//台湾
-					if (unit.tourproname.indexOf('台湾') > -1)
+					if (unit.tourproname.indexOf('台湾') > -1) {
 						mainVM.taiwan.push(unit);
+						return true;
+					}
 					//普吉
-					if (unit.tourproname.indexOf('普吉') > -1)
+					if (unit.tourproname.indexOf('普吉') > -1) {
 						mainVM.phuket.push(unit);
+						return true;
+					}
 					//日本
-					if (unit.tourproname.indexOf('日本') > -1)
+					if (unit.tourproname.indexOf('日本') > -1) {
 						mainVM.japan.push(unit);
+						return true;
+					}
 					//量子号邮轮
-					if (unit.tourproname.indexOf('量子号') > -1)
+					if (unit.tourproname.indexOf('量子号') > -1) {
 						mainVM.quantumcruises.push(unit);
+						return true;
+					}
 					//欧美（先欧洲）
-					if (unit.tourproname.indexOf('欧洲') > -1)
+					if (unit.tourproname.indexOf('欧洲') > -1) {
 						mainVM.europeandamericas.push(unit);
+						return true;
+					}
 					//欧美（再美国)
-					if (unit.tourproname.indexOf('美国') > -1)
+					if (unit.tourproname.indexOf('美国') > -1) {
 						mainVM.europeandamericas.push(unit);
+						return true;
+					}
 					//澳大利亚
-					if (unit.tourproname.indexOf('澳洲新西兰') > -1)
+					if (unit.tourproname.indexOf('澳洲新西兰') > -1) {
 						mainVM.australia.push(unit);
+						return true;
+					}
 					//马尔代夫
-					if (unit.tourproname.indexOf('马代') > -1)
+					if (unit.tourproname.indexOf('马代') > -1) {
 						mainVM.maldives.push(unit);
+						return true;
+					}
 					//泰国
+					if (unit.tourproname.indexOf('泰国') > -1) {
+						mainVM.maldives.push(unit);
+						return true;
+					}
 					//南岳祈福
+					if (unit.tourproname.indexOf('南岳') > -1) {
+						mainVM.maldives.push(unit);
+						return true;
+					}
+					//机票
+					if (unit.tourproname.indexOf('机票') > -1) {
+						mainVM.internationalticket.push(unit);
+						return true;
+					}
 				});
 			});
 		});
@@ -373,7 +406,7 @@
 <body ms-controller="main">
 
 <!--TODO: DEBUG-->
-<ul>
+<ul style="display:none;">
 	<li ms-repeat-unit="nanyueblessing">{{unit.tourproname}}</li>
 	<li ms-repeat-unit="internationalticket">{{unit.tourproname}}</li>
 	<li ms-repeat-unit="visa">{{unit.tourproname}}</li>
@@ -505,8 +538,12 @@
 			/* background: #F00; */
 			width: 25%;
 			height: 67%;
-			right: 3%;
+			right: 1.3%;
 			top: 21%;
+			line-height: 46.22px;
+			text-align: center;
+			color: #FFF;
+			font-size: 20px;
 		}
 
 		#nwlottery > img.lotteryimg {
@@ -529,8 +566,8 @@
 		<img alt="" class="lotteryimg" src="./images/nwlottery10.png">
 		<img alt="" class="lotteryimg" src="./images/nwlottery20.png">
 		<img alt="" class="lotteryimg" src="./images/nwlottery50.png">
-		<img src="./images/newyearlottery.png" alt="">
-		<div id="lotteryBtn" running="0"></div>
+		<img src="./images/kaimenhong/newyearlottery.png" alt="">
+		<div id="lotteryBtn" running="0">点击抽奖</div>
 	</div>
 	<script>
 		//在微信中才显示抽奖活动
@@ -546,11 +583,12 @@
 				alert('您正在抽奖中');
 				return false;
 			}
-			//设置运行状态为1
-			$('#lotteryBtn').attr('running', 1);
-			//TODO:现在都是测试数据
 			$.getJSON(server_addr + '/miaosha/miaosha_addChouJiangOrder.action?jsoncallback=?&userid=' + '636773', function (result) {
-				if (result.status == '1' || true) {
+				console.log('抽奖结果：',result);
+				//TODO:现在都是测试数据，记得要把true关掉！
+				if (result.status == '1') {
+					//设置运行状态为1
+					$('#lotteryBtn').attr('running', 1);
 					//返回成功的处理
 					var _maxCicle    = 50;	//默认先滚动多少次
 					var _circleCount = 0;	//滚动计数器
@@ -572,6 +610,7 @@
 							clearInterval(_siPoint);
 							//设置运行状态为0
 							$('#lotteryBtn').attr('running', 0);
+							$('#lotteryBtn').text('剩余次数:'+result.count);
 						}
 					}, 100);
 				} else {
@@ -579,6 +618,11 @@
 					var errMsg = '';
 					if (result.status == '102') {
 						errMsg = '您已参加过抽奖，请点击右上角进入用户中心查看。';
+						$('#lotteryBtn').text('次数已用完');
+					}
+					if (result.status == '103') {
+						errMsg = '活动尚未开始，敬请期待。';
+						$('#lotteryBtn').text('尚未开始');
 					}
 					if (errMsg != '') {
 						alert(errMsg);
@@ -611,7 +655,7 @@
 		<div class="price">&yen;{{unit.leastprice}}</div>
 		<div class="date">{{unit.tourdescdate.split(',')[0]}}</div>
 		<div class="desc">{{unit.startcity}}-{{unit.nation}}</div>
-		<a ms-attr-href="{{unit.lineid}}" class="link">查看详情</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="link">查看详情</a>
 	</div>
 </div>
 <!--签证-->
@@ -625,7 +669,7 @@
 	<div class="visa-unit" ms-repeat-unit="visa">
 		<div class="price">&yen;{{unit.leastprice}}</div>
 		<div class="desc">{{unit.tourproname}}</div>
-		<a ms-attr-href="{{unit.lineid}}" class="link">查看详情</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="link">查看详情</a>
 	</div>
 </div>
 
@@ -643,9 +687,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -662,9 +706,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -681,9 +725,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -700,9 +744,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -719,9 +763,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -738,9 +782,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -757,9 +801,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -776,9 +820,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -795,9 +839,9 @@
 		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>30000元</span></div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="{{unit.lineid}}" class="buybuybuy">立即预订</a>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
 </div>
@@ -805,7 +849,7 @@
 
 <script>
 	$(document).ready(function () {
-		$('.havaicon').prepend('<div class="icon"></div>');
+		$('#thailand,#maldives,#taiwan,#australia,#japan,#wildsmiles,#phuket,#quantumcruises,#europeandamericas').prepend('<div class="icon"></div>');
 	});
 </script>
 </body>
