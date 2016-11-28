@@ -113,7 +113,7 @@
 			font-size: 18px;
 			line-height: 45px;
 			position: absolute;
-			left: 130px;
+			left: 100px;
 			top: 0;
 		}
 
@@ -121,7 +121,7 @@
 			color: #000;
 			font-size: 18px;
 			line-height: 45px;
-			left: 280px;
+			left: 225px;
 			top: 0;
 			position: absolute;
 			width: 12em;
@@ -333,11 +333,21 @@
 					if (unit.pricedescribe == '') {
 						unit.pricedescribe = (parseInt(unit.leastprice / 0.8 / 10)) + '0';
 					}
-					//签证
-					if (unit.tourproname.indexOf('签证') > -1) {
-						mainVM.visa.push(unit);
-						return true;
+					//签证和机票的 tourtype=='单项服务'
+					if (unit.tourtype=='单项服务') {
+						//机票
+						if (unit.tourproname.indexOf('机票') > -1) {
+							mainVM.internationalticket.push(unit);
+							return true;
+						}
+						//签证
+						if (unit.tourproname.indexOf('签证') > -1) {
+							mainVM.visa.push(unit);
+							return true;
+						}
+						return false;
 					}
+
 					//野斯米兰
 					if (unit.tourproname.indexOf('墅斯米兰') > -1) {
 						mainVM.wildsmiles.push(unit);
@@ -393,11 +403,6 @@
 						mainVM.maldives.push(unit);
 						return true;
 					}
-					//机票
-					if (unit.tourproname.indexOf('机票') > -1) {
-						mainVM.internationalticket.push(unit);
-						return true;
-					}
 				});
 			});
 		});
@@ -434,8 +439,8 @@
 <!--红包规则-->
 <style>
 	#redpacketrules {
-		width: 353px;
-		height: 49px;
+		width: 463px;
+		height: 62px;
 		margin: 10px 0 0 10px;
 		position: relative;
 		background: url(images/kaimenhong/bg_rules.png) left top no-repeat;
@@ -448,8 +453,8 @@
 	}
 </style>
 <div id="redpacketrules">
-	<div class="floatpanel" data-am-modal="{target: '#ruleinfo'}" style="width: 87px; height: 21px; left: 240px; top: 1px;"><!--规则点击--></div>
-	<div class="floatpanel" data-am-modal="{target: '#packetinfo'}" style="width: 87px; height: 21px; left: 266px; top: 29px;"><!--礼包点击--></div>
+	<div class="floatpanel" data-am-modal="{target: '#ruleinfo'}" style="width: 112px; height: 28px; left: 314px; top: 0px; "><!--规则点击--></div>
+	<div class="floatpanel" data-am-modal="{target: '#packetinfo'}" style="width: 112px;height: 28px;left: 347px;top: 36px;"><!--礼包点击--></div>
 </div>
 
 <style>
@@ -654,7 +659,7 @@
 	<div class="ticket-unit" ms-repeat-unit="internationalticket">
 		<div class="price">&yen;{{unit.leastprice}}</div>
 		<div class="date">{{unit.tourdescdate.split(',')[0]}}</div>
-		<div class="desc">{{unit.startcity}}-{{unit.nation}}</div>
+		<div class="desc">{{unit.startcity}}-{{unit.nation}}往返</div>
 		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="link">查看详情</a>
 	</div>
 </div>
@@ -674,6 +679,16 @@
 </div>
 
 <!--出境游折后红包再降-->
+<style>
+	#hongbaozaijiang {
+		width: 640px;
+		height: 86px;
+		background:url(images/kaimenhong/title_tour.png) no-repeat center 15px;
+	}
+</style>
+<div id="hongbaozaijiang">
+
+</div>
 <!--泰国-->
 <style>
 	#thailand {
