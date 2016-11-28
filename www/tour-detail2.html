@@ -51,6 +51,7 @@
 				travelerList: [],	//出行人数组
 				currentAdult: [],	//临时填充的成人出行人数组信息，因为用mvvm框架生成出行人表单会清空数据！所以采用这个机制记录一下，每次更新出行人input就会保存所有出行人信息到这里，生成的时候自动填充
 				currentChild: [],	//临时填充的儿童出行人数组信息
+				discount:     0,	//可用折扣卷的总价，如果小于等于0就不能用优惠券
 
 				galleryRendered:  function (type) {
 					$('#galleryAD').show();
@@ -121,8 +122,10 @@
 				if (result.status != 1) {
 					alert('该产品已经过期或不存在，请点击左上角返回首页');
 				}
-				tourVM.detail = result;
-				tourVM.nation = result.value.nation.split(',');
+				tourVM.detail   = result;
+				tourVM.nation   = result.value.nation.split(',');
+				//TODO: 下面是测试数据记得还原成这一行 tourVM.discount = result.value2.discount;	//设定折扣卷信息
+				tourVM.discount = 70;
 			});
 			$.getJSON(server_addr + '/mobile/ipad_queryTourTeam.action?jsoncallback=?&lineid=' + lineid, function (result) {
 				tourVM.tourdate   = result.value;
@@ -135,10 +138,10 @@
 			/*TODO:用户ID记得改成mainVM.userid*/
 			$.getJSON(server_addr + '/miaosha/miaosha_queryMiaoShaOrderByGuestId.action?jsoncallback=?&userid=' + '636773', function (result) {
 				//获得优惠券后，先从高到低金额排序
-				result.sort(function(a,b){
-					if (a.fraction<b.fraction){
+				result.sort(function (a, b) {
+					if (a.fraction < b.fraction) {
 						return 1;
-					}else{
+					} else {
 						return -1;
 					}
 				});
@@ -213,7 +216,7 @@
 			});
 
 			//点击优惠券
-			$('#order-modal').delegate('.lottery-card', 'click', function(result){
+			$('#order-modal').delegate('.lottery-card', 'click', function (result) {
 				console.log($(this).attr('discount'), $(this).attr('cardid'), $(this).text());
 			});
 		});
@@ -275,11 +278,11 @@
 						//成功的处理
 						//console.log('成功');
 						var oderInfo = ''
-							+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
-							+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
-							+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
-							+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
-							+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
+								+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
+								+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
+								+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
+								+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
+								+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
 
 						$('#order-message .order-message-title').text('订单提交成功！');
 						//$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'您的操作已经被我们收集整理，'+alertMsg+'很快将由业务人员联系您，请保持通讯畅通．感谢您对华天国际旅行社的支持！');
@@ -315,11 +318,11 @@
 						//成功的处理
 						//console.log('成功');
 						var oderInfo = ''
-							+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
-							+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
-							+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
-							+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
-							+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
+								+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
+								+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
+								+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
+								+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
+								+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
 
 						$('#order-message .order-message-title').text('进入微信支付流程');
 						//$('#order-message .order-message-content').css({'text-align':'left'}).html(oderInfo+'请点击 <a target="_blank" class="am-btn am-btn-success" href="http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id='+result.orderParam.sys_show_order_id+'&message_info='+result._message_info_+'">微信支付</a> 付款');
@@ -356,11 +359,11 @@
 						//成功的处理
 						//console.log('成功');
 						var oderInfo = ''
-							+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
-							+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
-							+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
-							+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
-							+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
+								+ '<strong style="color:#000;">' + result.orderParam.tourproname + '</strong><br/>'
+								+ '<strong style="color:#F00;">订单单价：</strong>&yen;' + result.orderParam.personprice + '元<br/>'
+								+ '<strong style="color:#F00;">参团人数：</strong>' + result.orderParam.person_num + '人<br/>'
+								+ '<strong style="color:#F00;">订单总价：</strong>&yen;' + result.orderParam.order_amount + '元<br/>'
+								+ '<strong style="color:#F00;">订单单号：</strong>' + result.orderParam.sys_show_order_id + '<br/>';
 
 						$('#order-message .order-message-title').text('订单确认');
 						//如果在IOS设备则需要用这个方式:cordova.InAppBrowser.open('http://www.htyou.com/tour/tourorder_payForShowSysOrder.action?sys_show_order_id=C160322314241', '_blank', 'location=yes');
@@ -1412,20 +1415,11 @@
 								background-color: #FF6400;
 							}
 						</style>
-						<div class="am-form-group am-input-group">
+						{{discount}}
+						<div class="am-form-group am-input-group" ms-visible="discount>0">
 							<span class="am-input-group-label">优惠券</span>
 							<div>
-								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs" ms-attr-discount="{{unit.fraction}}" ms-attr-cardid="{{unit.id}}" ms-visible="unit.fraction>0">{{unit.miaoshaname}}</button>
-								<!--								<button type="button" class="am-btn am-btn-primary am-radius am-btn-xs"><span>现金券</span>5元
-																</button>
-																<button type="button" class="am-btn am-btn-warning am-radius am-btn-xs">10元</button>
-																<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">15元</button>
-																<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">20元</button>
-																<button type="button" class="am-btn am-btn-default am-radius am-btn-xs">999元</button>
-																<button type="button" class="am-btn am-btn-secondary am-radius am-btn-xs">1000元</button>
-																<button type="button" class="am-btn am-btn-danger am-radius am-btn-xs">9999元</button>
-																<button type="button" class="am-btn am-btn-success am-radius am-btn-xs">10000元</button>
-																<button type="button" class="am-btn am-btn-success am-active am-radius am-btn-xs">99999元</button>-->
+								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs" ms-attr-discount="{{unit.fraction}}" ms-attr-cardid="{{unit.sys_show_order_id}}" ms-visible="unit.fraction>0">{{unit.miaoshaname}}</button>
 							</div>
 						</div>
 

@@ -215,7 +215,7 @@ http://www.htyou.com/user/htuser_queryPassengerInfo.action?userid=636773
 
 #### 验证优惠券接口
 地址：
-- /mobile／tourorder_isVaildCoupon.action
+- /mobile/ourorder_isVaildCoupon.action
 ps : 线路必须设置discount 字段
 
 参数：
@@ -223,5 +223,5 @@ ps : 线路必须设置discount 字段
 - lineid: 线路ID
 
 返回：
-- status:1 正常,104 不可优惠,105 线路不存在
+- status:1 正常,104 不可优惠,105 线路不存在,103 优惠卷ID不存在
 - sumFraction: 优惠金额共计
