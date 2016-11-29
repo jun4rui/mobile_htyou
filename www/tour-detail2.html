@@ -125,8 +125,8 @@
 				}
 				tourVM.detail   = result;
 				tourVM.nation   = result.value.nation.split(',');
-				//TODO: 下面是测试数据记得还原成这一行 tourVM.discount = result.value2.discount;	//设定折扣卷信息
-				tourVM.discount = 500;
+				tourVM.discount = result.value2.discount;	//设定折扣卷信息
+
 			});
 			$.getJSON(server_addr + '/mobile/ipad_queryTourTeam.action?jsoncallback=?&lineid=' + lineid, function (result) {
 				tourVM.tourdate   = result.value;
@@ -160,40 +160,80 @@
 			//点击优惠券
 			$('#order-modal').delegate('.lottery-card', 'click', function (result) {
 				//判断点击的优惠券在什么状态
-				if ($(this).attr('class').indexOf('select')>-1){
+				if ($(this).attr('class').indexOf('select') > -1) {
 					//在选择状态的切换为不选择状态
 					$(this).removeClass('select');
 					//将图标改成不勾选状态
-					$(this).children('i').attr('class','am-icon-square-o');
-				}else{
+					$(this).children('i').attr('class', 'am-icon-square-o');
+				} else {
 					//在不选择状态的切换成选择状态
 					$(this).addClass('select');
 					//将图标改成不勾选状态
-					$(this).children('i').attr('class','am-icon-check-square-o');
+					$(this).children('i').attr('class', 'am-icon-check-square-o');
 				}
 			});
 
 			//点击“用券”按钮事件
-			$('#add-coupon').click(function(){
+			$('#add-coupon').click(function () {
 				console.log('用券Button.');
 				//没有选择任何券，就提示用户点击下面的券列表
-				if ( $('.lottery-card.select').length==0 ){
+				if ($('.lottery-card.select').length == 0) {
 					alert('请至少选择一个优惠券');
+					return false;
 				}
+
 				//先统计所有的 .lottery-card.select 的价格
 				var discountCount = 0;
-				$('.lottery-card.select').map(function(){
-					discountCount = discountCount+ parseInt($(this).attr('discount'));
+				//将cardid记录到数组备用
+				var _cardidList   = [];
+				$('.lottery-card.select').map(function () {
+					discountCount = discountCount + parseInt($(this).attr('discount'));
+					_cardidList.push($(this).attr('cardid'));
 				});
-				console.log('Discount Count:', discountCount);
+				console.log('Discount Count:', discountCount, _cardidList);
 				//检查选择的优惠券价格是否超过限定价格，超过就提示报错
-				if (tourVM.discount<discountCount){
-					alert('最大折扣金额为'+tourVM.discount+'，您选择的券金额为'+discountCount+'，超过了折扣额度。');
+				if (tourVM.discount < discountCount) {
+					alert('最大折扣金额为' + tourVM.discount + '，您选择的券金额为' + discountCount + '，超过了折扣额度。');
 					return false;
 				}
 				//没超过就调用接口检查
-					//接口成功就将有券的样式都改变成已使用的样式
-					//没成功则提示错误信息
+				var _lineid = getParameterValue(window.location.href, 'lineid');	//获取lineid
+				console.log('Coupon:',server_addr + '/mobile/tourorder_isVaildCoupon.action?jsoncallback=?&lineid='+_lineid+'&coupon=' + _cardidList.join(','));
+				$.getJSON(server_addr + '/mobile/tourorder_isVaildCoupon.action?jsoncallback=?&lineid='+_lineid+'&coupon=' + _cardidList.join(','), function (result) {
+					console.log('result:', result);
+					if (result.status == 1) {
+						//首先将清空原有使用的优惠券
+						$('.lottery-card-selected').children('i').attr('class','am-icon-square-o');
+						$('.lottery-card-selected').removeClass('lottery-card-selected am-btn-warning').addClass('lottery-card am-btn-success');
+
+						//返回成功的处理
+						//接口成功就将有券的样式都改变成已使用的样式，循环所有lottery-card，判断cardid在_cardidList中就转变样式
+						$('.lottery-card').map(function(){
+							if (_cardidList.join().indexOf( $(this).attr('cardid') )>-1){
+								$(this).removeClass('lottery-card select am-btn-success').addClass('lottery-card-selected am-btn-warning');
+								$(this).children('i').attr('class','am-icon-lock');
+							}
+						});
+						//记录到数组变量
+						tourVM.couponSelected = _cardidList;
+						console.log('cardidlist:',tourVM.couponSelected);
+						alert('折扣卷可用，将抵扣'+result.sumFraction+'元');
+					} else {
+						//返回失败的处理
+						var errMsg = '';
+						if (result.status == '104')
+							errMsg = '该产品不能使用优惠券';
+						if (result.status == '105')
+							errMsg = '该产品不存在';
+						if (result.status == '103')
+							errMsg = '优惠券不存在';
+						if (errMsg != '') {
+							//提示错误信息
+							alert(errMsg);
+							return false;
+						}
+					}
+				});
 			});
 
 
@@ -1443,27 +1483,28 @@
 						</div>
 
 						<style scoped>
-							.lottery-card {
+							.lottery-card,
+							.lottery-card-selected {
 								margin: 0 .5em .5em 0;
 							}
 
 							.lottery-card.select {
 								border-color: #669156;
-								background-color: #3f913f;
+								background-color: #3F913F;
 							}
 						</style>
 						<div class="am-form-group am-input-group" ms-visible="discount>0">
 							<span class="am-input-group-label">最多可用卷</span>
 							<div style="line-height: 36px;">
 								{{discount}}元
-								<button  class="am-btn am-btn-warning" id="add-coupon">
-									<i class="am-icon-shopping-cart"></i>
+								<button class="am-btn am-btn-warning am-align-right am-radius am-btn-xs" id="add-coupon" style="margin:6px 0;">
+									<i class="am-icon-ticket"></i>
 									用券
-								</button >
+								</button>
 							</div>
 						</div>
 						<div class="am-form-group am-input-group" ms-visible="discount>0">
-							<span class="am-input-group-label" style="vertical-align: top;">优惠券</span>
+							<!--<span class="am-input-group-label" style="vertical-align: top;">优惠券</span>-->
 							<div>
 								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs" ms-attr-discount="{{unit.fraction}}" ms-attr-cardid="{{unit.sys_show_order_id}}" ms-visible="unit.fraction>0">
 									<i class="am-icon-square-o"></i>
@@ -1577,6 +1618,11 @@
 			});
 		});
 	});
+
+
+
+	//TODO: 手工打开购买面板
+	$('#order-modal').modal('open');
 </script>
 </body>
 </html>
