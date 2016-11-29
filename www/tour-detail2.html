@@ -35,23 +35,24 @@
 		var lineid = getParameterValue(window.location.href, 'lineid');
 		avalon.ready(function () {
 			var tourVM = avalon.define({
-				$id:          'tour',
-				detail:       {},
-				nation:       [],
-				tourdate:     [],
-				tourtype:     '其它',
-				adultPrice:   0,	//成人单价
-				childPrice:   0,	//儿童单价
-				adultNum:     1,	//成人人数
-				childNum:     0,	//儿童人数
-				adultList:    [1],	//成人数组
-				childList:    [],	//儿童数组
-				lotteryList:  [],	//优惠券信息
-				lotteryCard:  '',	//当前所选择的优惠券
-				travelerList: [],	//出行人数组
-				currentAdult: [],	//临时填充的成人出行人数组信息，因为用mvvm框架生成出行人表单会清空数据！所以采用这个机制记录一下，每次更新出行人input就会保存所有出行人信息到这里，生成的时候自动填充
-				currentChild: [],	//临时填充的儿童出行人数组信息
-				discount:     0,	//可用折扣卷的总价，如果小于等于0就不能用优惠券
+				$id:            'tour',
+				detail:         {},
+				nation:         [],
+				tourdate:       [],
+				tourtype:       '其它',
+				adultPrice:     0,	//成人单价
+				childPrice:     0,	//儿童单价
+				adultNum:       1,	//成人人数
+				childNum:       0,	//儿童人数
+				adultList:      [1],	//成人数组
+				childList:      [],	//儿童数组
+				lotteryList:    [],	//优惠券信息
+				lotteryCard:    '',	//当前所选择的优惠券
+				travelerList:   [],	//出行人数组
+				currentAdult:   [],	//临时填充的成人出行人数组信息，因为用mvvm框架生成出行人表单会清空数据！所以采用这个机制记录一下，每次更新出行人input就会保存所有出行人信息到这里，生成的时候自动填充
+				currentChild:   [],	//临时填充的儿童出行人数组信息
+				discount:       0,	//可用折扣卷的总价，如果小于等于0就不能用优惠券
+				couponSelected: [],	//用户选择的优惠券
 
 				galleryRendered:  function (type) {
 					$('#galleryAD').show();
@@ -125,7 +126,7 @@
 				tourVM.detail   = result;
 				tourVM.nation   = result.value.nation.split(',');
 				//TODO: 下面是测试数据记得还原成这一行 tourVM.discount = result.value2.discount;	//设定折扣卷信息
-				tourVM.discount = 70;
+				tourVM.discount = 500;
 			});
 			$.getJSON(server_addr + '/mobile/ipad_queryTourTeam.action?jsoncallback=?&lineid=' + lineid, function (result) {
 				tourVM.tourdate   = result.value;
@@ -154,6 +155,47 @@
 			avalon.filters.nl2br = function (str) {
 				return str.replace(/\n/g, '<br/>');
 			};
+
+			//优惠券点击事件
+			//点击优惠券
+			$('#order-modal').delegate('.lottery-card', 'click', function (result) {
+				//判断点击的优惠券在什么状态
+				if ($(this).attr('class').indexOf('select')>-1){
+					//在选择状态的切换为不选择状态
+					$(this).removeClass('select');
+					//将图标改成不勾选状态
+					$(this).children('i').attr('class','am-icon-square-o');
+				}else{
+					//在不选择状态的切换成选择状态
+					$(this).addClass('select');
+					//将图标改成不勾选状态
+					$(this).children('i').attr('class','am-icon-check-square-o');
+				}
+			});
+
+			//点击“用券”按钮事件
+			$('#add-coupon').click(function(){
+				console.log('用券Button.');
+				//没有选择任何券，就提示用户点击下面的券列表
+				if ( $('.lottery-card.select').length==0 ){
+					alert('请至少选择一个优惠券');
+				}
+				//先统计所有的 .lottery-card.select 的价格
+				var discountCount = 0;
+				$('.lottery-card.select').map(function(){
+					discountCount = discountCount+ parseInt($(this).attr('discount'));
+				});
+				console.log('Discount Count:', discountCount);
+				//检查选择的优惠券价格是否超过限定价格，超过就提示报错
+				if (tourVM.discount<discountCount){
+					alert('最大折扣金额为'+tourVM.discount+'，您选择的券金额为'+discountCount+'，超过了折扣额度。');
+					return false;
+				}
+				//没超过就调用接口检查
+					//接口成功就将有券的样式都改变成已使用的样式
+					//没成功则提示错误信息
+			});
+
 
 			//刷新出行人的函数
 			function getTraveler() {
@@ -213,11 +255,6 @@
 					});
 				}
 				console.log('Continue.');
-			});
-
-			//点击优惠券
-			$('#order-modal').delegate('.lottery-card', 'click', function (result) {
-				console.log($(this).attr('discount'), $(this).attr('cardid'), $(this).text());
 			});
 		});
 
@@ -1410,16 +1447,28 @@
 								margin: 0 .5em .5em 0;
 							}
 
-							.lottery-card:hover {
-								border-color: #A94444;
-								background-color: #FF6400;
+							.lottery-card.select {
+								border-color: #669156;
+								background-color: #3f913f;
 							}
 						</style>
-						{{discount}}
 						<div class="am-form-group am-input-group" ms-visible="discount>0">
-							<span class="am-input-group-label">优惠券</span>
+							<span class="am-input-group-label">最多可用卷</span>
+							<div style="line-height: 36px;">
+								{{discount}}元
+								<button  class="am-btn am-btn-warning" id="add-coupon">
+									<i class="am-icon-shopping-cart"></i>
+									用券
+								</button >
+							</div>
+						</div>
+						<div class="am-form-group am-input-group" ms-visible="discount>0">
+							<span class="am-input-group-label" style="vertical-align: top;">优惠券</span>
 							<div>
-								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs" ms-attr-discount="{{unit.fraction}}" ms-attr-cardid="{{unit.sys_show_order_id}}" ms-visible="unit.fraction>0">{{unit.miaoshaname}}</button>
+								<button ms-repeat-unit="lotteryList" type="button" class="lottery-card am-btn am-btn-success am-radius am-btn-xs" ms-attr-discount="{{unit.fraction}}" ms-attr-cardid="{{unit.sys_show_order_id}}" ms-visible="unit.fraction>0">
+									<i class="am-icon-square-o"></i>
+									{{unit.miaoshaname}}
+								</button>
 							</div>
 						</div>
 

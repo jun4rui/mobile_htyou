@@ -217,6 +217,7 @@ http://www.htyou.com/user/htuser_queryPassengerInfo.action?userid=636773
 地址：
 - /mobile/ourorder_isVaildCoupon.action
 ps : 线路必须设置discount 字段
+sample: http://www.htyou.com/mobile/tourorder_isVaildCoupon.action?lineid=14036&coupon=D161116314725,D161116314726
 
 参数：
 - coupon: 优惠券订单id 从优惠卷接口能获得的字段叫sys_show_order_id，可以同时使用多个，用','逗号分隔
