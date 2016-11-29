@@ -37,7 +37,7 @@
 		/*页面有两种模块*/
 		.panel {
 			position: relative;
-			margin-top: 10px;
+			margin-top: 25px;
 		}
 
 		/*大图模块*/
@@ -68,7 +68,8 @@
 		.panel > .icon {
 			position: absolute;
 			left: 10px;
-			top: 0;
+			top: -12px;
+			z-index: 9;
 			width: 50px;
 			height: 51px;
 			background-image: url(images/kaimenhong/icon_tour.png);
@@ -308,15 +309,11 @@
 				internationalticket: [],	//国际机票产品列表
 				visa:                [],	//签证产品列表
 
-				thailand:          [],	//泰国产品列表
-				maldives:          [],	//马尔代夫产品列表
-				taiwan:            [],	//台湾产品列表
-				australia:         [],	//澳大利亚产品列表
-				japan:             [],	//日本产品列表
-				wildsmiles:        [],	//墅斯米兰产品列表
-				phuket:            [],	//普吉岛产品列表
-				quantumcruises:    [],	//量子号产品邮轮产品列表
-				europeandamericas: []	//欧美产品列表
+				thailand:   [],	//泰国产品列表
+				qingmai:    [],	//清迈产品列表
+				riben:      [],	//日本产品列表
+				shusimilan: [],	//墅斯米兰产品列表
+				pujidao:    [],	//普吉岛产品列表
 			});
 
 			avalon.scan();
@@ -334,7 +331,7 @@
 						unit.pricedescribe = (parseInt(unit.leastprice / 0.8 / 10)) + '0';
 					}
 					//签证和机票的 tourtype=='单项服务'
-					if (unit.tourtype=='单项服务') {
+					if (unit.tourtype == '单项服务') {
 						//机票
 						if (unit.tourproname.indexOf('机票') > -1) {
 							mainVM.internationalticket.push(unit);
@@ -348,19 +345,19 @@
 						return false;
 					}
 
-					//野斯米兰
-					if (unit.tourproname.indexOf('墅斯米兰') > -1) {
-						mainVM.wildsmiles.push(unit);
+					//泰国
+					if (unit.tourproname.indexOf('泰国') > -1) {
+						mainVM.thailand.push(unit);
 						return true;
 					}
-					//台湾
-					if (unit.tourproname.indexOf('台湾') > -1) {
-						mainVM.taiwan.push(unit);
+					//清迈
+					if (unit.tourproname.indexOf('清迈') > -1) {
+						mainVM.qingmai.push(unit);
 						return true;
 					}
-					//普吉
-					if (unit.tourproname.indexOf('普吉') > -1) {
-						mainVM.phuket.push(unit);
+					//日本
+					if (unit.tourproname.indexOf('日本') > -1) {
+						mainVM.riben.push(unit);
 						return true;
 					}
 					//日本
@@ -368,34 +365,14 @@
 						mainVM.japan.push(unit);
 						return true;
 					}
-					//量子号邮轮
-					if (unit.tourproname.indexOf('量子号') > -1) {
-						mainVM.quantumcruises.push(unit);
+					//墅斯米兰
+					if (unit.tourproname.indexOf('墅斯米兰') > -1) {
+						mainVM.shusimilan.push(unit);
 						return true;
 					}
-					//欧美（先欧洲）
-					if (unit.tourproname.indexOf('欧洲') > -1) {
-						mainVM.europeandamericas.push(unit);
-						return true;
-					}
-					//欧美（再美国)
-					if (unit.tourproname.indexOf('美国') > -1) {
-						mainVM.europeandamericas.push(unit);
-						return true;
-					}
-					//澳大利亚
-					if (unit.tourproname.indexOf('澳洲新西兰') > -1) {
-						mainVM.australia.push(unit);
-						return true;
-					}
-					//马尔代夫
-					if (unit.tourproname.indexOf('马代') > -1) {
-						mainVM.maldives.push(unit);
-						return true;
-					}
-					//泰国
-					if (unit.tourproname.indexOf('泰国') > -1) {
-						mainVM.maldives.push(unit);
+					//普吉岛
+					if (unit.tourproname.indexOf('普吉岛') > -1) {
+						mainVM.pujidao.push(unit);
 						return true;
 					}
 					//南岳祈福
@@ -453,8 +430,8 @@
 	}
 </style>
 <div id="redpacketrules">
-	<div class="floatpanel" data-am-modal="{target: '#ruleinfo'}" style="width: 112px; height: 28px; left: 314px; top: 0px; "><!--规则点击--></div>
-	<div class="floatpanel" data-am-modal="{target: '#packetinfo'}" style="width: 112px;height: 28px;left: 347px;top: 36px;"><!--礼包点击--></div>
+	<div class="floatpanel" data-am-modal="{target: '#ruleinfo'}" style="width: 112px;height: 26px;left: 189px;top: 0px;"><!--规则点击--></div>
+	<div class="floatpanel" data-am-modal="{target: '#packetinfo'}" style="width: 112px;height: 26px;left: 347px;top: 36px;"><!--礼包点击--></div>
 </div>
 
 <style>
@@ -566,8 +543,8 @@
 		}
 	</style>
 	<div id="nwlottery">
-		<img alt="" class="lotteryimg active" src="./images/nwlottery0.png">
-		<img alt="" class="lotteryimg" src="./images/nwlottery5.png">
+		<img alt="" class="lotteryimg" src="./images/nwlottery0.png">
+		<img alt="" class="lotteryimg active" src="./images/nwlottery5.png">
 		<img alt="" class="lotteryimg" src="./images/nwlottery10.png">
 		<img alt="" class="lotteryimg" src="./images/nwlottery20.png">
 		<img alt="" class="lotteryimg" src="./images/nwlottery50.png">
@@ -589,7 +566,7 @@
 				return false;
 			}
 			$.getJSON(server_addr + '/miaosha/miaosha_addChouJiangOrder.action?jsoncallback=?&userid=' + '636773', function (result) {
-				console.log('抽奖结果：',result);
+				console.log('抽奖结果：', result);
 				//TODO:现在都是测试数据，记得要把true关掉！
 				if (result.status == '1') {
 					//设置运行状态为1
@@ -615,7 +592,7 @@
 							clearInterval(_siPoint);
 							//设置运行状态为0
 							$('#lotteryBtn').attr('running', 0);
-							$('#lotteryBtn').text('剩余次数:'+result.count);
+							$('#lotteryBtn').text('剩余次数:' + result.count);
 						}
 					}, 100);
 				} else {
@@ -683,23 +660,22 @@
 	#hongbaozaijiang {
 		width: 640px;
 		height: 86px;
-		background:url(images/kaimenhong/title_tour.png) no-repeat center 15px;
+		background: url(images/kaimenhong/title_chujingyousongfudai.png) no-repeat center 15px;
 	}
 </style>
-<div id="hongbaozaijiang">
+<!--图片文字-->
+<div id="hongbaozaijiang"></div>
 
-</div>
 <!--泰国-->
 <style>
 	#thailand {
-		background-image: url(images/kaimenhong/title_taiguo.png);
+		background-image: url(images/kaimenhong/bg_taiguo.png);
 	}
 </style>
-<div id="thailand" class="panel panel-multitour havaicon">
+<div id="thailand" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="thailand" ms-visible="$index<2">
-		<div class="quota">限额10个</div>
-		<div class="coupon">红包限额50元</div>
+	<div class="tour-unit" ms-repeat-unit="thailand" ms-visible="$index<1">
+		<div class="quota">限额4个</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -708,17 +684,17 @@
 	</div>
 	<!--/线路单元-->
 </div>
-<!--马尔代夫-->
+
+<!--清迈-->
 <style>
-	#maldives {
-		background-image: url(images/kaimenhong/bg_maerdaifu.png);
+	#qingmai {
+		background-image: url(images/kaimenhong/bg_qingmai.png);
 	}
 </style>
-<div id="maldives" class="panel panel-bigpic havaicon">
+<div id="qingmai" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="maldives" ms-visible="$index<1">
-		<div class="quota">限额10个</div>
-		<div class="coupon">红包限额50元</div>
+	<div class="tour-unit" ms-repeat-unit="qingmai" ms-visible="$index<1">
+		<div class="quota">限额4个</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -727,55 +703,17 @@
 	</div>
 	<!--/线路单元-->
 </div>
-<!--台湾 TODO:台湾限额5个人-->
-<style>
-	#taiwan {
-		background-image: url(images/kaimenhong/title_taiwan.png);
-	}
-</style>
-<div id="taiwan" class="panel panel-multitour havaicon">
-	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="taiwan" ms-visible="$index<2">
-		<div class="quota">限额5个</div>
-		<div class="coupon">红包限额50元</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
-		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
-	</div>
-	<!--/线路单元-->
-</div>
-<!--澳大利亚-->
-<style>
-	#australia {
-		background-image: url(images/kaimenhong/bg_aodaliya.png);
-	}
-</style>
-<div id="australia" class="panel panel-bigpic havaicon">
-	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="australia" ms-visible="$index<1">
-		<div class="quota">限额10个</div>
-		<div class="coupon">红包限额50元</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
-		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
-	</div>
-	<!--/线路单元-->
-</div>
+
 <!--日本-->
 <style>
-	#japan {
-		background-image: url(images/kaimenhong/title_riben.png);
+	#riben {
+		background-image: url(images/kaimenhong/bg_riben.png);
 	}
 </style>
-<div id="japan" class="panel panel-multitour havaicon">
+<div id="riben" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="japan" ms-visible="$index<2">
-		<div class="quota">限额10个</div>
-		<div class="coupon">红包限额50元</div>
+	<div class="tour-unit" ms-repeat-unit="riben" ms-visible="$index<1">
+		<div class="quota">限额5个</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -784,17 +722,17 @@
 	</div>
 	<!--/线路单元-->
 </div>
-<!--野斯米兰-->
+
+<!--墅斯米兰-->
 <style>
-	#wildsmiles {
-		background-image: url(images/kaimenhong/bg_yesimilan.png);
+	#shusimilan {
+		background-image: url(images/kaimenhong/bg_shusimilan.png);
 	}
 </style>
-<div id="wildsmiles" class="panel panel-bigpic havaicon">
+<div id="shusimilan" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="wildsmiles" ms-visible="$index<1">
-		<div class="quota">限额10个</div>
-		<div class="coupon">红包限额50元</div>
+	<div class="tour-unit" ms-repeat-unit="shusimilan" ms-visible="$index<1">
+		<div class="quota">限额5个</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -803,17 +741,17 @@
 	</div>
 	<!--/线路单元-->
 </div>
-<!--普吉-->
+
+<!--普吉岛-->
 <style>
-	#phuket {
-		background-image: url(images/kaimenhong/title_puji.png);
+	#pujidao {
+		background-image: url(images/kaimenhong/bg_pujidao.png);
 	}
 </style>
-<div id="phuket" class="panel panel-multitour havaicon">
+<div id="pujidao" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="phuket" ms-visible="$index<2">
+	<div class="tour-unit" ms-repeat-unit="pujidao" ms-visible="$index<1">
 		<div class="quota">限额10个</div>
-		<div class="coupon">红包限额50元</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -822,49 +760,23 @@
 	</div>
 	<!--/线路单元-->
 </div>
-<!--量子号邮轮-->
+
+<!--底部文字-->
 <style>
-	#quantumcruises {
-		background-image: url(images/kaimenhong/bg_liangzihao.png);
+	#bottom-text {
+		background: url(images/kaimenhong/bg_text.png) no-repeat center center;
+		width: 640px;
+		height: 413px;
+		margin-top: 25px;
 	}
 </style>
-<div id="quantumcruises" class="panel panel-bigpic havaicon">
-	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="quantumcruises" ms-visible="$index<1">
-		<div class="quota">限额10个</div>
-		<div class="coupon">红包限额50元</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
-		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
-	</div>
-	<!--/线路单元-->
+<div id="bottom-text">
+
 </div>
-<!--欧美 20161125替换台湾线路位置提升到这里-->
-<style>
-	#europeandamericas {
-		background-image: url(images/kaimenhong/title_oumei.png);
-	}
-</style>
-<div id="europeandamericas" class="panel panel-multitour havaicon">
-	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="europeandamericas">
-		<div class="quota">限额10个</div>
-		<div class="coupon">红包限额50元</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
-		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
-	</div>
-	<!--/线路单元-->
-</div>
-<!--/出境游折后红包再降-->
 
 <script>
 	$(document).ready(function () {
-		$('#thailand,#maldives,#taiwan,#australia,#japan,#wildsmiles,#phuket,#quantumcruises,#europeandamericas').prepend('<div class="icon"></div>');
+		$('#thailand,#qingmai,#riben,#shusimilan,#pujidao').prepend('<div class="icon"></div>');
 	});
 </script>
 </body>
