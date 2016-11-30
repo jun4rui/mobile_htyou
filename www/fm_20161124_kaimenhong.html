@@ -579,7 +579,11 @@
 							//设置运行状态为0
 							$('#lotteryBtn').attr('running', 0);
 							$('#lotteryBtn').text('剩余次数:' + (2-parseInt(result.count)));
-							alert('您获得了'+result.miaoshaname+', 您可以在用户中心查看优惠券信息。');
+							if (_active==1){
+								alert('本次未获得任何优惠券，谢谢您的参与。');
+							}else{
+								alert('您获得了'+result.miaoshaname+', 您可以在用户中心查看优惠券信息。');
+							}
 						}
 					}, 100);
 				} else {
