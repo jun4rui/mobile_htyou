@@ -223,7 +223,7 @@ http://www.htyou.com/user/htuser_queryPassengerInfo.action?userid=636773
 |tourOrderVO.contact_name|联系人姓名|
 |tourOrderVO.contact_phone|联系人电话|
 |tourOrderVO.pay_type|支付方式|
-|tourOrderVO.preferential_price()|支付金额|
+|tourOrderVO.preferential_price|支付金额|
 |tourOrderVO.jzl_cteamcode|团号|
 |tourOrderVO.cuser|销售人员|
 |passengerIds|乘客id 已,分割|

@@ -275,6 +275,8 @@
 			color: #373636;
 			text-decoration: line-through;
 			font-size: 14px;
+
+			display:none;
 		}
 
 		.tour-unit > .orgprice > span {
@@ -346,7 +348,7 @@
 							return true;
 						}
 						//签证
-						if (unit.tourproname.indexOf('签证') > -1) {
+						if (unit.tourproname.indexOf('签证') > -1 || unit.tourproname.indexOf('入台证') > -1) {
 							mainVM.visa.push(unit);
 							return true;
 						}
@@ -539,8 +541,7 @@
 	</div>
 	<script>
 		//在微信中才显示抽奖活动
-		//TODO:现在是测试任何地方都显示
-		if (whereami() == 'weixin' || true) {
+		if (whereami() == 'weixin') {
 			$('#nwlottery').show();
 		}
 
@@ -551,9 +552,8 @@
 				alert('您正在抽奖中');
 				return false;
 			}
-			$.getJSON(server_addr + '/miaosha/miaosha_addChouJiangOrder.action?jsoncallback=?&userid=' + '636773', function (result) {
+			$.getJSON(server_addr + '/miaosha/miaosha_addChouJiangOrder.action?jsoncallback=?&userid=' + getParameterValue(window.location.href, 'userid'), function (result) {
 				console.log('抽奖结果：', result);
-				//TODO:现在都是测试数据，记得要把true关掉！
 				if (result.status == '1') {
 					//设置运行状态为1
 					$('#lotteryBtn').attr('running', 1);
@@ -578,7 +578,8 @@
 							clearInterval(_siPoint);
 							//设置运行状态为0
 							$('#lotteryBtn').attr('running', 0);
-							$('#lotteryBtn').text('剩余次数:' + result.count);
+							$('#lotteryBtn').text('剩余次数:' + (2-parseInt(result.count)));
+							alert('您获得了'+result.miaoshaname+', 您可以在用户中心查看优惠券信息。');
 						}
 					}, 100);
 				} else {
@@ -615,7 +616,7 @@
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
+		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
 		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
@@ -677,7 +678,7 @@
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
+		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
 		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
@@ -696,7 +697,7 @@
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
+		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
 		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
@@ -715,7 +716,7 @@
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
+		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
 		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
@@ -734,7 +735,7 @@
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
+		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
 		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->
@@ -753,7 +754,7 @@
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
+		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
 		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
 	</div>
 	<!--/线路单元-->

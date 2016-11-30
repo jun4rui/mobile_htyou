@@ -53,6 +53,7 @@
 				currentChild:   [],	//临时填充的儿童出行人数组信息
 				discount:       0,	//可用折扣卷的总价，如果小于等于0就不能用优惠券
 				couponSelected: [],	//用户选择的优惠券
+				couponTotal:	0,	//选用优惠券的总额
 
 				galleryRendered:  function (type) {
 					$('#galleryAD').show();
@@ -216,7 +217,10 @@
 						});
 						//记录到数组变量
 						tourVM.couponSelected = _cardidList;
+						tourVM.couponTotal = result.sumFraction;
+
 						console.log('cardidlist:',tourVM.couponSelected);
+
 						alert('折扣卷可用，将抵扣'+result.sumFraction+'元');
 					} else {
 						//返回失败的处理
@@ -954,7 +958,8 @@
 					<span class="am-block" ms-if="childPrice>0">儿童价：{{childPrice}}元/人x{{childNum}}</span>
 				</li>
 				<li>
-					<h4 class="am-popup-title" style="margin:0; color:#FD9001;border-left: 2px solid #D2D2D2;/* padding: 2px 0; *//* box-sizing: border-box; */">订单金额：{{adultPrice*adultNum+childPrice*childNum}}元</h4>
+					<!--TODO：这里总额还没有减去优惠券的价格-->
+					<h4 class="am-popup-title" style="margin:0; color:#FD9001;border-left: 2px solid #D2D2D2;/* padding: 2px 0; *//* box-sizing: border-box; */">订单金额：{{adultPrice*adultNum+childPrice*childNum-couponTotal}}元</h4>
 					<span data-am-modal-close class="am-close" style="color:#F00 !important; opacity: 1;">&times;</span>
 				</li>
 			</ul>
