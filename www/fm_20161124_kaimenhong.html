@@ -347,24 +347,19 @@
 						return false;
 					}
 
-					//泰国
-					if (unit.tourproname.indexOf('泰国') > -1) {
-						mainVM.thailand.push(unit);
-						return true;
-					}
 					//清迈
 					if (unit.tourproname.indexOf('清迈') > -1) {
 						mainVM.qingmai.push(unit);
 						return true;
 					}
-					//日本
-					if (unit.tourproname.indexOf('日本') > -1) {
-						mainVM.riben.push(unit);
+					//泰国
+					if (unit.tourproname.indexOf('泰国') > -1) {
+						mainVM.thailand.push(unit);
 						return true;
 					}
 					//日本
 					if (unit.tourproname.indexOf('日本') > -1) {
-						mainVM.japan.push(unit);
+						mainVM.riben.push(unit);
 						return true;
 					}
 					//墅斯米兰
@@ -373,13 +368,13 @@
 						return true;
 					}
 					//普吉岛
-					if (unit.tourproname.indexOf('普吉岛') > -1) {
+					if (unit.tourproname.indexOf('普吉') > -1) {
 						mainVM.pujidao.push(unit);
 						return true;
 					}
 					//南岳祈福
 					if (unit.tourproname.indexOf('南岳') > -1) {
-						mainVM.maldives.push(unit);
+						mainVM.nanyueblessing.push(unit);
 						return true;
 					}
 				});
@@ -625,7 +620,16 @@
 	}
 </style>
 <div id="nanyueblessing" class="panel panel-bigpic">
-
+	<!--线路单元-->
+	<div class="tour-unit" ms-repeat-unit="nanyueblessing" ms-visible="$index<1">
+		<!--<div class="quota">限额4个</div>-->
+		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
+		<div class="name">{{unit.tourproname}}</div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
+		<div class="discount">折扣价&yen;{{unit.leastprice}}元</div>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
+	</div>
+	<!--/线路单元-->
 </div>
 <!--国际机票-->
 <style>
