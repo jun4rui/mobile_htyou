@@ -19,7 +19,7 @@
 	<script src="./config.js?20160612"></script>
 	<script>
 		//如果没有userid参数进来，就跳转到微信一键登录页面
-		if (getParameterValue(window.location.href, 'userid')==''){
+		if (getParameterValue(window.location.href, 'userid') == '') {
 			window.location.href = 'http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=fm_20161124_kaimenhong.html';
 			alert('您尚未登录，系统将自动跳转到微信进行登录。');
 		}
@@ -389,23 +389,6 @@
 	</script>
 </head>
 <body ms-controller="main">
-
-<!--TODO: DEBUG-->
-<ul style="display:none;">
-	<li ms-repeat-unit="nanyueblessing">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="internationalticket">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="visa">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="thailand">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="maldives">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="taiwan">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="australia">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="japan">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="wildsmiles">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="phuket">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="quantumcruises">{{unit.tourproname}}</li>
-	<li ms-repeat-unit="europeandamericas">{{unit.tourproname}}</li>
-</ul>
-
 
 <!--顶部广告banner-->
 <style>
