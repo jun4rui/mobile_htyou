@@ -226,3 +226,35 @@ sample: http://www.htyou.com/mobile/tourorder_isVaildCoupon.action?lineid=14036&
 返回：
 - status:1 正常,104 不可优惠,105 线路不存在,103 优惠卷ID不存在
 - sumFraction: 优惠金额共计
+
+#### 微信专用页面跳转一键登录地址
+http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=活动页面
+- sample:
+http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=fm_20161124_kaimenhong.html
+
+
+#### TODO：2016年底开门红 福袋相关接口
+添加福袋数据  /mobile/tourorder_addLuckyBag.action  
+					参数： sys_show_order_id 订单id, bagprice 福袋总价格 , bagname福袋名称 已,分割 
+					返回： status：			1 //成功   102 //价格不对  103//订单未支付
+
+创发曹熙 2016/11/30 10:54:34
+
+7. 福袋数据静态展示 
+
+
+新年福袋含：
+旅游三宝（价值15元）、147
+背包（价值30元）、148
+水杯（价值20元）、149
+境外WiFi（35元/天）、150
+机场贵宾厅（198元/次 仅限国内厅使用）。151
+
+全场单笔订单满3000元赠送价值50元福袋，
+满8000元赠送价值100元福袋。 
+满10000元赠送价值120元福袋，
+满20000元赠送价值200元福袋。福袋内容可自由选择和组合，先到先得。
+
+8. 添加福袋数据  /mobile/tourorder_addLuckyBag.action  
+参数： sys_show_order_id 订单id, bagid 产品id 已,分割 
+返回： status：			1 //成功   102 //价格不对  103//订单未支付

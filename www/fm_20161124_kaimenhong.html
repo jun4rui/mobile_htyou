@@ -17,7 +17,13 @@
 	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css"/>
 	<!--js配置文件-->
 	<script src="./config.js?20160612"></script>
-
+	<script>
+		//如果没有userid参数进来，就跳转到微信一键登录页面
+		if (getParameterValue(window.location.href, 'userid')==''){
+			window.location.href = 'http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=fm_20161124_kaimenhong.html';
+			alert('您尚未登录，系统将自动跳转到微信进行登录。');
+		}
+	</script>
 	<style>
 		body {
 			padding: 0;
