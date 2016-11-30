@@ -211,7 +211,24 @@ http://www.htyou.com/user/htuser_addPassengerInfo.action?passengerVO.guestId=636
 http://www.htyou.com/user/htuser_queryPassengerInfo.action?userid=636773
 ```
 
-#### 新版提交订单接口（2016-11-21日）
+#### 新版提交订单接口（2016-11-30日）
+接口地址：```/mobile/tourorder_addTourOrder.action```
+参数：*待定已下必填*
+
+|参数名称|参数描述|
+|------|------|
+|tourOrderVO.order_source|订单来源  12 微信默认|
+|tourOrderVO.adult_num|成人数 关键|
+|tourOrderVO.child_num|儿童数 关键|
+|tourOrderVO.contact_name|联系人姓名|
+|tourOrderVO.contact_phone|联系人电话|
+|tourOrderVO.pay_type|支付方式|
+|tourOrderVO.preferential_price()|支付金额|
+|tourOrderVO.jzl_cteamcode|团号|
+|tourOrderVO.cuser|销售人员|
+|passengerIds|乘客id 已,分割|
+|userid|用户id 没有填0|
+
 
 #### 验证优惠券接口
 地址：
