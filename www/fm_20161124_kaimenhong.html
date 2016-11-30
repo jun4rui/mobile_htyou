@@ -20,7 +20,7 @@
 	<script>
 		//如果没有userid参数进来，就跳转到微信一键登录页面
 		if (getParameterValue(window.location.href, 'userid') == '') {
-			window.location.href = 'http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=fm_20161124_kaimenhong.html';
+			//window.location.href = 'http://ipad.htyou.com/weixin/thirdWebPageLoginHT.action?page_url=fm_20161124_kaimenhong.html';
 			alert('您尚未登录，系统将自动跳转到微信进行登录。');
 		}
 	</script>
@@ -276,7 +276,7 @@
 			text-decoration: line-through;
 			font-size: 14px;
 
-			display:none;
+			display: none;
 		}
 
 		.tour-unit > .orgprice > span {
@@ -324,6 +324,7 @@
 				riben:      [],	//日本产品列表
 				shusimilan: [],	//墅斯米兰产品列表
 				pujidao:    [],	//普吉岛产品列表
+				meiguo:     [],	//美国产品列表
 			});
 
 			avalon.scan();
@@ -380,11 +381,16 @@
 						mainVM.pujidao.push(unit);
 						return true;
 					}
-					//南岳祈福
-					if (unit.tourproname.indexOf('祈福') > -1) {
-						mainVM.nanyueblessing.push(unit);
+					//美国
+					if (unit.tourproname.indexOf('美国') > -1) {
+						mainVM.meiguo.push(unit);
 						return true;
 					}
+					//南岳祈福//20161130 这个写死，不用分析了
+					/*if (unit.tourproname.indexOf('祈福') > -1) {
+					 mainVM.nanyueblessing.push(unit);
+					 return true;
+					 }*/
 				});
 			});
 		});
@@ -578,11 +584,11 @@
 							clearInterval(_siPoint);
 							//设置运行状态为0
 							$('#lotteryBtn').attr('running', 0);
-							$('#lotteryBtn').text('剩余次数:' + (2-parseInt(result.count)));
-							if (_active==1){
+							$('#lotteryBtn').text('剩余次数:' + (2 - parseInt(result.count)));
+							if (_active == 1) {
 								alert('本次未获得任何优惠券，谢谢您的参与。');
-							}else{
-								alert('您获得了'+result.miaoshaname+', 您可以在用户中心查看优惠券信息。');
+							} else {
+								alert('您获得了' + result.miaoshaname + ', 您可以在用户中心查看优惠券信息。');
 							}
 						}
 					}, 100);
@@ -612,18 +618,22 @@
 	#nanyueblessing {
 		background-image: url(images/kaimenhong/bg_nanyue.png);
 	}
+	.float-button {
+		position:absolute;
+		width: 198px;
+		height: 61px;
+	}
 </style>
 <div id="nanyueblessing" class="panel panel-bigpic">
-	<!--线路单元-->
-	<div class="tour-unit" ms-repeat-unit="nanyueblessing" ms-visible="$index<1">
-		<!--<div class="quota">限额4个</div>-->
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
-		<div class="name">{{unit.tourproname}}</div>
-		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
-		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
-		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
-	</div>
-	<!--/线路单元-->
+	<!--南岳产品 自驾车-->
+	<a href="tour-detail.html?lineid=14158">
+		<div class="float-button" style="left: 399px; top: 132px;"></div>
+	</a>
+	<!--南越产品 大巴-->
+	<a href="tour-detail.html?lineid=14161">
+		<div class="float-button" style="left: 397px; top: 41px;"></div>
+	</a>
+
 </div>
 <!--国际机票-->
 <style>
@@ -678,7 +688,7 @@
 <div id="thailand" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="thailand" ms-visible="$index<1">
-		<div class="quota">限额4个</div>
+		<div class="quota">限额24个</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -697,7 +707,7 @@
 <div id="qingmai" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="qingmai" ms-visible="$index<1">
-		<div class="quota">限额4个</div>
+		<div class="quota">限额19个</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -716,7 +726,7 @@
 <div id="riben" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="riben" ms-visible="$index<1">
-		<div class="quota">限额5个</div>
+		<div class="quota">限额24个</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -735,7 +745,7 @@
 <div id="shusimilan" class="panel panel-bigpic havaicon">
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="shusimilan" ms-visible="$index<1">
-		<div class="quota">限额5个</div>
+		<div class="quota">限额10个</div>
 		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
@@ -764,6 +774,25 @@
 	<!--/线路单元-->
 </div>
 
+<!--美国-->
+<style>
+	#meiguo {
+		background-image: url(images/kaimenhong/bg_meiguo.png);
+	}
+</style>
+<div id="meiguo" class="panel panel-bigpic havaicon">
+	<!--线路单元-->
+	<div class="tour-unit" ms-repeat-unit="meiguo" ms-visible="$index<1">
+		<div class="quota">限额10个</div>
+		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
+		<div class="name">{{unit.tourproname}}</div>
+		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
+		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
+		<a ms-attr-href="http://www.htyou.com/weixin_h5/tour-detail.html?lineid={{unit.lineid}}" class="buybuybuy">立即预订</a>
+	</div>
+	<!--/线路单元-->
+</div>
+
 <!--底部文字-->
 <style>
 	#bottom-text {
@@ -779,7 +808,7 @@
 
 <script>
 	$(document).ready(function () {
-		$('#thailand,#qingmai,#riben,#shusimilan,#pujidao').prepend('<div class="icon"></div>');
+		$('.havaicon').prepend('<div class="icon"></div>');
 	});
 </script>
 </body>
