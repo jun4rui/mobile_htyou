@@ -227,6 +227,11 @@
 			left: 0;
 			top: 0;
 		}
+		.tour-unit .image>img {
+			width:280px;
+			height:153px;
+			display: block;
+		}
 
 		.tour-unit > .quota {
 			position: absolute;
@@ -538,7 +543,7 @@
 	</style>
 	<div id="nwlottery">
 		<img alt="" class="lotteryimg" src="./images/nwlottery0.png">
-		<img alt="" class="lotteryimg active" src="./images/nwlottery5.png">
+		<img alt="" class="lotteryimg" src="./images/nwlottery5.png">
 		<img alt="" class="lotteryimg" src="./images/nwlottery10.png">
 		<img alt="" class="lotteryimg" src="./images/nwlottery20.png">
 		<img alt="" class="lotteryimg" src="./images/nwlottery50.png">
@@ -689,7 +694,7 @@
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="thailand" ms-visible="$index<1">
 		<div class="quota">限额24个</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
+		<div class="image"><img ms-attr-src="http://www.htyou.com/{{unit.spotviewpic}}" alt=""></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
@@ -708,7 +713,7 @@
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="qingmai" ms-visible="$index<1">
 		<div class="quota">限额19个</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
+		<div class="image"><img ms-attr-src="http://www.htyou.com/{{unit.spotviewpic}}" alt=""></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
@@ -727,7 +732,7 @@
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="riben" ms-visible="$index<1">
 		<div class="quota">限额24个</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
+		<div class="image"><img ms-attr-src="http://www.htyou.com/{{unit.spotviewpic}}" alt=""></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
@@ -746,7 +751,7 @@
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="shusimilan" ms-visible="$index<1">
 		<div class="quota">限额10个</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
+		<div class="image"><img ms-attr-src="http://www.htyou.com/{{unit.spotviewpic}}" alt=""></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
@@ -765,7 +770,7 @@
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="pujidao" ms-visible="$index<1">
 		<div class="quota">限额10个</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
+		<div class="image"><img ms-attr-src="http://www.htyou.com/{{unit.spotviewpic}}" alt=""></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
@@ -784,7 +789,7 @@
 	<!--线路单元-->
 	<div class="tour-unit" ms-repeat-unit="meiguo" ms-visible="$index<1">
 		<div class="quota">限额10个</div>
-		<div class="image" ms-attr-style="background-image: url(http://www.htyou.com/{{unit.spotviewpic}});"></div>
+		<div class="image"><img ms-attr-src="http://www.htyou.com/{{unit.spotviewpic}}" alt=""></div>
 		<div class="name">{{unit.tourproname}}</div>
 		<div class="orgprice">原价：<span>{{unit.pricedescribe}}元</span></div>
 		<div class="discount">原价：&yen;{{unit.leastprice}}元</div>
